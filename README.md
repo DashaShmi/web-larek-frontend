@@ -40,3 +40,17 @@ npm run build
 ```
 yarn build
 ```
+
+## Данные и типы данных, исользуемые в приложении
+
+Карточка
+
+```
+export interface ICard {
+  name: string;
+  description: string;
+  price: string;
+  category: string
+  img:
+}
+```
