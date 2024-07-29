@@ -1,6 +1,7 @@
 // работа с апи
-
+import { IListResponse } from "../components/base/api"
 export type ApiPostMethods = 'POST' | 'PUT' | 'DELETE' | 'PATCH';
+
 
 export interface IApi {
   baseUrl: string;
@@ -17,28 +18,46 @@ export interface IProductData {
   title: string;
   category: string;
   price: number | null;
+  readonly total: number;
 }
 
-
-
-// _________*********
-
-
-export interface IBuyer {
-  phone: string;
+export interface IContactsData {
   email: string;
+  telephone: string;
+}
+
+export interface IPaymentInfoData {
+  paymentMethod: "online" | "offline";
   adress: string;
 }
 
-export interface ICardsData {
-  cards: IProductData[];
-  openCard(card: IProductData): void;
+export interface IOrderData {
+  readonly total: number;
+  contacts: IContactsData;
+  products: IProductData[];
+  paymentInfo: IPaymentInfoData;
 }
 
-export interface ICart {
-  addToCart();
-  removeFromCart();
+export interface ICartModel {
+  products: IProductData[];
+  add(data: IProductData): void;
+  delete(productId: string): void;
+  counter: number;
+}
 
+export interface IProductsModel {
+  products: IProductData[];
+}
+
+export interface IOrderModel {
+  contacts: IContactsData;
+  products: IProductData[];
+  paymentInfo: IPaymentInfoData;
+}
+
+interface IAppApi {
+  getProductList(): Promise<IListResponse<IProductData>>;
+  getProduct(id: string): Promise<IProductData>;
 }
 
 
