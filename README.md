@@ -53,7 +53,6 @@ interface IProductData {
  title: string;
  category: string;
  price: number | null;
- readonly total:number;
 }
 ```
 
@@ -83,6 +82,14 @@ interface  IOrderData {
  contacts: IContactsData;
  products: IProductData[];
  paymentInfo: IPaymentInfoData;
+}
+```
+
+Данные модального окна
+
+```
+interface IModalData{
+  content: HTMLElement;
 }
 ```
 
@@ -146,11 +153,12 @@ export interface ICartModel {
 }
 ```
 
+
 ### Классы представления
 Все классы представления отвечают за отображение внутри контейнера (DOM-элемент) передаваемых в них данных.
 
 #### Базовый Класс View
-Класс является дженериком и родителем всех View слоя представления. В дженерик принимает тип объекта, в котором данные будут передаваться в метод render для отображения данных во View. В конструктор принимает элемент разметки, являющийся основным родительским контейнером View. Содержит метод render, отвечающий за отрисовку данных.
+Класс является дженериком и родителем всех View слоя представления. В дженерик принимает тип объекта, в котором данные будут передаваться в метод render для отображения данных во View. В конструктор принимает элемент разметки, являющийся основным родительским контейнером View. Содержит метод render, отвечающий за отрисовку данных. (Для ревьюереки коментарий -  хочу оставить abstract render, потому что иначе получается не типизированный код через object.assign. Он  вызывает гетттеры и сеттеры в обход проверки типов)
 
 ```
 abstract class View<T> {
@@ -173,7 +181,7 @@ abstract class ViewWithEvents<T> extends View<T> {
 Предназначен для реализации модального окна с формой содержащей поля ввода. При сабмите инициирует событие передавая в него объект с данными из полей ввода формы. При изменении данных в полях ввода инициирует событие изменения данных. Предоставляет методы для отображения ошибок и управления активностью кнопки сохранения.
 
 ```
-abstract class ViewWithForm<T> {
+abstract class ViewWithForm extends ViewWithEvents <T> {
  inputs: HTMLInputElement[];
  form: HTMLFormElement;
  errors: Record<string, HTMLElement>;
@@ -183,22 +191,28 @@ abstract class ViewWithForm<T> {
 
 
 #### Класс ModalView
-Реализует модальное окно. Так же предоставляет методы `open` и `close` для управления отображением модального окна. Устанавливает слушатели на клавиатуру, для закрытия модального окна по Esc, на клик в оверлей и кнопку-крестик для закрытия попапа. 
+Реализует модальное окно. Так же предоставляет методы `open`, `close` и `render` для управления отображением модального окна. Устанавливает слушатели на клавиатуру, для закрытия модального окна по Esc, на клик в оверлей и кнопку-крестик для закрытия попапа. 
+
+interface IModalData{
+  content: HTMLElement|View;
+}
 
 ```
-class ModalView extends View<unknown> {
+class ModalView extends View<IModalData> {
  open(): void;
  close(): void;
+ render(data: Partial<IModalData>){
+    ... // отображение дочернего View}
 }
 ```
 
 #### Класс ProductView
-Расширяет класс ViewWithEvent. Предназначен для реализации отобродения олного продукта. 
+Расширяет класс ViewWithForm. Предназначен для реализации отобродения оного продукта. 
 События - Events:
  "product:open" (data:IProductData);
 
 ```
-class ProductView extends ViewWithEvents<IProductData> {
+class ProductView extends ViewWithForm<IProductData> {
 render(data: IProductData):HTMLElementevents;
 }
 ```
@@ -217,42 +231,42 @@ class ProductListView {
 Events:
 "product:add_to_cart" (data:IProductData);
 
-```class ProductDetailView extends ViewWithEvents<IProductData> {
+```class ProductDetailView extends ViewWithForm<IProductData> {
  render(data:IProductData):HTMLElement;
 }
 ```
 
 #### Класс CartView
-Расширяет класс ViewWithEvents  и предназначен для управления отображением и событиями для интерфейса корзины.  И сосредоточен на работе с массивами данных о продуктах IProductData. Метод render создает HTML-представления корзины и генерирует события для уведомления об изменениях и завершении операций с корзиной.
+Расширяет класс ViewWithForm  и предназначен для управления отображением и событиями для интерфейса корзины.  И сосредоточен на работе с массивами данных о продуктах IProductData. Метод render создает HTML-представления корзины и генерирует события для уведомления об изменениях и завершении операций с корзиной.
 Events:
 "cart:item-deleted"(productId:string);
 "cart:competed" (IProductData[]);
 
 ```
-class CartView extends ViewWithEvents<IProductData[]> {
+class CartView extends ViewWithForm<IProductData[]> {
  render(data: IProductData[]):HTMLElement;
 }
 ```
 
 #### Класс PaymentInfoView
-Расширяет класс ViewWithEvents и отвечает за отображение информации о платеже. Метод render принимает объект данных о платеже и отображает его в контейнере, за который отвечает.
+Расширяет класс ViewWithForm и отвечает за отображение информации о платеже. Метод render принимает объект данных о платеже и отображает его в контейнере, за который отвечает.
 Events:
 "payment_info:filled"(data:IPaymentInfoData);
 
 ```
-class PaymentInfoView extends ViewWithEvents<IPaymentInfoData> {
+class PaymentInfoView extends ViewWithForm<IPaymentInfoData> {
  render(data: IPaymentInfoData)HTMLElement;
 }
 ```
 
 #### Класс ContactsView
-Расширяет класс ViewWithEvents, метод render принимает объект данных о контактах и отображает его в контейнере.
+Расширяет класс ViewWithForm, метод render принимает объект данных о контактах и отображает его в контейнере.
 События - 
 Events:
 "contacts_info:filled"(data:IContactsData);
 
 ```
-class ContactsView extends ViewWithEvents<IContactsData>{
+class ContactsView extends ViewWithForm<IContactsData>{
  render(data:IContactsData):HTMLElement;
 }
 ```

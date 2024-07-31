@@ -18,7 +18,6 @@ export interface IProductData {
   title: string;
   category: string;
   price: number | null;
-  readonly total: number;
 }
 
 export interface IContactsData {
@@ -58,6 +57,10 @@ export interface IOrderModel {
 interface IAppApi {
   getProductList(): Promise<IListResponse<IProductData>>;
   getProduct(id: string): Promise<IProductData>;
+}
+
+export interface IModalData {
+  content: HTMLElement;
 }
 
 
