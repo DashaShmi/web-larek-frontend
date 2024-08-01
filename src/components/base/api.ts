@@ -1,4 +1,4 @@
-import { IApi } from "../../types";
+import { IApi } from "../../types/contracts";
 
 export interface IListResponse<T> {
     total: number;
