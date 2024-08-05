@@ -54,7 +54,7 @@ export interface IOrderModel {
   paymentInfo: IPaymentInfoData;
 }
 
-interface IAppApi {
+export interface IAppApi {
   getProductList(): Promise<IListResponse<IProductData>>;
   getProduct(id: string): Promise<IProductData>;
 }

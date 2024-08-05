@@ -1,13 +1,18 @@
-import { IApi, IProductData } from "../types/contracts";
+import { IApi, IProductData, IAppApi } from "../types/contracts";
+import { IListResponse } from "./base/api";
 
-export class AppApi {
+export class AppApi implements IAppApi {
   private _baseApi: IApi;
 
   constructor(baseApi: IApi) {
     this._baseApi = baseApi;
   }
 
-  getProducts(): Promise<IProductData[]> {
-    return this._baseApi.get<IProductData[]>(`/product/`).then((cards: IProductData[]) => cards);
+  getProductList(): Promise<IListResponse<IProductData>> {
+    return this._baseApi.get<IListResponse<IProductData>>(`/product/`).then((cards: IListResponse<IProductData>) => cards);
+  }
+
+  getProduct(id: string): Promise<IProductData> {
+    throw new Error("Method not implemented.");
   }
 }
