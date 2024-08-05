@@ -1,22 +1,46 @@
 import './scss/styles.scss';
 import { AppApi } from './components/AppApi';
-import { IApi } from './types/contracts';
+import { IApi, IProductData } from './types/contracts';
 import { Api } from './components/base/api';
 import { API_URL } from './utils/constants';
+import { EventEmitter, IEvents } from './components/base/events';
+import { ProductView } from './components/ProductView';
+import { ensureElement } from './utils/utils';
 
 const baseApi: IApi = new Api(API_URL);
 const api = new AppApi(baseApi);
+const events: IEvents = new EventEmitter();
+// const productData = new 
 
 // Получаем карточки с сервера
-api.getProductList()
-  .then((productList) => {
-    console.log(productList.items);
-  })
-  .catch((err) => {
-    console.error(err);
-  });
+
+const promise = api.getProductList();
+
+const newPromise = promise.then((productList) => {
+  console.log(productList.items);
+
+  const productsContainer = ensureElement('.gallery');
+
+  // productList.items.forEach((productData: IProductData) => {
+  //   const productView = new ProductView;
+  //   const productElement = productView.render(productData);
+  //   productContainer.appendChild(productElement);
+  // })
 
 
-// 1) убрать промис олл
-// 2) использовать IAppApi в AppApi
-// 3) сделать абстрактныый View и из него класс ProductView. render самой писать не надо
+  for (let i = 0; i < productList.items.length; i++) {
+    const productData = productList.items[i];
+    const productView = new ProductView(document.createElement('div'));
+    const productElement = productView.render(productData);
+    productsContainer.appendChild(productElement);
+  }
+
+
+});
+
+newPromise.catch((err) => {
+  console.error(err);
+});
+
+
+// "product:open" (data:IProductData)

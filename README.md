@@ -163,7 +163,7 @@ export interface ICartModel {
 ```
 abstract class View<T> {
   abstract render(data: T):HTMLElement;
-  element: HTMLlElement;
+  element: HTMLElement;
   ...
 }
 ```
@@ -207,14 +207,14 @@ class ModalView extends View<IModalData> {
 ```
 
 #### Класс ProductView
-Расширяет класс ViewWithForm. Предназначен для реализации отобродения оного продукта. 
+Расширяет класс View. Предназначен для реализации отобродения оного продукта. 
 События - Events:
  "product:open" (data:IProductData);
 
 ```
-class ProductView extends ViewWithForm<IProductData> {
-render(data: IProductData):HTMLElementevents;
-}
+class ProductView extends View<IProductData> {
+  render(data: IProductData):HTMLElement;
+  }
 ```
 
 #### Класс ProductListView
