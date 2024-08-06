@@ -21,32 +21,15 @@ const newPromise = promise.then((productList) => {
 
   const productsContainer = ensureElement('.gallery');
 
-  // productList.items.forEach((productData: IProductData) => {
-  //   const productView = new ProductView;
-  //   const productElement = productView.render(productData);
-  //   productContainer.appendChild(productElement);
-  // })
-
-
-  //   export function cloneTemplate<T extends HTMLElement>(query: string | HTMLTemplateElement): T {
-  //     const template = ensureElement(query) as HTMLTemplateElement;
-  //     return template.content.firstElementChild!.cloneNode(true) as T;
-  // }
-
-
   for (let i = 0; i < productList.items.length; i++) {
     const productData = productList.items[i];
     const productView = new ProductView(cloneTemplate('#card-catalog'));
     const productElement = productView.render(productData);
     productsContainer.appendChild(productElement);
   }
-
-
 });
 
 newPromise.catch((err) => {
   console.error(err);
 });
 
-
-// "product:open" (data:IProductData)
