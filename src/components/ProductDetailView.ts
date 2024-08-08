@@ -11,6 +11,7 @@ export class ProductDetailView extends ProductView {
     this.description = ensureElement<HTMLElement>(".card__text", this.element);
   }
 
+  // перезапись
   override render(data: IProductData): HTMLElement {
     super.render(data);
     this.description.textContent = data.description;

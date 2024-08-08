@@ -1,3 +1,4 @@
+
 export abstract class View<T> {
   protected readonly element: HTMLElement;
 
@@ -7,3 +8,4 @@ export abstract class View<T> {
     this.element = element;
   }
 }
+

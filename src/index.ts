@@ -7,6 +7,7 @@ import { EventEmitter, IEvents } from './components/base/events';
 import { ProductView } from './components/ProductView';
 import { ProductDetailView } from "./components/ProductDetailView";
 import { cloneTemplate, ensureElement } from './utils/utils';
+import { ModalView } from "./components/base/ModalView";
 
 const baseApi: IApi = new Api(API_URL);
 const api = new AppApi(baseApi);
@@ -24,11 +25,21 @@ const newPromise = promise.then((productList) => {
 
   for (let i = 0; i < productList.items.length; i++) {
     const productData = productList.items[i];
-    // const productView = new ProductView(cloneTemplate('#card-catalog'));
-    const productView = new ProductDetailView(cloneTemplate('#card-preview'));
+    const productView = new ProductView(cloneTemplate('#card-catalog'));
+    // const productView = new ProductDetailView(cloneTemplate('#card-preview'));
     const productElement = productView.render(productData);
     productsContainer.appendChild(productElement);
   }
+
+
+  const modalView = new ModalView(ensureElement('#modal-container'));
+  const modalElement = modalView.render({});
+
+  modalView.open();
+  // modalView.close();
+
+  console.log(modalElement);
+
 });
 
 newPromise.catch((err) => {
