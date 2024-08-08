@@ -4,7 +4,8 @@ import { IApi, IProductData } from './types/contracts';
 import { Api } from './components/base/api';
 import { API_URL } from './utils/constants';
 import { EventEmitter, IEvents } from './components/base/events';
-import { ProductDetailView, ProductView } from './components/ProductView';
+import { ProductView } from './components/ProductView';
+import { ProductDetailView } from "./components/ProductDetailView";
 import { cloneTemplate, ensureElement } from './utils/utils';
 
 const baseApi: IApi = new Api(API_URL);
