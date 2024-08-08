@@ -1,4 +1,5 @@
 import { IProductData } from "../types/contracts";
+import { CDN_URL } from "../utils/constants";
 import { ensureElement } from "../utils/utils";
 import { View } from "./base/View";
 
@@ -19,34 +20,62 @@ export class ProductView extends View<IProductData> {
 
   render(data: IProductData): HTMLElement {
     this.title.textContent = data.title;
-    this.image.src = `${data.image}`;
-    this.price.textContent = data.price! == null ? `${data.price} синапсов` : 'Бесценно';
+    this.image.src = `${CDN_URL}${data.image}`;
+    this.price.textContent = data.price !== null ? `${data.price} синапсов` : 'Бесценно';
     this.category.textContent = data.category;
 
-    this.category.classList.remove
-      (
-        'card__category_soft',
-        'card__category_hard',
-        'card__category_other',
-        'card__category_button',
-        'card__category_additional'
-      );
+    const map: Record<string, string> = {
+      "софт-скил": 'card__category_soft',
+      "хард-скил": 'card__category_hard',
+      "другое": 'card__category_other',
+      "кнопка": 'card__category_button',
+      "дополнительное": 'card__category_additional'
+    }
 
-    if (data.category == "софт-скил") {
-      this.category.classList.add('card__category_soft')
+    const allClasses = Object.values(map);
+    this.category.classList.remove(...allClasses);
+    const categoryClass = map[data.category];
+    this.category.classList.add(categoryClass);
+    return this.element;
+  }
+}
+
+export class ProductDetailView extends View<IProductData> {
+
+  private readonly title: HTMLHeadingElement;
+  private readonly image: HTMLImageElement;
+  private readonly price: HTMLElement;
+  private readonly category: HTMLElement;
+  private readonly description: HTMLElement;
+
+  constructor(element: HTMLElement) {
+    super(element);
+    this.title = ensureElement<HTMLHeadingElement>(".card__title", this.element);
+    this.image = ensureElement<HTMLImageElement>(".card__image", this.element);
+    this.price = ensureElement<HTMLElement>(".card__price", this.element);
+    this.category = ensureElement<HTMLElement>(".card__category", this.element);
+    this.description = ensureElement<HTMLElement>(".card__text", this.element);
+  }
+
+  render(data: IProductData): HTMLElement {
+    this.title.textContent = data.title;
+    this.image.src = `${CDN_URL}${data.image}`;
+    this.price.textContent = data.price !== null ? `${data.price} синапсов` : 'Бесценно';
+    this.category.textContent = data.category;
+    this.description.textContent = data.description;
+
+    const map: Record<string, string> = {
+      "софт-скил": 'card__category_soft',
+      "хард-скил": 'card__category_hard',
+      "другое": 'card__category_other',
+      "кнопка": 'card__category_button',
+      "дополнительное": 'card__category_additional'
     }
-    else if (data.category == "хард-скил") {
-      this.category.classList.add('card__category_hard')
-    }
-    else if (data.category == "другое") {
-      this.category.classList.add('card__category_other')
-    }
-    else if (data.category == "кнопка") {
-      this.category.classList.add('card__category_button')
-    }
-    else if (data.category == "дополнительное") {
-      this.category.classList.add('card__category_additional')
-    }
+
+    const allClasses = Object.values(map);
+    this.category.classList.remove(...allClasses);
+    const categoryClass = map[data.category];
+    this.category.classList.add(categoryClass);
     return this.element;
   }
 }

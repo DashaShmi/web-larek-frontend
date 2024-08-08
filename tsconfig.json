@@ -10,5 +10,8 @@
     "strictNullChecks": true,
     "strictPropertyInitialization": true
   },
-  //"include": ["src/index.ts", "src/types/*.d.ts"]
+  "include": [
+    "src/**/*.ts",
+    "src/types/*.d.ts"
+  ]
 }

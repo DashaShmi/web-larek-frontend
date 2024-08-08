@@ -4,7 +4,7 @@ import { IApi, IProductData } from './types/contracts';
 import { Api } from './components/base/api';
 import { API_URL } from './utils/constants';
 import { EventEmitter, IEvents } from './components/base/events';
-import { ProductView } from './components/ProductView';
+import { ProductDetailView, ProductView } from './components/ProductView';
 import { cloneTemplate, ensureElement } from './utils/utils';
 
 const baseApi: IApi = new Api(API_URL);
@@ -23,7 +23,8 @@ const newPromise = promise.then((productList) => {
 
   for (let i = 0; i < productList.items.length; i++) {
     const productData = productList.items[i];
-    const productView = new ProductView(cloneTemplate('#card-catalog'));
+    // const productView = new ProductView(cloneTemplate('#card-catalog'));
+    const productView = new ProductDetailView(cloneTemplate('#card-preview'));
     const productElement = productView.render(productData);
     productsContainer.appendChild(productElement);
   }
