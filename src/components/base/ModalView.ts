@@ -23,7 +23,10 @@ export class ModalView extends View<IModalData> {
 
   render(data: Partial<IModalData>) {
 
-    this.element.querySelector('.modal__content')!.textContent = 'popa';
+    if (data.content !== undefined) {
+      this.element.querySelector('.modal__content')!.appendChild(data.content);
+    }
+
 
     return this.element;
   }
@@ -36,3 +39,7 @@ export class ModalView extends View<IModalData> {
     }
   };
 }
+
+// class ProductDetailView {
+
+// };
