@@ -1,6 +1,7 @@
 import { IProductData } from "../types/contracts";
 import { CDN_URL } from "../utils/constants";
 import { ensureElement } from "../utils/utils";
+import { IEvents } from "./base/events";
 import { View } from "./base/View";
 
 export class ProductView extends View<IProductData> {
@@ -9,13 +10,20 @@ export class ProductView extends View<IProductData> {
   private readonly image: HTMLImageElement;
   private readonly price: HTMLElement;
   private readonly category: HTMLElement;
+  protected events: IEvents;
 
-  constructor(element: HTMLElement) {
+
+  constructor(element: HTMLElement, events: IEvents) {
     super(element);
+    this.events = events;
     this.title = ensureElement<HTMLHeadingElement>(".card__title", this.element);
     this.image = ensureElement<HTMLImageElement>(".card__image", this.element);
     this.price = ensureElement<HTMLElement>(".card__price", this.element);
     this.category = ensureElement<HTMLElement>(".card__category", this.element);
+
+    this.element.addEventListener('click', () => console.log('gavno'))
+
+
   }
 
   render(data: IProductData): HTMLElement {
