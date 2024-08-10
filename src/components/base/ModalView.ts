@@ -4,10 +4,13 @@ import { View } from "./View";
 
 export class ModalView extends View<IModalData> {
 
+  private readonly modalContent: HTMLElement;
+
   constructor(element: HTMLElement) {
     super(element);
     const closeButtonElement = ensureElement('.modal__close', element);
     closeButtonElement.addEventListener("click", this.close.bind(this));
+    this.modalContent = ensureElement<HTMLElement>('.modal__content', this.element);
   }
 
 
@@ -24,7 +27,7 @@ export class ModalView extends View<IModalData> {
   render(data: Partial<IModalData>) {
 
     if (data.content !== undefined) {
-      this.element.querySelector('.modal__content')!.appendChild(data.content);
+      this.modalContent.replaceChildren(data.content);
     }
 
 
