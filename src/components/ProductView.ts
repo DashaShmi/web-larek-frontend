@@ -11,7 +11,7 @@ export class ProductView extends View<IProductData> {
   private readonly price: HTMLElement;
   private readonly category: HTMLElement;
   protected events: IEvents;
-
+  protected data?: IProductData;
 
   constructor(element: HTMLElement, events: IEvents) {
     super(element);
@@ -21,9 +21,7 @@ export class ProductView extends View<IProductData> {
     this.price = ensureElement<HTMLElement>(".card__price", this.element);
     this.category = ensureElement<HTMLElement>(".card__category", this.element);
 
-    this.element.addEventListener('click', () => console.log('gavno'))
-
-
+    this.element.addEventListener('click', () => this.events.emit('product:open', this.data))
   }
 
   render(data: IProductData): HTMLElement {
@@ -31,6 +29,7 @@ export class ProductView extends View<IProductData> {
     this.image.src = `${CDN_URL}${data.image}`;
     this.price.textContent = data.price !== null ? `${data.price} синапсов` : 'Бесценно';
     this.category.textContent = data.category;
+    this.data = data;
 
     const map: Record<string, string> = {
       "софт-скил": 'card__category_soft',

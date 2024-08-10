@@ -12,7 +12,17 @@ import { ModalView } from "./components/base/ModalView";
 const baseApi: IApi = new Api(API_URL);
 const api = new AppApi(baseApi);
 const events: IEvents = new EventEmitter();
-// const productData = new 
+
+events.on('product:open', (productData: IProductData) => {
+  console.log(`event: `, productData);
+  // product
+  const productView = new ProductDetailView(cloneTemplate('#card-preview'), events);
+  const productElement = productView.render(productData);
+  //  modal
+  const modalView = new ModalView(ensureElement('#modal-container'));
+  modalView.render({ content: productElement });
+  modalView.open();
+});
 
 // Получаем карточки с сервера
 
@@ -29,20 +39,6 @@ const newPromise = promise.then((productList) => {
     const productElement = productView.render(productData);
     productsContainer.appendChild(productElement);
   }
-
-  const productData = productList.items[0];
-  const productView = new ProductDetailView(cloneTemplate('#card-preview'), events);
-  const modalView = new ModalView(ensureElement('#modal-container'));
-  const productElement = productView.render(productData);
-  const pipa = document.createElement("div");
-  pipa.textContent = "pipa";
-  const modalElement = modalView.render({ content: productElement });
-
-  // modalView.open();
-  // modalView.close();
-  console.log(modalElement);
-
-
 });
 
 newPromise.catch((err) => {
