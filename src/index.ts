@@ -14,25 +14,18 @@ const api = new AppApi(baseApi);
 const events: IEvents = new EventEmitter();
 
 // views
-const detailModalView = new ModalView(ensureElement('#modal-container'));
+const modalView = new ModalView(ensureElement('#modal-container'));
+
 const detailProductView = new ProductDetailView(cloneTemplate('#card-preview'), events);
-
-const productElement = detailProductView.render({
-  id: '',
-  description: '',
-  image: '',
-  title: '',
-  category: '',
-  price: null
-});
-
-detailModalView.render({ content: productElement });
 
 events.on('product:open', (productData: IProductData) => {
   console.log(`event: `, productData);
 
-  detailProductView.render(productData);
-  detailModalView.open();
+  const productElement = detailProductView.render(productData);
+
+  modalView.render({ content: productElement });
+
+  modalView.open();
 });
 
 // Получаем карточки с сервера
