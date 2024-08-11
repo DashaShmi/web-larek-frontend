@@ -6,6 +6,7 @@ import { API_URL } from './utils/constants';
 import { EventEmitter, IEvents } from './components/base/events';
 import { ProductView } from './components/ProductView';
 import { ProductDetailView } from "./components/ProductDetailView";
+import { BasketView } from "./components/BasketView";
 import { cloneTemplate, ensureElement } from './utils/utils';
 import { ModalView } from "./components/base/ModalView";
 
@@ -17,6 +18,7 @@ const events: IEvents = new EventEmitter();
 const modalView = new ModalView(ensureElement('#modal-container'));
 
 const detailProductView = new ProductDetailView(cloneTemplate('#card-preview'), events);
+console.log('фигняяя');
 
 events.on('product:open', (productData: IProductData) => {
   console.log(`event: `, productData);
@@ -33,6 +35,15 @@ events.on('product:open', (productData: IProductData) => {
 const promise = api.getProductList();
 
 const newPromise = promise.then((productList) => {
+
+  const basketView = new BasketView(cloneTemplate('#basket'));
+
+  const basketElement = basketView.render({
+    products: productList.items
+  });
+  modalView.render({ content: basketElement });
+  modalView.open();
+
   console.log(productList.items);
   const productsContainer = ensureElement('.gallery');
 

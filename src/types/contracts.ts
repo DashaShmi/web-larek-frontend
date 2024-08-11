@@ -63,6 +63,9 @@ export interface IModalData {
   content: HTMLElement;
 }
 
+export interface IBasketData {
+  products: IProductData[];
+}
 
 
 

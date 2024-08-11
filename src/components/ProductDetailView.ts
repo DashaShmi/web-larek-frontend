@@ -3,7 +3,6 @@ import { ensureElement } from "../utils/utils";
 import { IEvents } from "./base/events";
 import { ProductView } from "./ProductView";
 
-
 export class ProductDetailView extends ProductView {
   private readonly description: HTMLElement;
 
@@ -19,3 +18,5 @@ export class ProductDetailView extends ProductView {
     return this.element;
   }
 }
+
+
