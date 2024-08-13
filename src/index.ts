@@ -39,7 +39,7 @@ const newPromise = promise.then((productList) => {
   const basketView = new BasketView(cloneTemplate('#basket'));
 
   const basketElement = basketView.render({
-    products: productList.items
+    products: productList.items.slice(1, 4) // [productList.items[0], productList.items[1], productList.items[3]]
   });
   modalView.render({ content: basketElement });
   modalView.open();
