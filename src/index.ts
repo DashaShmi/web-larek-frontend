@@ -21,7 +21,7 @@ const detailProductView = new ProductDetailView(cloneTemplate('#card-preview'), 
 console.log('фигняяя');
 
 events.on('product:open', (productData: IProductData) => {
-  console.log(`event: `, productData);
+  console.log(`eventOpen: `, productData);
 
   const productElement = detailProductView.render(productData);
 
@@ -29,6 +29,11 @@ events.on('product:open', (productData: IProductData) => {
 
   modalView.open();
 });
+
+events.on('product:add_to_cart', (productData: IProductData) => {
+  console.log(`eventAddToCart: `, productData);
+
+})
 
 // Получаем карточки с сервера
 
