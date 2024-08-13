@@ -16,9 +16,9 @@ const events: IEvents = new EventEmitter();
 
 // views
 const modalView = new ModalView(ensureElement('#modal-container'));
-
 const detailProductView = new ProductDetailView(cloneTemplate('#card-preview'), events);
-console.log('фигняяя');
+const basketView = new BasketView(cloneTemplate('#basket'));
+
 
 events.on('product:open', (productData: IProductData) => {
   console.log(`eventOpen: `, productData);
@@ -33,6 +33,12 @@ events.on('product:open', (productData: IProductData) => {
 events.on('product:add_to_cart', (productData: IProductData) => {
   console.log(`eventAddToCart: `, productData);
 
+  modalView.close();
+  const basketElement = basketView.render({
+    products: [productData]
+  });
+  modalView.render({ content: basketElement });
+  modalView.open();
 })
 
 // Получаем карточки с сервера
@@ -40,11 +46,8 @@ events.on('product:add_to_cart', (productData: IProductData) => {
 const promise = api.getProductList();
 
 const newPromise = promise.then((productList) => {
-
-  const basketView = new BasketView(cloneTemplate('#basket'));
-
   const basketElement = basketView.render({
-    products: productList.items.slice(1, 4) // [productList.items[0], productList.items[1], productList.items[3]]
+    products: productList.items.slice(1, 4)
   });
   modalView.render({ content: basketElement });
   modalView.open();

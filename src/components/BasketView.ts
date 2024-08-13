@@ -12,6 +12,7 @@ export class BasketView extends View<IBasketData> {
 
   override render(data: IBasketData): HTMLElement {
 
+    const liArray: HTMLElement[] = [];
 
     for (let i = 0; i < data.products.length; i++) {
       const productData = data.products[i];
@@ -25,8 +26,12 @@ export class BasketView extends View<IBasketData> {
       cardTitle.textContent = productData.title;
       cardPrice.textContent = productData.price == null ? 'Бесценно' : `${productData.price} синапсов`;
 
-      this.listUl.appendChild(li);
+      liArray.push(li);
     }
+
+
+    this.listUl.replaceChildren(...liArray);
+
     return this.element;
   }
 
