@@ -1,9 +1,9 @@
 import { IProductData } from "../types/contracts";
 import { ensureElement } from "../utils/utils";
 import { IEvents } from "./base/events";
-import { ProductView } from "./ProductView";
+import { ProductViewBase } from "./productViewBase";
 
-export class ProductDetailView extends ProductView {
+export class ProductDetailView extends ProductViewBase {
   private readonly description: HTMLElement;
 
   constructor(element: HTMLElement, events: IEvents) {
