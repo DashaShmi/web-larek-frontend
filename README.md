@@ -237,13 +237,13 @@ Events:
 ```
 
 #### Класс CartView
-Расширяет класс ViewWithForm  и предназначен для управления отображением и событиями для интерфейса корзины.  И сосредоточен на работе с массивами данных о продуктах IProductData. Метод render создает HTML-представления корзины и генерирует события для уведомления об изменениях и завершении операций с корзиной.
+Расширяет класс ???  и предназначен для управления отображением и событиями для интерфейса корзины.  И сосредоточен на работе с массивами данных о продуктах IProductData. Метод render создает HTML-представления корзины и генерирует события для уведомления об изменениях и завершении операций с корзиной.
 Events:
 "cart:item-deleted"(productId:string);
 "cart:competed" (IProductData[]);
 
 ```
-class CartView extends ViewWithForm<IProductData[]> {
+class CartView extends ??? <IProductData[]> {
  render(data: IProductData[]):HTMLElement;
 }
 ```
