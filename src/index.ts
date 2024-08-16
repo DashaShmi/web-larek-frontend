@@ -21,9 +21,9 @@ const detailProductView = new ProductDetailView(cloneTemplate('#card-preview'), 
 const cartView = new CartView(cloneTemplate('#basket'));
 
 // models
-const cartModel = new CartModel();
+const cartModel = new CartModel(events);
 
-events.on('product:open', (productData: IProductData) => {
+events.on<IProductData>('product:open', (productData) => {
   console.log(`eventOpen: `, productData);
 
   const productElement = detailProductView.render(productData);
@@ -33,18 +33,25 @@ events.on('product:open', (productData: IProductData) => {
   modalView.open();
 });
 
-events.on('product:add_to_cart', (productData: IProductData) => {
+events.on<IProductData>('product:add_to_cart', (productData) => {
   console.log(`eventAddToCart: `, productData);
 
   modalView.close();
   cartModel.add(productData);
-  const basketElement = cartView.render({
+  const cartElement = cartView.render({
     products: cartModel.products
   });
-  modalView.render({ content: basketElement });
+  modalView.render({ content: cartElement });
   modalView.open();
 
 })
+
+events.on<IProductData[]>('cards:changed', (productsData) => {
+  console.log(`cards:changed: `, productsData);
+  // const basketElement = cartView.render({
+  //   products: cartModel.products
+  // });
+});
 
 // Получаем карточки с сервера
 

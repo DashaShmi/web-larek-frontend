@@ -1,7 +1,20 @@
 import { ICartModel, IProductData } from "../types/contracts";
+import { IEvents } from "./base/events";
 
-export class CartModel implements ICartModel {
+export class ModalBase {
+  protected events: IEvents;
+
+  constructor(events: IEvents) {
+    this.events = events;
+  }
+}
+
+export class CartModel extends ModalBase implements ICartModel {
   products: IProductData[] = [];
+
+  constructor(events: IEvents) {
+    super(events);
+  }
 
   add(data: IProductData): void {
     // Проверка на наличие продукта в корзине
@@ -13,6 +26,7 @@ export class CartModel implements ICartModel {
     }
 
     this.products.push(data);
+    this.events.emit<IProductData[]>('cards:changed', this.products);
   }
 
   delete(productId: string): void {
