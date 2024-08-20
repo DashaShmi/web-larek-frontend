@@ -1,7 +1,7 @@
 import { IProductData } from "../types/contracts";
 import { ensureElement } from "../utils/utils";
 import { IEvents } from "./base/events";
-import { ProductViewBase } from "./productViewBase";
+import { ProductViewBase } from "./ProductViewBase";
 
 export class ProductDetailView extends ProductViewBase {
   private readonly description: HTMLElement;

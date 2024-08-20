@@ -63,8 +63,12 @@ export interface IModalData {
   content: HTMLElement;
 }
 
-export interface IBasketData {
+export interface ICartData {
   products: IProductData[];
+}
+
+export interface IDeleteProductData {
+  id: string;
 }
 
 

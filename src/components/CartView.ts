@@ -1,16 +1,17 @@
-import { IBasketData } from "../types/contracts";
+import { ICartData, IDeleteProductData } from "../types/contracts";
 import { cloneTemplate, ensureElement } from "../utils/utils";
-import { View } from "./base/View";
+import { IEvents } from "./base/events";
+import { ViewWithEvents } from "./ViewWithEvents";
 
-export class CartView extends View<IBasketData> {
+export class CartView extends ViewWithEvents<ICartData> {
   private readonly listUl: HTMLElement;
 
-  constructor(element: HTMLElement) {
-    super(element);
+  constructor(element: HTMLElement, events: IEvents) {
+    super(element, events);
     this.listUl = ensureElement<HTMLElement>(".basket__list", this.element);
   }
 
-  override render(data: IBasketData): HTMLElement {
+  override render(data: ICartData): HTMLElement {
 
     const liArray: HTMLElement[] = [];
 
@@ -24,12 +25,15 @@ export class CartView extends View<IBasketData> {
       const cardTitle = ensureElement<HTMLElement>(".card__title", li);
       const cardPrice = ensureElement<HTMLElement>(".card__price", li);
       const cartIndex = ensureElement<HTMLElement>(".basket__item-index", li);
+      const cartDelineButton = ensureElement<HTMLButtonElement>(".basket__item-delete", li);
+
+
       cardTitle.textContent = productData.title;
       cardPrice.textContent = productData.price == null ? 'Бесценно' : `${productData.price} синапсов`;
       cartIndex.textContent = `${i + 1}`;
+      cartDelineButton.addEventListener('click', () => this.events.emit<IDeleteProductData>('cart:item-deleted', { id: productData.id }));
       liArray.push(li);
     }
-
 
     this.listUl.replaceChildren(...liArray);
 

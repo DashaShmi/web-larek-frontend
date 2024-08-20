@@ -3,18 +3,17 @@ import { CDN_URL } from "../utils/constants";
 import { ensureElement } from "../utils/utils";
 import { IEvents } from "./base/events";
 import { View } from "./base/View";
+import { ViewWithEvents } from "./ViewWithEvents";
 
-export class ProductViewBase extends View<IProductData> {
+export class ProductViewBase extends ViewWithEvents<IProductData> {
   private readonly title: HTMLHeadingElement;
   private readonly image: HTMLImageElement;
   private readonly price: HTMLElement;
   private readonly category: HTMLElement;
-  protected events: IEvents;
   protected data?: IProductData;
 
   constructor(element: HTMLElement, events: IEvents) {
-    super(element);
-    this.events = events;
+    super(element, events);
     this.title = ensureElement<HTMLHeadingElement>(".card__title", this.element);
     this.image = ensureElement<HTMLImageElement>(".card__image", this.element);
     this.price = ensureElement<HTMLElement>(".card__price", this.element);

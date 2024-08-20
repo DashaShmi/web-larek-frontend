@@ -1,6 +1,6 @@
 import './scss/styles.scss';
 import { AppApi } from './components/AppApi';
-import { IApi, IProductData } from './types/contracts';
+import { IApi, IDeleteProductData, IProductData } from './types/contracts';
 import { Api } from './components/base/api';
 import { API_URL } from './utils/constants';
 import { EventEmitter, IEvents } from './components/base/events';
@@ -18,7 +18,7 @@ const events: IEvents = new EventEmitter();
 // views
 const modalView = new ModalView(ensureElement('#modal-container'));
 const detailProductView = new ProductDetailView(cloneTemplate('#card-preview'), events);
-const cartView = new CartView(cloneTemplate('#basket'));
+const cartView = new CartView(cloneTemplate('#basket'), events);
 
 // models
 const cartModel = new CartModel(events);
@@ -48,21 +48,23 @@ events.on<IProductData>('product:add_to_cart', (productData) => {
 
 events.on<IProductData[]>('cards:changed', (productsData) => {
   console.log(`cards:changed: `, productsData);
-  // const basketElement = cartView.render({
-  //   products: cartModel.products
-  // });
+  cartView.render({
+    products: cartModel.products
+  });
 });
+
+events.on<IDeleteProductData>('cart:item-deleted', (productsId) => {
+  console.log(`cart:item-deleted: `, productsId);
+  cartModel.delete(productsId.id);
+});
+
+
 
 // Получаем карточки с сервера
 
 const promise = api.getProductList();
 
 const newPromise = promise.then((productList) => {
-  const basketElement = cartView.render({
-    products: productList.items.slice(1, 4)
-  });
-  modalView.render({ content: basketElement });
-  modalView.open();
 
   console.log(productList.items);
   const productsContainer = ensureElement('.gallery');

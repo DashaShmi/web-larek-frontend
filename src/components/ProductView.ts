@@ -1,6 +1,6 @@
 import { IProductData } from "../types/contracts";
 import { IEvents } from "./base/events";
-import { ProductViewBase } from "./productViewBase";
+import { ProductViewBase } from "./ProductViewBase";
 
 export class ProductView extends ProductViewBase {
 

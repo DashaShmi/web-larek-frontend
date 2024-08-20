@@ -30,14 +30,15 @@ export class CartModel extends ModalBase implements ICartModel {
   }
 
   delete(productId: string): void {
+    const existingProductIndex = this.products.findIndex(product => product.id === productId);
 
-    const existingProduct = this.products.findIndex(product => product.id === productId);
     // Если сплайс не найдет такой элемент в массиве он вернет -1
-    if (existingProduct < 0) {
+    if (existingProductIndex < 0) {
       return;
     }
     // Удаляем элемент массива
-    this.products.splice(existingProduct, 1);
+    this.products.splice(existingProductIndex, 1);
+    this.events.emit<IProductData[]>('cards:changed', this.products);
   }
 
   counter: number = 0;
