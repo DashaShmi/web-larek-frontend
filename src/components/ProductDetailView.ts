@@ -18,7 +18,7 @@ export class ProductDetailView extends ProductViewBase {
       }
 
       if (this.data.inCart) {
-        this.events.emit<IDeleteProductData>('cart:item-deleted', { id: this.data.id });
+        this.events.emit<IDeleteProductData>('product:remove_from_cart', { id: this.data.id });
       }
       else {
         this.events.emit<IProductData>('product:add_to_cart', this.data);

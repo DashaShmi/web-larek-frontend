@@ -67,6 +67,14 @@ events.on<IDeleteProductData>('cart:item-deleted', (productsId) => {
   cartModel.delete(productsId.id);
 });
 
+events.on<IDeleteProductData>('product:remove_from_cart', (productsId) => {
+  console.log(`'product:remove_from_cart:' `, productsId);
+  cartModel.delete(productsId.id);
+  modalView.close();
+});
+
+
+
 // events.on<ICartData>
 
 // Получаем карточки с сервера

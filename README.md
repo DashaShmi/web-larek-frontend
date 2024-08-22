@@ -230,6 +230,7 @@ class ProductListView {
 События - 
 Events:
 "product:add_to_cart" (data:IProductData);
+""
 
 ```class ProductDetailView extends ViewWithForm<IProductData> {
  render(data:IProductData):HTMLElement;
