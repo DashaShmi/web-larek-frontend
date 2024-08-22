@@ -5,10 +5,12 @@ import { ViewWithEvents } from "./ViewWithEvents";
 
 export class CartView extends ViewWithEvents<ICartData> {
   private readonly listUl: HTMLElement;
+  private readonly cartCount: HTMLElement;
 
   constructor(element: HTMLElement, events: IEvents) {
     super(element, events);
     this.listUl = ensureElement<HTMLElement>(".basket__list", this.element);
+    this.cartCount = ensureElement<HTMLButtonElement>(".basket__price", this.element);
   }
 
   override render(data: ICartData): HTMLElement {
@@ -34,6 +36,7 @@ export class CartView extends ViewWithEvents<ICartData> {
       cartDelineButton.addEventListener('click', () => this.events.emit<IDeleteProductData>('cart:item-deleted', { id: productData.id }));
       liArray.push(li);
     }
+    this.cartCount.textContent = `${data.counter}`;
 
     this.listUl.replaceChildren(...liArray);
 

@@ -1,11 +1,11 @@
-import { IProductData } from "../types/contracts";
+import { IProductData, IProductViewData } from "../types/contracts";
 import { CDN_URL } from "../utils/constants";
 import { ensureElement } from "../utils/utils";
 import { IEvents } from "./base/events";
 import { View } from "./base/View";
 import { ViewWithEvents } from "./ViewWithEvents";
 
-export class ProductViewBase extends ViewWithEvents<IProductData> {
+export class ProductViewBase extends ViewWithEvents<IProductViewData> {
   private readonly title: HTMLHeadingElement;
   private readonly image: HTMLImageElement;
   private readonly price: HTMLElement;

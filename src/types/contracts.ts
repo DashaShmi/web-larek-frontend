@@ -20,6 +20,10 @@ export interface IProductData {
   price: number | null;
 }
 
+export interface IProductViewData extends IProductData {
+  inCart: boolean;
+}
+
 export interface IContactsData {
   email: string;
   telephone: string;
@@ -42,6 +46,7 @@ export interface ICartModel {
   add(data: IProductData): void;
   delete(productId: string): void;
   counter: number;
+  contains(productId: string): boolean;
 }
 
 export interface IProductsModel {
@@ -65,6 +70,7 @@ export interface IModalData {
 
 export interface ICartData {
   products: IProductData[];
+  counter: number;
 }
 
 export interface IDeleteProductData {

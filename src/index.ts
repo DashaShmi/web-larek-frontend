@@ -26,7 +26,14 @@ const cartModel = new CartModel(events);
 events.on<IProductData>('product:open', (productData) => {
   console.log(`eventOpen: `, productData);
 
-  const productElement = detailProductView.render(productData);
+  const inCart = cartModel.contains(productData.id);
+
+  const productViewData = {
+    ...productData,
+    inCart: inCart
+  };
+
+  const productElement = detailProductView.render(productViewData);
 
   modalView.render({ content: productElement });
 
@@ -38,8 +45,10 @@ events.on<IProductData>('product:add_to_cart', (productData) => {
 
   modalView.close();
   cartModel.add(productData);
+
   const cartElement = cartView.render({
-    products: cartModel.products
+    products: cartModel.products,
+    counter: cartModel.counter
   });
   modalView.render({ content: cartElement });
   modalView.open();
@@ -49,7 +58,8 @@ events.on<IProductData>('product:add_to_cart', (productData) => {
 events.on<IProductData[]>('cards:changed', (productsData) => {
   console.log(`cards:changed: `, productsData);
   cartView.render({
-    products: cartModel.products
+    products: cartModel.products,
+    counter: cartModel.counter
   });
 });
 
@@ -58,7 +68,7 @@ events.on<IDeleteProductData>('cart:item-deleted', (productsId) => {
   cartModel.delete(productsId.id);
 });
 
-
+// events.on<ICartData>
 
 // Получаем карточки с сервера
 

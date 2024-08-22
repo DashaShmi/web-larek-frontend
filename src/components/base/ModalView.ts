@@ -13,7 +13,6 @@ export class ModalView extends View<IModalData> {
     this.modalContent = ensureElement<HTMLElement>('.modal__content', this.element);
   }
 
-
   open(): void {
     this.element.classList.add('modal_active');
     document.addEventListener("keyup", this.handleEscUp);
@@ -29,11 +28,8 @@ export class ModalView extends View<IModalData> {
     if (data.content !== undefined) {
       this.modalContent.replaceChildren(data.content);
     }
-
-
     return this.element;
   }
-
   handleEscUp = (evt: KeyboardEvent) => {
     if (evt.key === "Escape") {
       this.close();
