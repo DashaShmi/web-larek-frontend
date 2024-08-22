@@ -27,7 +27,6 @@ events.on<IProductData>('product:open', (productData) => {
   console.log(`eventOpen: `, productData);
 
   const inCart = cartModel.contains(productData.id);
-
   const productViewData = {
     ...productData,
     inCart: inCart
@@ -55,8 +54,8 @@ events.on<IProductData>('product:add_to_cart', (productData) => {
 
 })
 
-events.on<IProductData[]>('cards:changed', (productsData) => {
-  console.log(`cards:changed: `, productsData);
+events.on<IProductData[]>('cart:changed', (productsData) => {
+  console.log(`cart:changed: `, productsData);
   cartView.render({
     products: cartModel.products,
     counter: cartModel.counter
@@ -82,8 +81,11 @@ const newPromise = promise.then((productList) => {
   for (let i = 0; i < productList.items.length; i++) {
     const productData = productList.items[i];
     const productView = new ProductView(cloneTemplate('#card-catalog'), events);
-
-    const productElement = productView.render(productData);
+    const productViewData = {
+      ...productData,
+      inCart: false
+    };
+    const productElement = productView.render(productViewData);
     productsContainer.appendChild(productElement);
   }
 });

@@ -39,7 +39,7 @@ export class CartModel extends ModalBase implements ICartModel {
     else {
       this.counter += data.price;
     }
-    this.events.emit<IProductData[]>('cards:changed', this.products);
+    this.events.emit<IProductData[]>('cart:changed', this.products);
 
   }
 
@@ -66,7 +66,7 @@ export class CartModel extends ModalBase implements ICartModel {
     }
 
     this.products.splice(existingProductIndex, 1);
-    this.events.emit<IProductData[]>('cards:changed', this.products);
+    this.events.emit<IProductData[]>('cart:changed', this.products);
   }
 }
 

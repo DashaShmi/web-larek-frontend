@@ -1,4 +1,4 @@
-import { IProductData, IProductViewData } from "../types/contracts";
+import { IDeleteProductData, IProductData, IProductViewData } from "../types/contracts";
 import { ensureElement } from "../utils/utils";
 import { IEvents } from "./base/events";
 import { ProductViewBase } from "./ProductViewBase";
@@ -10,7 +10,20 @@ export class ProductDetailView extends ProductViewBase {
   constructor(element: HTMLElement, events: IEvents) {
     super(element, events);
     this.description = ensureElement<HTMLElement>(".card__text", this.element);
-    this.btnAddToCart.addEventListener('click', () => this.events.emit<IProductData>('product:add_to_cart', this.data));
+
+    this.btnAddToCart.addEventListener('click', () => {
+
+      if (this.data == undefined) {
+        return
+      }
+
+      if (this.data.inCart) {
+        this.events.emit<IDeleteProductData>('cart:item-deleted', { id: this.data.id });
+      }
+      else {
+        this.events.emit<IProductData>('product:add_to_cart', this.data);
+      }
+    });
   }
 
   // перезапись

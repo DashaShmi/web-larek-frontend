@@ -10,7 +10,7 @@ export class ProductViewBase extends ViewWithEvents<IProductViewData> {
   private readonly image: HTMLImageElement;
   private readonly price: HTMLElement;
   private readonly category: HTMLElement;
-  protected data?: IProductData;
+  protected data?: IProductViewData;
 
   constructor(element: HTMLElement, events: IEvents) {
     super(element, events);
@@ -20,7 +20,7 @@ export class ProductViewBase extends ViewWithEvents<IProductViewData> {
     this.category = ensureElement<HTMLElement>(".card__category", this.element);
   }
 
-  render(data: IProductData): HTMLElement {
+  render(data: IProductViewData): HTMLElement {
     this.title.textContent = data.title;
     this.image.src = `${CDN_URL}${data.image}`;
     this.price.textContent = data.price !== null ? `${data.price} синапсов` : 'Бесценно';
