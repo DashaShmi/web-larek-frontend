@@ -87,6 +87,7 @@ const productListPromise = api.getProductList();
 
 const newPromise = productListPromise.then((productList) => {
   prouctListView.render(productList.items);
+  prouctListView.render(productList.items);
 
   console.log(productList.items);
 });
