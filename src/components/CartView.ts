@@ -36,7 +36,7 @@ export class CartView extends ViewWithEvents<ICartData> {
       cartDelineButton.addEventListener('click', () => this.events.emit<IDeleteProductData>('cart:item-deleted', { id: productData.id }));
       liArray.push(li);
     }
-    this.cartCount.textContent = `${data.counter}`;
+    this.cartCount.textContent = `${data.counter} синапсов`;
 
     this.listUl.replaceChildren(...liArray);
 

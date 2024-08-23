@@ -1,15 +1,8 @@
 import { ICartModel, IProductData } from "../types/contracts";
 import { IEvents } from "./base/events";
+import { ModelBase } from "./ModelBase";
 
-export class ModalBase {
-  protected events: IEvents;
-
-  constructor(events: IEvents) {
-    this.events = events;
-  }
-}
-
-export class CartModel extends ModalBase implements ICartModel {
+export class CartModel extends ModelBase implements ICartModel {
   products: IProductData[] = [];
   counter: number = 0;
 

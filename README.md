@@ -335,4 +335,4 @@ interface IApi {
 - `order:complete` - оформили заказ
   
 
-- написать класс ProductViewBase
+- написать класс ProductViewBase, ProductsModel

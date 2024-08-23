@@ -10,6 +10,7 @@ import { CartView as CartView } from "./components/CartView";
 import { cloneTemplate, ensureElement } from './utils/utils';
 import { ModalView } from "./components/base/ModalView";
 import { CartModel } from './components/CartModel';
+import { ProductListView } from './components/ProductListView';
 
 const baseApi: IApi = new Api(API_URL);
 const api = new AppApi(baseApi);
@@ -19,6 +20,9 @@ const events: IEvents = new EventEmitter();
 const modalView = new ModalView(ensureElement('#modal-container'));
 const detailProductView = new ProductDetailView(cloneTemplate('#card-preview'), events);
 const cartView = new CartView(cloneTemplate('#basket'), events);
+
+
+
 
 // models
 const cartModel = new CartModel(events);
@@ -73,29 +77,18 @@ events.on<IDeleteProductData>('product:remove_from_cart', (productsId) => {
   modalView.close();
 });
 
-
-
 // events.on<ICartData>
 
 // Получаем карточки с сервера
 
-const promise = api.getProductList();
+const prouctListView = new ProductListView(ensureElement('.gallery'), events);
 
-const newPromise = promise.then((productList) => {
+const productListPromise = api.getProductList();
+
+const newPromise = productListPromise.then((productList) => {
+  prouctListView.render(productList.items);
 
   console.log(productList.items);
-  const productsContainer = ensureElement('.gallery');
-
-  for (let i = 0; i < productList.items.length; i++) {
-    const productData = productList.items[i];
-    const productView = new ProductView(cloneTemplate('#card-catalog'), events);
-    const productViewData = {
-      ...productData,
-      inCart: false
-    };
-    const productElement = productView.render(productViewData);
-    productsContainer.appendChild(productElement);
-  }
 });
 
 newPromise.catch((err) => {
