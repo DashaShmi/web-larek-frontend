@@ -49,7 +49,6 @@ export class CartModel extends ModelBase implements ICartModel {
     if (existingProductIndex < 0) {
       return;
     }
-    // Удаляем элемент массива
 
     if (existingProduct.price == null) {
       // this.counter = 0;
@@ -57,7 +56,7 @@ export class CartModel extends ModelBase implements ICartModel {
     else {
       this.counter = this.counter - existingProduct.price;
     }
-
+    // Удаляет элемент из массива
     this.products.splice(existingProductIndex, 1);
     this.events.emit<IProductData[]>('cart:changed', this.products);
   }

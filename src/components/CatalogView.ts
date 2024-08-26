@@ -4,7 +4,7 @@ import { IEvents } from "./base/events";
 import { ProductView } from "./ProductView";
 import { ViewWithEvents } from "./ViewWithEvents";
 
-export class ProductListView extends ViewWithEvents<IProductData[]> {
+export class CatalogView extends ViewWithEvents<IProductData[]> {
 
   constructor(element: HTMLElement, events: IEvents) {
     super(element, events);

@@ -10,7 +10,8 @@ import { CartView as CartView } from "./components/CartView";
 import { cloneTemplate, ensureElement } from './utils/utils';
 import { ModalView } from "./components/base/ModalView";
 import { CartModel } from './components/CartModel';
-import { ProductListView } from './components/ProductListView';
+import { CatalogView } from './components/CatalogView';
+import { CatalogModel } from './components/CatalogModel';
 
 const baseApi: IApi = new Api(API_URL);
 const api = new AppApi(baseApi);
@@ -77,18 +78,21 @@ events.on<IDeleteProductData>('product:remove_from_cart', (productsId) => {
   modalView.close();
 });
 
-// events.on<ICartData>
+events.on<IProductData[]>('catalog:changed', (productsData) => {
+  console.log(`catalog:changed `, productsData);
+  catalogView.render(catalogModel.products);
+})
 
 // Получаем карточки с сервера
 
-const prouctListView = new ProductListView(ensureElement('.gallery'), events);
+const catalogView = new CatalogView(ensureElement('.gallery'), events);
+const catalogModel = new CatalogModel(events);
+catalogView.render([]);
 
 const productListPromise = api.getProductList();
 
 const newPromise = productListPromise.then((productList) => {
-  prouctListView.render(productList.items);
-  prouctListView.render(productList.items);
-
+  catalogModel.setProducts(productList.items);
   console.log(productList.items);
 });
 

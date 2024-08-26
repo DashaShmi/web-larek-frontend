@@ -49,8 +49,9 @@ export interface ICartModel {
   contains(productId: string): boolean;
 }
 
-export interface IProductsModel {
+export interface ICatalogModel {
   products: IProductData[];
+  setProducts(newProducts: IProductData[]): void;
 }
 
 export interface IOrderModel {
