@@ -1,6 +1,6 @@
 import './scss/styles.scss';
 import { AppApi } from './components/AppApi';
-import { IApi, IDeleteProductData, IProductData } from './types/contracts';
+import { IApi, IContactsData, IDeleteProductData, IPaymentInfoData, IProductData } from './types/contracts';
 import { Api } from './components/base/api';
 import { API_URL } from './utils/constants';
 import { EventEmitter, IEvents } from './components/base/events';
@@ -13,6 +13,8 @@ import { CartModel } from './components/CartModel';
 import { CatalogView } from './components/CatalogView';
 import { CatalogModel } from './components/CatalogModel';
 import { ContactsView } from './components/ContactsView';
+import { View } from './components/base/View';
+import { PaymentInfoView } from './components/PaymentInfoView';
 
 const baseApi: IApi = new Api(API_URL);
 const api = new AppApi(baseApi);
@@ -22,18 +24,25 @@ const events: IEvents = new EventEmitter();
 const modalView = new ModalView(ensureElement('#modal-container'));
 const detailProductView = new ProductDetailView(cloneTemplate('#card-preview'), events);
 const cartView = new CartView(cloneTemplate('#basket'), events);
-
-
-
 const contactsView = new ContactsView(cloneTemplate('#contacts'), events);
+const paymentInfoView = new PaymentInfoView(cloneTemplate('#order'), events);
+
 const contactsViewElement = contactsView.render({
   email: "email",
   telephone: "555"
 });
 modalView.render({ content: contactsViewElement });
 modalView.open();
-
 console.log("ищем модалку с контактами")
+
+const paymentInfoViewElement = paymentInfoView.render({
+  paymentMethod: "online",
+  adress: "ul.Sezam"
+})
+modalView.render({ content: paymentInfoViewElement });
+modalView.open();
+
+
 
 
 // models
@@ -92,6 +101,17 @@ events.on<IDeleteProductData>('product:remove_from_cart', (productsId) => {
 events.on<IProductData[]>('catalog:changed', (productsData) => {
   console.log(`catalog:changed `, productsData);
   catalogView.render(catalogModel.products);
+})
+
+events.on<IContactsData>('contacts:submit', (contactsData) => {
+  console.log('contacts:submit', contactsData);
+  console.log(contactsData);
+  modalView.close();
+})
+
+events.on<IPaymentInfoData>('order:submit', (paymentInfoData) => {
+  console.log('order:submit', paymentInfoData);
+  modalView.close();
 })
 
 // Получаем карточки с сервера
