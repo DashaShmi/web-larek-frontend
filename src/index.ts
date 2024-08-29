@@ -12,6 +12,7 @@ import { ModalView } from "./components/base/ModalView";
 import { CartModel } from './components/CartModel';
 import { CatalogView } from './components/CatalogView';
 import { CatalogModel } from './components/CatalogModel';
+import { ContactsView } from './components/ContactsView';
 
 const baseApi: IApi = new Api(API_URL);
 const api = new AppApi(baseApi);
@@ -23,6 +24,16 @@ const detailProductView = new ProductDetailView(cloneTemplate('#card-preview'), 
 const cartView = new CartView(cloneTemplate('#basket'), events);
 
 
+
+const contactsView = new ContactsView(cloneTemplate('#contacts'), events);
+const contactsViewElement = contactsView.render({
+  email: "email",
+  telephone: "555"
+});
+modalView.render({ content: contactsViewElement });
+modalView.open();
+
+console.log("ищем модалку с контактами")
 
 
 // models

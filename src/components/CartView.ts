@@ -29,7 +29,6 @@ export class CartView extends ViewWithEvents<ICartData> {
       const cartIndex = ensureElement<HTMLElement>(".basket__item-index", li);
       const cartDelineButton = ensureElement<HTMLButtonElement>(".basket__item-delete", li);
 
-
       cardTitle.textContent = productData.title;
       cardPrice.textContent = productData.price == null ? 'Бесценно' : `${productData.price} синапсов`;
       cartIndex.textContent = `${i + 1}`;

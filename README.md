@@ -181,7 +181,7 @@ abstract class ViewWithEvents<T> extends View<T> {
 Предназначен для реализации модального окна с формой содержащей поля ввода. При сабмите инициирует событие передавая в него объект с данными из полей ввода формы. При изменении данных в полях ввода инициирует событие изменения данных. Предоставляет методы для отображения ошибок и управления активностью кнопки сохранения.
 
 ```
-abstract class ViewWithForm extends ViewWithEvents <T> {
+abstract class ViewWithForm extends ViewWithEvents<T> {
  inputs: HTMLInputElement[];
  form: HTMLFormElement;
  errors: Record<string, HTMLElement>;
