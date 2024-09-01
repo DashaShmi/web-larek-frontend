@@ -1,4 +1,7 @@
 // Хорошая практика даже простые типы выносить в алиасы
+
+import { IEventScheme } from "./IEventScheme";
+
 // Зато когда захотите поменять это достаточно сделать в одном месте
 type EventName = string | RegExp;
 type Subscriber = Function;
@@ -7,81 +10,134 @@ type EmitterEvent = {
     data: unknown
 };
 
-export interface IEvents {
-    on<T extends object>(event: EventName, callback: (data: T) => void): void;
-    emit<T extends object>(event: string, data?: T): void;
-    trigger<T extends object>(event: string, context?: Partial<T>): (data: T) => void;
+
+export interface IEvents extends IGenericEvents<IEventScheme> {
+
 }
+
+export interface IGenericEvents<T extends Record<keyof T, UnknownFunc>> {
+    on<K extends keyof T>(eventName: K, func: T[K]): boolean;
+    off<K extends keyof T>(eventName: K, func: T[K]): boolean;
+    offAll(): void;
+    emit<K extends keyof T>(eventName: K, ...params: Parameters<T[K]>): boolean;
+    emitDynamic<T>(eventName: string, value: T): boolean;
+}
+
+export type UnknownFunc = (...args: never[]) => unknown;
 
 /**
  * Брокер событий, классическая реализация
  * В расширенных вариантах есть возможность подписаться на все события
  * или слушать события по шаблону например
  */
-export class EventEmitter implements IEvents {
-    _events: Map<EventName, Set<Subscriber>>;
+export class EventEmitter<T extends Record<keyof T, UnknownFunc>> implements IGenericEvents<T> {
+    private readonly _actions: {
+        [K in keyof T]?: T[K][];
+    } = {};
 
     constructor() {
-        this._events = new Map<EventName, Set<Subscriber>>();
     }
 
     /**
      * Установить обработчик на событие
      */
-    on<T extends object>(eventName: EventName, callback: (event: T) => void) {
-        if (!this._events.has(eventName)) {
-            this._events.set(eventName, new Set<Subscriber>());
+    on<K extends keyof T>(eventName: K, func: T[K]): boolean {
+        let actionFunctions: T[K][] | undefined = this._actions[eventName];
+
+        if (actionFunctions === undefined) {
+            const newArr: T[K][] = []; // ts fix
+            this._actions[eventName] = newArr;
+            actionFunctions = newArr;
         }
-        this._events.get(eventName)?.add(callback);
+
+        if (actionFunctions.indexOf(func) >= 0) {
+            return false;
+        }
+
+        actionFunctions.push(func);
+
+        return true;
     }
 
     /**
      * Снять обработчик с события
      */
-    off(eventName: EventName, callback: Subscriber) {
-        if (this._events.has(eventName)) {
-            this._events.get(eventName)!.delete(callback);
-            if (this._events.get(eventName)?.size === 0) {
-                this._events.delete(eventName);
-            }
+    off<K extends keyof T>(eventName: K, func: T[K]): boolean {
+        const actionFunctions = this._actions[eventName];
+
+        if (actionFunctions === undefined) {
+            return false;
         }
+
+        const actionIndex = actionFunctions.indexOf(func);
+
+        if (actionIndex < 0) {
+            return false;
+        }
+
+        actionFunctions.splice(actionIndex, 1);
+        return true;
     }
 
     /**
      * Инициировать событие с данными
      */
-    emit<T extends object>(eventName: string, data?: T) {
-        this._events.forEach((subscribers, name) => {
-            if (name instanceof RegExp && name.test(eventName) || name === eventName) {
-                subscribers.forEach(callback => callback(data));
+    emit<K extends keyof T>(
+        eventName: K,
+        ...params: Parameters<T[K]>
+    ): boolean {
+        if (this._actions[eventName] === undefined) {
+            return false;
+        }
+
+        const actions = this._actions[eventName] ?? [];
+
+        for (const action of actions) {
+            if (action === undefined || action === null) {
+                continue;
             }
-        });
+
+            action(...params);
+        }
+
+        return true;
+    }
+
+    /*
+        для отправки событий без проверки
+    */
+    emitDynamic<T>(eventName: string, ...params: any): boolean {
+        return this.emit(eventName as any, ...params as any);
     }
 
     /**
      * Слушать все события
      */
-    onAll(callback: (event: EmitterEvent) => void) {
-        this.on("*", callback);
-    }
+    // onAll(callback: (event: EmitterEvent) => void) {
+    //     this.on("*", callback);
+    // }
 
     /**
      * Сбросить все обработчики
      */
-    offAll() {
-        this._events = new Map<string, Set<Subscriber>>();
+
+    // clear all subscriptions
+    offAll(): void {
+        for (const key in this._actions) {
+            delete this._actions[key];
+        }
     }
 
     /**
      * Сделать коллбек триггер, генерирующий событие при вызове
      */
-    trigger<T extends object>(eventName: string, context?: Partial<T>) {
-        return (event: object = {}) => {
-            this.emit(eventName, {
-                ...(event || {}),
-                ...(context || {})
-            });
-        };
-    }
+    // trigger<T extends object>(eventName: string, context?: Partial<T>) {
+    //     return (event: object = {}) => {
+    //         this.emit(eventName, {
+    //             ...(event || {}),
+    //             ...(context || {})
+    //         });
+    //     };
+    // }
 }
 
