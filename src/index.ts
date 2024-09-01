@@ -27,23 +27,6 @@ const cartView = new CartView(cloneTemplate('#basket'), events);
 const contactsView = new ContactsView(cloneTemplate('#contacts'), events);
 const paymentInfoView = new PaymentInfoView(cloneTemplate('#order'), events);
 
-const contactsViewElement = contactsView.render({
-  email: "email",
-  telephone: "555"
-});
-modalView.render({ content: contactsViewElement });
-modalView.open();
-console.log("ищем модалку с контактами")
-
-const paymentInfoViewElement = paymentInfoView.render({
-  paymentMethod: "online",
-  adress: "ul.Sezam"
-})
-modalView.render({ content: paymentInfoViewElement });
-modalView.open();
-
-
-
 
 // models
 const cartModel = new CartModel(events);
@@ -111,10 +94,25 @@ events.on('contacts:submit', (contactsData) => {
 
 events.on('order:submit', (paymentInfoData) => {
   console.log('order:submit', paymentInfoData);
-  modalView.close();
+
+  const contactsViewElement = contactsView.render({
+    email: "email",
+    telephone: "555"
+  });
+  modalView.render({ content: contactsViewElement });
+  modalView.open();
+  console.log("ищем модалку с контактами")
 })
 
-events.on('cart:completed', (productsData) => console.log('cart:completed', productsData))
+events.on('cart:completed', (productsData) => {
+  console.log('cart:completed', productsData)
+  const paymentInfoViewElement = paymentInfoView.render({
+    paymentMethod: "online",
+    adress: "ul.Sezam"
+  })
+  modalView.render({ content: paymentInfoViewElement });
+  modalView.open();
+})
 
 // Получаем карточки с сервера
 
