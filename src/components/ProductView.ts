@@ -7,7 +7,10 @@ export class ProductView extends ProductViewBase {
   constructor(element: HTMLElement, events: IEvents) {
     super(element, events);
 
-    this.element.addEventListener('click', () => this.events.emit<IProductData>('product:open', this.data))
+    this.element.addEventListener('click', () => {
+      if (this.data !== undefined) {
+        this.events.emit('product:open', this.data)
+      }
+    })
   }
 }
-

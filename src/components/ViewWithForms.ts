@@ -28,7 +28,7 @@ export abstract class ViewWithForm<T> extends ViewWithEvents<T> {
     this.form.addEventListener('submit', (evt) => {
       evt.preventDefault();
       const formData = this.getInputValues()
-      this.events.emit(`${this.formName}:submit`, formData);
+      this.events.emitDynamic(`${this.formName}:submit`, formData);
       console.log(formData);
     });
   }

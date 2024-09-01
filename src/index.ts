@@ -48,7 +48,7 @@ modalView.open();
 // models
 const cartModel = new CartModel(events);
 
-events.on<IProductData>('product:open', (productData) => {
+events.on('product:open', (productData) => {
   console.log(`eventOpen: `, productData);
 
   const inCart = cartModel.contains(productData.id);
@@ -64,7 +64,7 @@ events.on<IProductData>('product:open', (productData) => {
   modalView.open();
 });
 
-events.on<IProductData>('product:add_to_cart', (productData) => {
+events.on('product:add_to_cart', (productData) => {
   console.log(`eventAddToCart: `, productData);
 
   modalView.close();
@@ -79,7 +79,7 @@ events.on<IProductData>('product:add_to_cart', (productData) => {
 
 })
 
-events.on<IProductData[]>('cart:changed', (productsData) => {
+events.on('cart:changed', (productsData) => {
   console.log(`cart:changed: `, productsData);
   cartView.render({
     products: cartModel.products,
@@ -87,34 +87,34 @@ events.on<IProductData[]>('cart:changed', (productsData) => {
   });
 });
 
-events.on<IDeleteProductData>('cart:item-deleted', (productsId) => {
+events.on('cart:item-deleted', (productsId) => {
   console.log(`cart:item-deleted: `, productsId);
   cartModel.delete(productsId.id);
 });
 
-events.on<IDeleteProductData>('product:remove_from_cart', (productsId) => {
+events.on('product:remove_from_cart', (productsId) => {
   console.log(`'product:remove_from_cart:' `, productsId);
   cartModel.delete(productsId.id);
   modalView.close();
 });
 
-events.on<IProductData[]>('catalog:changed', (productsData) => {
+events.on('catalog:changed', (productsData) => {
   console.log(`catalog:changed `, productsData);
   catalogView.render(catalogModel.products);
 })
 
-events.on<IContactsData>('contacts:submit', (contactsData) => {
+events.on('contacts:submit', (contactsData) => {
   console.log('contacts:submit', contactsData);
   console.log(contactsData);
   modalView.close();
 })
 
-events.on<IPaymentInfoData>('order:submit', (paymentInfoData) => {
+events.on('order:submit', (paymentInfoData) => {
   console.log('order:submit', paymentInfoData);
   modalView.close();
 })
 
-events.on<IProductData[]>('cart:completed', (productsData) => console.log('cart:completed', productsData))
+events.on('cart:completed', (productsData) => console.log('cart:completed', productsData))
 
 // Получаем карточки с сервера
 

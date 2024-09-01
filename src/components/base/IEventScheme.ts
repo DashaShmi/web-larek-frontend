@@ -1,4 +1,4 @@
-import { IDeleteProductData, IProductData } from "../../types/contracts";
+import { IContactsData, IDeleteProductData, IOrderData, IPaymentInfoData, IProductData } from "../../types/contracts";
 
 export interface IEventScheme {
   'product:open': (data: IProductData) => unknown;
@@ -8,6 +8,6 @@ export interface IEventScheme {
   'product:remove_from_cart': (data: IDeleteProductData) => unknown;
   'catalog:changed': (data: IProductData[]) => unknown;
   'cart:completed': (data: IProductData[]) => unknown;
-  // 'contacts:submit': 
-  // 'order:submit'
+  'contacts:submit': (data: IContactsData) => unknown;
+  'order:submit': (data: IPaymentInfoData) => unknown;
 }

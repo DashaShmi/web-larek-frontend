@@ -11,6 +11,6 @@ export class CatalogModel extends ModelBase implements ICatalogModel {
 
   setProducts(newProducts: IProductData[]): void {
     this.products = newProducts;
-    this.events.emit<IProductData[]>('catalog:changed', this.products);
+    this.events.emit('catalog:changed', this.products);
   }
 }

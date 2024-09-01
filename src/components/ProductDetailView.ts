@@ -18,10 +18,10 @@ export class ProductDetailView extends ProductViewBase {
       }
 
       if (this.data.inCart) {
-        this.events.emit<IDeleteProductData>('product:remove_from_cart', { id: this.data.id });
+        this.events.emit('product:remove_from_cart', { id: this.data.id });
       }
       else {
-        this.events.emit<IProductData>('product:add_to_cart', this.data);
+        this.events.emit('product:add_to_cart', this.data);
       }
     });
   }

@@ -13,7 +13,7 @@ export class CartView extends ViewWithEvents<ICartData> {
     this.cartCount = ensureElement<HTMLButtonElement>(".basket__price", this.element);
 
     const cartOrderButtom = ensureElement<HTMLButtonElement>('.basket__button', this.element);
-    cartOrderButtom.addEventListener('click', () => this.events.emit<IProductData[]>('cart:completed', []));
+    cartOrderButtom.addEventListener('click', () => this.events.emit('cart:completed', []));
   }
 
   override render(data: ICartData): HTMLElement {
@@ -34,7 +34,7 @@ export class CartView extends ViewWithEvents<ICartData> {
       cardTitle.textContent = productData.title;
       cardPrice.textContent = productData.price == null ? 'Бесценно' : `${productData.price} синапсов`;
       cartIndex.textContent = `${i + 1}`;
-      cartDelineButton.addEventListener('click', () => this.events.emit<IDeleteProductData>('cart:item-deleted', { id: productData.id }));
+      cartDelineButton.addEventListener('click', () => this.events.emit('cart:item-deleted', { id: productData.id }));
       liArray.push(li);
     }
     this.cartCount.textContent = `${data.counter} синапсов`;

@@ -32,7 +32,7 @@ export class CartModel extends ModelBase implements ICartModel {
     else {
       this.counter += data.price;
     }
-    this.events.emit<IProductData[]>('cart:changed', this.products);
+    this.events.emit('cart:changed', this.products);
 
   }
 
@@ -58,7 +58,7 @@ export class CartModel extends ModelBase implements ICartModel {
     }
     // Удаляет элемент из массива
     this.products.splice(existingProductIndex, 1);
-    this.events.emit<IProductData[]>('cart:changed', this.products);
+    this.events.emit('cart:changed', this.products);
   }
 }
 
