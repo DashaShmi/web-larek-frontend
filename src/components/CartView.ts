@@ -1,4 +1,4 @@
-import { ICartData, IDeleteProductData } from "../types/contracts";
+import { ICartData, IDeleteProductData, IProductData } from "../types/contracts";
 import { cloneTemplate, ensureElement } from "../utils/utils";
 import { IEvents } from "./base/events";
 import { ViewWithEvents } from "./ViewWithEvents";
@@ -11,10 +11,12 @@ export class CartView extends ViewWithEvents<ICartData> {
     super(element, events);
     this.listUl = ensureElement<HTMLElement>(".basket__list", this.element);
     this.cartCount = ensureElement<HTMLButtonElement>(".basket__price", this.element);
+
+    const cartOrderButtom = ensureElement<HTMLButtonElement>('.basket__button', this.element);
+    cartOrderButtom.addEventListener('click', () => this.events.emit<IProductData[]>('cart:completed', []));
   }
 
   override render(data: ICartData): HTMLElement {
-
     const liArray: HTMLElement[] = [];
 
     for (let i = 0; i < data.products.length; i++) {

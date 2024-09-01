@@ -114,6 +114,8 @@ events.on<IPaymentInfoData>('order:submit', (paymentInfoData) => {
   modalView.close();
 })
 
+events.on<IProductData[]>('cart:completed', (productsData) => console.log('cart:completed', productsData))
+
 // Получаем карточки с сервера
 
 const catalogView = new CatalogView(ensureElement('.gallery'), events);
