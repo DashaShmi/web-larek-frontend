@@ -15,6 +15,7 @@ import { CatalogModel } from './components/CatalogModel';
 import { ContactsView } from './components/ContactsView';
 import { View } from './components/base/View';
 import { PaymentInfoView } from './components/PaymentInfoView';
+import { SuccessfulOrderView } from './components/SuccessfulOrderView';
 
 const baseApi: IApi = new Api(API_URL);
 const api = new AppApi(baseApi);
@@ -26,6 +27,7 @@ const detailProductView = new ProductDetailView(cloneTemplate('#card-preview'), 
 const cartView = new CartView(cloneTemplate('#basket'), events);
 const contactsView = new ContactsView(cloneTemplate('#contacts'), events);
 const paymentInfoView = new PaymentInfoView(cloneTemplate('#order'), events);
+const successfulOrderView = new SuccessfulOrderView(cloneTemplate('#success'), events);
 
 
 // models
@@ -55,7 +57,7 @@ events.on('product:add_to_cart', (productData) => {
 
   const cartElement = cartView.render({
     products: cartModel.products,
-    counter: cartModel.counter
+    total: cartModel.total
   });
   modalView.render({ content: cartElement });
   modalView.open();
@@ -66,7 +68,7 @@ events.on('cart:changed', (productsData) => {
   console.log(`cart:changed: `, productsData);
   cartView.render({
     products: cartModel.products,
-    counter: cartModel.counter
+    total: cartModel.total
   });
 });
 
@@ -89,7 +91,18 @@ events.on('catalog:changed', (productsData) => {
 events.on('contacts:submit', (contactsData) => {
   console.log('contacts:submit', contactsData);
   console.log(contactsData);
-  modalView.close();
+
+  const successfulOrderViewElement = successfulOrderView.render({
+    total: cartModel.total,
+    contacts: contactsData,
+    products: [],
+    paymentInfo: {
+      paymentMethod: 'online',
+      adress: ''
+    }
+  })
+  modalView.render({ content: successfulOrderViewElement });
+  modalView.open();
 })
 
 events.on('order:submit', (paymentInfoData) => {

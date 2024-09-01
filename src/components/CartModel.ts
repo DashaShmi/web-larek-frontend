@@ -4,7 +4,7 @@ import { ModelBase } from "./ModelBase";
 
 export class CartModel extends ModelBase implements ICartModel {
   products: IProductData[] = [];
-  counter: number = 0;
+  total: number = 0;
 
   constructor(events: IEvents) {
     super(events);
@@ -30,7 +30,7 @@ export class CartModel extends ModelBase implements ICartModel {
       // this.counter = 0;
     }
     else {
-      this.counter += data.price;
+      this.total += data.price;
     }
     this.events.emit('cart:changed', this.products);
 
@@ -54,7 +54,7 @@ export class CartModel extends ModelBase implements ICartModel {
       // this.counter = 0;
     }
     else {
-      this.counter = this.counter - existingProduct.price;
+      this.total = this.total - existingProduct.price;
     }
     // Удаляет элемент из массива
     this.products.splice(existingProductIndex, 1);

@@ -45,7 +45,7 @@ export interface ICartModel {
   products: IProductData[];
   add(data: IProductData): void;
   delete(productId: string): void;
-  counter: number;
+  total: number;
   contains(productId: string): boolean;
 }
 
@@ -71,7 +71,7 @@ export interface IModalData {
 
 export interface ICartData {
   products: IProductData[];
-  counter: number;
+  total: number;
 }
 
 export interface IDeleteProductData {

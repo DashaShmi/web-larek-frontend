@@ -9,6 +9,7 @@ export class CatalogView extends ViewWithEvents<IProductData[]> {
   constructor(element: HTMLElement, events: IEvents) {
     super(element, events);
   }
+
   override render(data: IProductData[]): HTMLElement {
     const array: HTMLElement[] = [];
 
