@@ -1,4 +1,4 @@
-import { IApi, IProductData, IAppApi } from "../types/contracts";
+import { IApi, IProductData, IAppApi, IApiOrderData } from "../types/contracts";
 import { IListResponse } from "./base/api";
 
 export class AppApi implements IAppApi {
@@ -6,6 +6,9 @@ export class AppApi implements IAppApi {
 
   constructor(baseApi: IApi) {
     this._baseApi = baseApi;
+  }
+  sendOrder(data: IApiOrderData): Promise<void> {
+    throw new Error("Method not implemented.");
   }
 
   async getProductList(): Promise<IListResponse<IProductData>> {

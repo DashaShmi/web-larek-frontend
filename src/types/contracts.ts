@@ -9,6 +9,21 @@ export interface IApi {
   post<T>(uri: string, data: object, method?: ApiPostMethods): Promise<T>;
 }
 
+export interface IApiOrderData {
+  payment: "online" | "offline";
+  email: string;
+  phone: string;
+  address: string;
+  total: number;
+  items: string[];
+}
+
+export interface IAppApi {
+  getProductList(): Promise<IListResponse<IProductData>>;
+  getProduct(id: string): Promise<IProductData>;
+  sendOrder(data: IApiOrderData): Promise<void>;
+}
+
 // данные
 
 export interface IProductData {
@@ -56,11 +71,6 @@ export interface ICatalogModel {
 export interface IOrderModel {
   contacts: IContactsData;
   paymentInfo: IPaymentInfoData;
-}
-
-export interface IAppApi {
-  getProductList(): Promise<IListResponse<IProductData>>;
-  getProduct(id: string): Promise<IProductData>;
 }
 
 export interface IModalData {
