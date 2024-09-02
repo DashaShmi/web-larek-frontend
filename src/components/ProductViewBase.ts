@@ -2,15 +2,14 @@ import { IProductData, IProductViewData } from "../types/contracts";
 import { CDN_URL } from "../utils/constants";
 import { ensureElement } from "../utils/utils";
 import { IEvents } from "./base/events";
-import { View } from "./base/View";
 import { ViewWithEvents } from "./ViewWithEvents";
 
-export class ProductViewBase extends ViewWithEvents<IProductViewData> {
+export class ProductViewBase<T extends IProductData> extends ViewWithEvents<T> {
   private readonly title: HTMLHeadingElement;
   private readonly image: HTMLImageElement;
   private readonly price: HTMLElement;
   private readonly category: HTMLElement;
-  protected data?: IProductViewData;
+  protected data?: T;
 
   constructor(element: HTMLElement, events: IEvents) {
     super(element, events);
@@ -20,7 +19,7 @@ export class ProductViewBase extends ViewWithEvents<IProductViewData> {
     this.category = ensureElement<HTMLElement>(".card__category", this.element);
   }
 
-  render(data: IProductViewData): HTMLElement {
+  render(data: T): HTMLElement {
     this.title.textContent = data.title;
     this.image.src = `${CDN_URL}${data.image}`;
     this.price.textContent = data.price !== null ? `${data.price} синапсов` : 'Бесценно';

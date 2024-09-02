@@ -2,7 +2,7 @@ import { IProductData } from "../types/contracts";
 import { IEvents } from "./base/events";
 import { ProductViewBase } from "./ProductViewBase";
 
-export class ProductView extends ProductViewBase {
+export class ProductView extends ProductViewBase<IProductData> {
 
   constructor(element: HTMLElement, events: IEvents) {
     super(element, events);

@@ -16,11 +16,7 @@ export class CatalogView extends ViewWithEvents<IProductData[]> {
     for (let i = 0; i < data.length; i++) {
       const productData = data[i];
       const productView = new ProductView(cloneTemplate('#card-catalog'), this.events);
-      const productViewData = {
-        ...productData,
-        inCart: false
-      };
-      const productElement = productView.render(productViewData);
+      const productElement = productView.render(productData);
       array.push(productElement);
     }
     this.element.replaceChildren(...array);

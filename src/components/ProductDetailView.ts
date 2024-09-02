@@ -3,7 +3,7 @@ import { ensureElement } from "../utils/utils";
 import { IEvents } from "./base/events";
 import { ProductViewBase } from "./ProductViewBase";
 
-export class ProductDetailView extends ProductViewBase {
+export class ProductDetailView extends ProductViewBase<IProductViewData> {
   private readonly description: HTMLElement;
   private readonly btnAddToCart = ensureElement<HTMLElement>(".card__button", this.element);
 
