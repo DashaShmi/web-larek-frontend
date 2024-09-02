@@ -276,7 +276,7 @@ class ContactsView extends ViewWithForm<IContactsData>{
 Расширяет класс ViewWithEvents и отвечает за отображение информации об успешном заказе. Метод render принимает объект данных о заказе и отображает его в контейнере.
 События - 
 Events:
-"order:complete"(IOrderData);
+"order:completed"(IOrderData);
 
 
 ```

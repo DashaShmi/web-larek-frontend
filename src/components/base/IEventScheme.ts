@@ -10,4 +10,5 @@ export interface IEventScheme {
   'cart:completed': (data: IProductData[]) => unknown;
   'contacts:submit': (data: IContactsData) => unknown;
   'paymentsInfo:submit': (data: IPaymentInfoData) => unknown;
+  'order:completed': (data: IOrderData) => unknown;
 }

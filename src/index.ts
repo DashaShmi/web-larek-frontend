@@ -1,10 +1,9 @@
 import './scss/styles.scss';
 import { AppApi } from './components/AppApi';
-import { IApi, IContactsData, IDeleteProductData, IPaymentInfoData, IProductData } from './types/contracts';
+import { IApi, IOrderData, IPaymentInfoData } from './types/contracts';
 import { Api } from './components/base/api';
 import { API_URL } from './utils/constants';
 import { EventEmitter, IEvents } from './components/base/events';
-import { ProductView } from './components/ProductView';
 import { ProductDetailView } from "./components/ProductDetailView";
 import { CartView as CartView } from "./components/CartView";
 import { cloneTemplate, ensureElement } from './utils/utils';
@@ -13,7 +12,6 @@ import { CartModel } from './components/CartModel';
 import { CatalogView } from './components/CatalogView';
 import { CatalogModel } from './components/CatalogModel';
 import { ContactsView } from './components/ContactsView';
-import { View } from './components/base/View';
 import { PaymentInfoView } from './components/PaymentInfoView';
 import { SuccessfulOrderView } from './components/SuccessfulOrderView';
 
@@ -90,17 +88,23 @@ events.on('catalog:changed', (productsData) => {
 
 events.on('contacts:submit', (contactsData) => {
   console.log('contacts:submit', contactsData);
-  console.log(contactsData);
 
-  const successfulOrderViewElement = successfulOrderView.render({
+  const orderData: IOrderData = {
     total: cartModel.total,
     contacts: contactsData,
     products: cartModel.products,
     paymentInfo: paymentsInfo
-  })
+  };
+  events.emit('order:completed', orderData);
+});
+
+events.on('order:completed', orderData => {
+  console.log('order:completed', orderData);
+  const successfulOrderViewElement = successfulOrderView.render(orderData);
   modalView.render({ content: successfulOrderViewElement });
   modalView.open();
 })
+
 
 let paymentsInfo: IPaymentInfoData = {
   paymentMethod: 'online',
