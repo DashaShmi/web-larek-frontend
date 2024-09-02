@@ -9,5 +9,5 @@ export interface IEventScheme {
   'catalog:changed': (data: IProductData[]) => unknown;
   'cart:completed': (data: IProductData[]) => unknown;
   'contacts:submit': (data: IContactsData) => unknown;
-  'order:submit': (data: IPaymentInfoData) => unknown;
+  'paymentsInfo:submit': (data: IPaymentInfoData) => unknown;
 }

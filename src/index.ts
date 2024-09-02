@@ -95,22 +95,24 @@ events.on('contacts:submit', (contactsData) => {
   const successfulOrderViewElement = successfulOrderView.render({
     total: cartModel.total,
     contacts: contactsData,
-    products: [],
-    paymentInfo: {
-      paymentMethod: 'online',
-      adress: ''
-    }
+    products: cartModel.products,
+    paymentInfo: paymentsInfo
   })
   modalView.render({ content: successfulOrderViewElement });
   modalView.open();
 })
 
-events.on('order:submit', (paymentInfoData) => {
-  console.log('order:submit', paymentInfoData);
+let paymentsInfo: IPaymentInfoData = {
+  paymentMethod: 'online',
+  adress: ''
+};
 
+events.on('paymentsInfo:submit', (paymentInfoData) => {
+  paymentInfoData = paymentInfoData;
+  console.log('paymentsInfo:submit', paymentInfoData);
   const contactsViewElement = contactsView.render({
-    email: "email",
-    telephone: "555"
+    email: "",
+    telephone: ""
   });
   modalView.render({ content: contactsViewElement });
   modalView.open();
