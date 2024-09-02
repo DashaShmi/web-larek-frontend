@@ -20,6 +20,11 @@ const baseApi: IApi = new Api(API_URL);
 const api = new AppApi(baseApi);
 const events: IEvents = new EventEmitter();
 
+// models
+const cartModel = new CartModel(events);
+const orderModel = new OrderModel(events);
+const catalogModel = new CatalogModel(events);
+
 // views
 const modalView = new ModalView(ensureElement('#modal-container'));
 const detailProductView = new ProductDetailView(cloneTemplate('#card-preview'), events);
@@ -27,12 +32,10 @@ const cartView = new CartView(cloneTemplate('#basket'), events);
 const contactsView = new ContactsView(cloneTemplate('#contacts'), events);
 const paymentInfoView = new PaymentInfoView(cloneTemplate('#order'), events);
 const successfulOrderView = new SuccessfulOrderView(cloneTemplate('#success'), events);
+const catalogView = new CatalogView(ensureElement('.gallery'), events);
 
-
-
-// models
-const cartModel = new CartModel(events);
-const orderModel = new OrderModel(events);
+// отрисовываем пустой каталог, пока с апи не пришли данные
+catalogView.render(catalogModel.products);
 
 events.on('product:open', (productData) => {
   console.log(`eventOpen: `, productData);
@@ -108,7 +111,6 @@ events.on('order:completed', orderData => {
   modalView.open();
 })
 
-
 events.on('paymentsInfo:submit', (paymentInfoData) => {
   orderModel.paymentInfo = paymentInfoData;
 
@@ -133,10 +135,6 @@ events.on('cart:completed', (productsData) => {
 })
 
 // Получаем карточки с сервера
-
-const catalogView = new CatalogView(ensureElement('.gallery'), events);
-const catalogModel = new CatalogModel(events);
-catalogView.render([]);
 
 const productListPromise = api.getProductList();
 

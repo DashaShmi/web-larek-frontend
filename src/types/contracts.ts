@@ -20,7 +20,7 @@ export interface IProductData {
   price: number | null;
 }
 
-export interface IProductViewData extends IProductData {
+export interface IProductDetailViewData extends IProductData {
   inCart: boolean;
 }
 

@@ -1,9 +1,9 @@
-import { IDeleteProductData, IProductData, IProductViewData } from "../types/contracts";
+import { IDeleteProductData, IProductData, IProductDetailViewData } from "../types/contracts";
 import { ensureElement } from "../utils/utils";
 import { IEvents } from "./base/events";
 import { ProductViewBase } from "./ProductViewBase";
 
-export class ProductDetailView extends ProductViewBase<IProductViewData> {
+export class ProductDetailView extends ProductViewBase<IProductDetailViewData> {
   private readonly description: HTMLElement;
   private readonly btnAddToCart = ensureElement<HTMLElement>(".card__button", this.element);
 
@@ -27,7 +27,7 @@ export class ProductDetailView extends ProductViewBase<IProductViewData> {
   }
 
   // перезапись
-  override render(data: IProductViewData): HTMLElement {
+  override render(data: IProductDetailViewData): HTMLElement {
     super.render(data);
     this.description.textContent = data.description;
     this.btnAddToCart.innerText = data.inCart ? `Удалить из корзины` : `В корзину`;

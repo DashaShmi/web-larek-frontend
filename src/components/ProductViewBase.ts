@@ -1,4 +1,4 @@
-import { IProductData, IProductViewData } from "../types/contracts";
+import { IProductData, IProductDetailViewData } from "../types/contracts";
 import { CDN_URL } from "../utils/constants";
 import { ensureElement } from "../utils/utils";
 import { IEvents } from "./base/events";
