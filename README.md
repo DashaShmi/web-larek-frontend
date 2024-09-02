@@ -135,7 +135,6 @@ Events:
 ```
 export interface IOrderModel {
   contacts: IContactsData;
-  products: IProductData[];
   paymentInfo: IPaymentInfoData;
 }
 ```

@@ -51,12 +51,10 @@ export interface ICartModel {
 
 export interface ICatalogModel {
   products: IProductData[];
-  setProducts(newProducts: IProductData[]): void;
 }
 
 export interface IOrderModel {
   contacts: IContactsData;
-  products: IProductData[];
   paymentInfo: IPaymentInfoData;
 }
 

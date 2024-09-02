@@ -14,6 +14,7 @@ import { CatalogModel } from './components/CatalogModel';
 import { ContactsView } from './components/ContactsView';
 import { PaymentInfoView } from './components/PaymentInfoView';
 import { SuccessfulOrderView } from './components/SuccessfulOrderView';
+import { OrderModel } from './components/OrderModel';
 
 const baseApi: IApi = new Api(API_URL);
 const api = new AppApi(baseApi);
@@ -28,8 +29,10 @@ const paymentInfoView = new PaymentInfoView(cloneTemplate('#order'), events);
 const successfulOrderView = new SuccessfulOrderView(cloneTemplate('#success'), events);
 
 
+
 // models
 const cartModel = new CartModel(events);
+const orderModel = new OrderModel(events);
 
 events.on('product:open', (productData) => {
   console.log(`eventOpen: `, productData);
@@ -59,7 +62,6 @@ events.on('product:add_to_cart', (productData) => {
   });
   modalView.render({ content: cartElement });
   modalView.open();
-
 })
 
 events.on('cart:changed', (productsData) => {
@@ -88,12 +90,13 @@ events.on('catalog:changed', (productsData) => {
 
 events.on('contacts:submit', (contactsData) => {
   console.log('contacts:submit', contactsData);
+  orderModel.contacts = contactsData;
 
   const orderData: IOrderData = {
     total: cartModel.total,
-    contacts: contactsData,
     products: cartModel.products,
-    paymentInfo: paymentsInfo
+    contacts: orderModel.contacts,
+    paymentInfo: orderModel.paymentInfo,
   };
   events.emit('order:completed', orderData);
 });
@@ -106,13 +109,9 @@ events.on('order:completed', orderData => {
 })
 
 
-let paymentsInfo: IPaymentInfoData = {
-  paymentMethod: 'online',
-  adress: ''
-};
-
 events.on('paymentsInfo:submit', (paymentInfoData) => {
-  paymentInfoData = paymentInfoData;
+  orderModel.paymentInfo = paymentInfoData;
+
   console.log('paymentsInfo:submit', paymentInfoData);
   const contactsViewElement = contactsView.render({
     email: "",
@@ -142,7 +141,7 @@ catalogView.render([]);
 const productListPromise = api.getProductList();
 
 const newPromise = productListPromise.then((productList) => {
-  catalogModel.setProducts(productList.items);
+  catalogModel.products = productList.items;
   console.log(productList.items);
 });
 
