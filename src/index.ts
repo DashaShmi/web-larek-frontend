@@ -1,6 +1,6 @@
 import './scss/styles.scss';
 import { AppApi } from './components/AppApi';
-import { IApi, IOrderData, IPaymentInfoData } from './types/contracts';
+import { IApi, IApiOrderData, IOrderData, IPaymentInfoData } from './types/contracts';
 import { Api } from './components/base/api';
 import { API_URL } from './utils/constants';
 import { EventEmitter, IEvents } from './components/base/events';
@@ -101,8 +101,22 @@ events.on('contacts:submit', (contactsData) => {
     contacts: orderModel.contacts,
     paymentInfo: orderModel.paymentInfo,
   };
-  events.emit('order:completed', orderData);
-});
+
+  const apiOrderData: IApiOrderData = {
+    payment: orderModel.paymentInfo.paymentMethod,
+    email: orderModel.contacts.email,
+    phone: orderModel.contacts.telephone,
+    address: orderModel.paymentInfo.adress,
+    total: cartModel.total,
+    items: cartModel.products.map(productData => productData.id)
+  };
+
+  api.sendOrder(apiOrderData).then(() => {
+    events.emit('order:completed', orderData);
+  });
+
+  modalView.close();
+})
 
 events.on('order:completed', orderData => {
   console.log('order:completed', orderData);
