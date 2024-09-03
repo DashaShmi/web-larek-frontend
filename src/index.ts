@@ -1,6 +1,6 @@
 import './scss/styles.scss';
 import { AppApi } from './components/AppApi';
-import { IApi, IApiOrderData, IOrderData, IPaymentInfoData } from './types/contracts';
+import { IApi, IApiOrderData, IOrderData, IPaymentInfoData, IProductDetailViewData } from './types/contracts';
 import { Api } from './components/base/api';
 import { API_URL } from './utils/constants';
 import { EventEmitter, IEvents } from './components/base/events';
@@ -37,20 +37,25 @@ const catalogView = new CatalogView(ensureElement('.gallery'), events);
 // отрисовываем пустой каталог, пока с апи не пришли данные
 catalogView.render(catalogModel.products);
 
-events.on('product:open', (productData) => {
-  console.log(`eventOpen: `, productData);
+events.on('product:open', (idData) => {
+  console.log(`eventOpen: `, idData);
 
-  const inCart = cartModel.contains(productData.id);
-  const productViewData = {
-    ...productData,
-    inCart: inCart
-  };
+  api.getProduct(idData.id).then((productData) => {
+    const inCart = cartModel.contains(idData.id);
 
-  const productElement = detailProductView.render(productViewData);
+    const productViewData: IProductDetailViewData = {
+      ...productData,
+      inCart: inCart
+    };
 
-  modalView.render({ content: productElement });
+    const productElement = detailProductView.render(productViewData);
 
-  modalView.open();
+    modalView.render({ content: productElement });
+
+    modalView.open();
+  })
+
+
 });
 
 events.on('product:add_to_cart', (productData) => {

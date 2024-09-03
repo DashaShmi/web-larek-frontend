@@ -1,4 +1,4 @@
-import { ICartData, IDeleteProductData, IProductData } from "../types/contracts";
+import { ICartData, IIdData, IProductData } from "../types/contracts";
 import { cloneTemplate, ensureElement } from "../utils/utils";
 import { IEvents } from "./base/events";
 import { ViewWithEvents } from "./ViewWithEvents";

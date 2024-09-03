@@ -82,7 +82,7 @@ export interface ICartData {
   total: number;
 }
 
-export interface IDeleteProductData {
+export interface IIdData {
   id: string;
 }
 
