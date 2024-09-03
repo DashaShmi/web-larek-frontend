@@ -5,6 +5,11 @@ export interface IListResponse<T> {
     items: T[];
 }
 
+export interface IOrderResponse {
+    id: string,
+    total: number
+}
+
 export type ApiPostMethods = 'POST' | 'PUT' | 'DELETE';
 
 export class Api implements IApi {
@@ -22,23 +27,34 @@ export class Api implements IApi {
     }
 
     protected handleResponse<T>(response: Response): Promise<T> {
-        if (response.ok) return response.json();
+        if (response.ok)
+            return response.json();
+
         else return response.json()
             .then(data => Promise.reject(data.error ?? response.statusText));
     }
 
-    get<T>(uri: string) {
-        return fetch(this.baseUrl + uri, {
+    async get<T>(uri: string) {
+        const requestParam = {
             ...this.options,
             method: 'GET'
-        }).then(this.handleResponse<T>);
+        }
+
+        const response = await fetch(this.baseUrl + uri, requestParam);
+        const data = await this.handleResponse<T>(response);
+
+        return data;
     }
 
     post<T>(uri: string, data: object, method: ApiPostMethods = 'POST') {
-        return fetch(this.baseUrl + uri, {
+        const requestParam = {
             ...this.options,
             method,
             body: JSON.stringify(data)
-        }).then(this.handleResponse<T>);
+        }
+        const responsePromis = fetch(this.baseUrl + uri, requestParam);
+
+        const dataPromise = responsePromis.then(this.handleResponse<T>);
+        return dataPromise
     }
 }

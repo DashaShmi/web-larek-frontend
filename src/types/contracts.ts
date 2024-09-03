@@ -1,5 +1,5 @@
 // работа с апи
-import { IListResponse } from "../components/base/api"
+import { IListResponse, IOrderResponse } from "../components/base/api"
 export type ApiPostMethods = 'POST' | 'PUT' | 'DELETE' | 'PATCH';
 
 
@@ -21,7 +21,7 @@ export interface IApiOrderData {
 export interface IAppApi {
   getProductList(): Promise<IListResponse<IProductData>>;
   getProduct(id: string): Promise<IProductData>;
-  sendOrder(data: IApiOrderData): Promise<void>;
+  sendOrder(data: IApiOrderData): Promise<IOrderResponse>;
 }
 
 // данные
