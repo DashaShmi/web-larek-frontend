@@ -20,7 +20,6 @@ export interface IGenericEvents<T extends Record<keyof T, UnknownFunc>> {
     off<K extends keyof T>(eventName: K, func: T[K]): boolean;
     offAll(): void;
     emit<K extends keyof T>(eventName: K, ...params: Parameters<T[K]>): boolean;
-    emitDynamic<T>(eventName: string, value: T): boolean;
 }
 
 export type UnknownFunc = (...args: never[]) => unknown;
@@ -103,12 +102,6 @@ export class EventEmitter<T extends Record<keyof T, UnknownFunc>> implements IGe
         return true;
     }
 
-    /*
-        для отправки событий без проверки
-    */
-    emitDynamic<T>(eventName: string, ...params: any): boolean {
-        return this.emit(eventName as any, ...params as any);
-    }
 
     /**
      * Слушать все события
