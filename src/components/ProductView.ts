@@ -10,6 +10,8 @@ export class ProductView extends ProductViewBase<IProductData> {
     this.element.addEventListener('click', () => {
       if (this.data !== undefined) {
         this.events.emit('product:open', this.data)
+      } else {
+        console.warn('data пустая! так быть не должно');
       }
     })
   }

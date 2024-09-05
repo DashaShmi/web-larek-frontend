@@ -355,4 +355,7 @@ interface IApi {
 - `paymentsInfo:submit'` - выбрали способ платежа
 - `contacts:submit` - заполненли котактные данные покупателя
 - `order:completed` - оформили заказ
+
+
+Дописать: CartItemView , ICartItemData
   

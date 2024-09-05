@@ -86,5 +86,12 @@ export interface IIdData {
   id: string;
 }
 
+export interface ICartItemData {
+  id: string;
+  title: string;
+  price: number | null;
+  index: string;
+}
+
 
 

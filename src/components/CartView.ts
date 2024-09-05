@@ -1,6 +1,7 @@
-import { ICartData, IIdData, IProductData } from "../types/contracts";
+import { ICartData } from "../types/contracts";
 import { cloneTemplate, ensureElement } from "../utils/utils";
 import { IEvents } from "./base/events";
+import { CartItemView } from "./CartItemView";
 import { ViewWithEvents } from "./ViewWithEvents";
 
 export class CartView extends ViewWithEvents<ICartData> {
@@ -22,20 +23,15 @@ export class CartView extends ViewWithEvents<ICartData> {
     for (let i = 0; i < data.products.length; i++) {
       const productData = data.products[i];
 
-      const li = cloneTemplate('#card-basket');
+      const cartItemView = new CartItemView(cloneTemplate('#card-basket'), this.events);
+      const cartItemElement = cartItemView.render({
+        title: productData.title,
+        price: productData.price,
+        index: `${i + 1}`,
+        id: productData.id
+      })
 
-      // заполнение данными
-
-      const cardTitle = ensureElement<HTMLElement>(".card__title", li);
-      const cardPrice = ensureElement<HTMLElement>(".card__price", li);
-      const cartIndex = ensureElement<HTMLElement>(".basket__item-index", li);
-      const cartDelineButton = ensureElement<HTMLButtonElement>(".basket__item-delete", li);
-
-      cardTitle.textContent = productData.title;
-      cardPrice.textContent = productData.price == null ? 'Бесценно' : `${productData.price} синапсов`;
-      cartIndex.textContent = `${i + 1}`;
-      cartDelineButton.addEventListener('click', () => this.events.emit('cart:item-deleted', { id: productData.id }));
-      liArray.push(li);
+      liArray.push(cartItemElement);
     }
     this.cartCount.textContent = `${data.total} синапсов`;
 

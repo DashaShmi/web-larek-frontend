@@ -54,8 +54,6 @@ events.on('product:open', (idData) => {
 
     modalView.open();
   })
-
-
 });
 
 events.on('product:add_to_cart', (productData) => {
