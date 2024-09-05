@@ -11,6 +11,8 @@ export abstract class ViewWithForm<T> extends ViewWithEvents<T> {
   // protected errors: Record<string, HTMLElement>;
   protected submitButton: HTMLButtonElement;
 
+  protected abstract onSubmit(formData: Record<string, string>): void;
+
   constructor(element: HTMLElement, events: IEvents) {
     super(element, events);
 
@@ -27,8 +29,8 @@ export abstract class ViewWithForm<T> extends ViewWithEvents<T> {
 
     this.form.addEventListener('submit', (evt) => {
       evt.preventDefault();
-      const formData = this.getInputValues()
-      this.events.emit(`${this.formName}:submit` as any, formData);
+      const formData = this.getInputValues();
+      this.onSubmit(formData);
       console.log(formData);
     });
   }

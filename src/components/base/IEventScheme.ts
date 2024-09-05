@@ -8,7 +8,7 @@ export interface IEventScheme {
   'cart:item-deleted': IIdData;
   'cart:completed': IProductData[];
   'catalog:changed': IProductData[];
-  'contacts:submit': void;
+  'contacts:submit': IContactsData;
   'paymentsInfo:submit': IPaymentInfoData;
   'order:completed': IOrderData;
 }
