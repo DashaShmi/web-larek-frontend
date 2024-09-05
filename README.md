@@ -355,7 +355,8 @@ interface IApi {
 - `paymentsInfo:submit'` - выбрали способ платежа
 - `contacts:submit` - заполненли котактные данные покупателя
 - `order:completed` - оформили заказ
+- `contacts:input-change` - один инпут изменился в поле контактов
 
 
-Дописать: CartItemView , ICartItemData
+Дописать: CartItemView , ICartItemData, IInputChangeData
   

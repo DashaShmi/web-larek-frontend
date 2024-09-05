@@ -93,5 +93,10 @@ export interface ICartItemData {
   index: string;
 }
 
+export interface IInputChangeData {
+  name: string;
+  value: string;
+}
+
 
 

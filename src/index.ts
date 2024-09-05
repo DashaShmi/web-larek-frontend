@@ -15,6 +15,7 @@ import { ContactsView } from './components/ContactsView';
 import { PaymentInfoView } from './components/PaymentInfoView';
 import { SuccessfulOrderView } from './components/SuccessfulOrderView';
 import { OrderModel } from './components/OrderModel';
+import { ContactsModal } from './components/ContactsModal';
 
 const baseApi: IApi = new Api(API_URL);
 const api = new AppApi(baseApi);
@@ -24,6 +25,7 @@ const events: IEvents = new EventEmitter();
 const cartModel = new CartModel(events);
 const orderModel = new OrderModel(events);
 const catalogModel = new CatalogModel(events);
+const contactsModal = new ContactsModal(events);
 
 // views
 const modalView = new ModalView(ensureElement('#modal-container'));
@@ -36,6 +38,13 @@ const catalogView = new CatalogView(ensureElement('.gallery'), events);
 
 // отрисовываем пустой каталог, пока с апи не пришли данные
 catalogView.render(catalogModel.products);
+
+const contactsViewElement = contactsView.render({
+  email: "",
+  telephone: ""
+});
+modalView.render({ content: contactsViewElement });
+modalView.open();
 
 events.on('product:open', (idData) => {
   console.log(`eventOpen: `, idData);
@@ -149,6 +158,11 @@ events.on('cart:completed', (productsData) => {
   })
   modalView.render({ content: paymentInfoViewElement });
   modalView.open();
+})
+
+events.on('contacts:input-change', (valueInput) => {
+  console.log('contacts:input-change', valueInput);
+  contactsModal.setField(valueInput.name, valueInput.value);
 })
 
 // Получаем карточки с сервера

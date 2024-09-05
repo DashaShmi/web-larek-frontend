@@ -12,6 +12,7 @@ export abstract class ViewWithForm<T> extends ViewWithEvents<T> {
   protected submitButton: HTMLButtonElement;
 
   protected abstract onSubmit(formData: Record<string, string>): void;
+  protected abstract onInputChange(name: string, value: string): void;
 
   constructor(element: HTMLElement, events: IEvents) {
     super(element, events);
@@ -27,11 +28,18 @@ export abstract class ViewWithForm<T> extends ViewWithEvents<T> {
     this.inputs = this.form.querySelectorAll<HTMLInputElement>('.form__input');
     this.formName = this.form.getAttribute('name') ?? 'noname';
 
+    // слушаем инпуты
+    this.form.addEventListener('input', (e) => {
+      const target = e.target as HTMLInputElement;
+      const value = target.value;
+      this.onInputChange(target.name, value);
+    })
+
+    // слушаем сабмит
     this.form.addEventListener('submit', (evt) => {
       evt.preventDefault();
       const formData = this.getInputValues();
       this.onSubmit(formData);
-      console.log(formData);
     });
   }
 
