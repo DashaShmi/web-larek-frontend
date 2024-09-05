@@ -2,36 +2,30 @@
 
 import { IEventScheme } from "./IEventScheme";
 
-// Зато когда захотите поменять это достаточно сделать в одном месте
-type EventName = string | RegExp;
-type Subscriber = Function;
-type EmitterEvent = {
-    eventName: string,
-    data: unknown
-};
-
 
 export interface IEvents extends IGenericEvents<IEventScheme> {
 
 }
 
-export interface IGenericEvents<T extends Record<keyof T, UnknownFunc>> {
-    on<K extends keyof T>(eventName: K, func: T[K]): boolean;
-    off<K extends keyof T>(eventName: K, func: T[K]): boolean;
-    offAll(): void;
-    emit<K extends keyof T>(eventName: K, ...params: Parameters<T[K]>): boolean;
-}
+export type ToArrayOfParams<T> = T extends void ? [] : [data: T];
 
-export type UnknownFunc = (...args: never[]) => unknown;
+type Listener<T> = (...args: ToArrayOfParams<T>) => void;
+
+export interface IGenericEvents<T extends Record<keyof T, unknown>> {
+    on<K extends keyof T>(eventName: K, func: Listener<T[K]>): boolean;
+    off<K extends keyof T>(eventName: K, func: Listener<T[K]>): boolean;
+    offAll(): void;
+    emit<K extends keyof T>(eventName: K, ...params: ToArrayOfParams<T[K]>): boolean;
+}
 
 /**
  * Брокер событий, классическая реализация
  * В расширенных вариантах есть возможность подписаться на все события
  * или слушать события по шаблону например
  */
-export class EventEmitter<T extends Record<keyof T, UnknownFunc>> implements IGenericEvents<T> {
+export class EventEmitter<T extends Record<keyof T, []>> implements IGenericEvents<T> {
     private readonly _actions: {
-        [K in keyof T]?: T[K][];
+        [K in keyof T]?: Listener<T[K]>[];
     } = {};
 
     constructor() {
@@ -40,11 +34,11 @@ export class EventEmitter<T extends Record<keyof T, UnknownFunc>> implements IGe
     /**
      * Установить обработчик на событие
      */
-    on<K extends keyof T>(eventName: K, func: T[K]): boolean {
-        let actionFunctions: T[K][] | undefined = this._actions[eventName];
+    on<K extends keyof T>(eventName: K, func: Listener<T[K]>): boolean {
+        let actionFunctions: Listener<T[K]>[] | undefined = this._actions[eventName];
 
         if (actionFunctions === undefined) {
-            const newArr: T[K][] = []; // ts fix
+            const newArr: Listener<T[K]>[] = []; // ts fix
             this._actions[eventName] = newArr;
             actionFunctions = newArr;
         }
@@ -61,7 +55,7 @@ export class EventEmitter<T extends Record<keyof T, UnknownFunc>> implements IGe
     /**
      * Снять обработчик с события
      */
-    off<K extends keyof T>(eventName: K, func: T[K]): boolean {
+    off<K extends keyof T>(eventName: K, func: Listener<T[K]>): boolean {
         const actionFunctions = this._actions[eventName];
 
         if (actionFunctions === undefined) {
@@ -83,7 +77,7 @@ export class EventEmitter<T extends Record<keyof T, UnknownFunc>> implements IGe
      */
     emit<K extends keyof T>(
         eventName: K,
-        ...params: Parameters<T[K]>
+        ...params: ToArrayOfParams<T[K]>
     ): boolean {
         if (this._actions[eventName] === undefined) {
             return false;
