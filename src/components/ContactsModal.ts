@@ -4,7 +4,7 @@ import { ModelBase } from "./ModelBase";
 
 export type ContactFormErrors = Partial<Record<keyof IContactsData, string>>;
 
-export class ContactsModal extends ModelBase {
+export class ContactsModel extends ModelBase {
 
   private data: IContactsData = {
     email: "",

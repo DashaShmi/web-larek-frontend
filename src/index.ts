@@ -15,7 +15,7 @@ import { ContactsView } from './components/ContactsView';
 import { PaymentInfoView } from './components/PaymentInfoView';
 import { SuccessfulOrderView } from './components/SuccessfulOrderView';
 import { OrderModel } from './components/OrderModel';
-import { ContactsModal } from './components/ContactsModal';
+import { ContactsModel } from './components/ContactsModal';
 
 const baseApi: IApi = new Api(API_URL);
 const api = new AppApi(baseApi);
@@ -25,7 +25,7 @@ const events: IEvents = new EventEmitter();
 const cartModel = new CartModel(events);
 const orderModel = new OrderModel(events);
 const catalogModel = new CatalogModel(events);
-const contactsModal = new ContactsModal(events);
+const contactsModal = new ContactsModel(events);
 
 // views
 const modalView = new ModalView(ensureElement('#modal-container'));
@@ -156,7 +156,8 @@ events.on('cart:completed', (productsData) => {
   console.log('cart:completed', productsData)
   const paymentInfoViewElement = paymentInfoView.render({
     paymentMethod: "online",
-    adress: "ul.Sezam"
+    adress: "ul.Sezam",
+    errors: {},
   })
   modalView.render({ content: paymentInfoViewElement });
   modalView.open();

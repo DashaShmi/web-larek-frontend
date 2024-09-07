@@ -358,5 +358,5 @@ interface IApi {
 - `contacts:input-change` - один инпут изменился в поле контактов
 
 
-Дописать: CartItemView , ICartItemData, IInputChangeData
+Дописать: CartItemView , ICartItemData, IInputChangeData, 
   

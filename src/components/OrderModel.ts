@@ -10,6 +10,7 @@ export class OrderModel extends ModelBase implements IOrderModel {
 
   paymentInfo: IPaymentInfoData = {
     paymentMethod: "online",
-    adress: ""
+    adress: "",
+    errors: {},
   }
 }
