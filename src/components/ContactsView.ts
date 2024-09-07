@@ -1,9 +1,10 @@
 import { IContactsData } from "../types/contracts";
 import { ensureElement } from "../utils/utils";
 import { IEvents } from "./base/events";
+import { IFormDataWithErrors } from "./FormErrors";
 import { ViewWithForm } from "./ViewWithForms";
 
-export class ContactsView extends ViewWithForm<IContactsData> {
+export class ContactsView extends ViewWithForm<IFormDataWithErrors<IContactsData>> {
 
   private readonly formErrors: HTMLElement;
   private readonly inputEmail: HTMLInputElement;
@@ -27,12 +28,12 @@ export class ContactsView extends ViewWithForm<IContactsData> {
     this.events.emit(`contacts:submit`, formData as any);
   }
 
-  override render(data: IContactsData): HTMLElement {
+  override render(data: IFormDataWithErrors<IContactsData>): HTMLElement {
     this.formErrors.textContent = Object.values(data.errors).filter(x => x.trim().length > 0).join('; ');
     const isValid = Object.keys(data.errors).length === 0;
     this.submitButton.disabled = !isValid;
-    this.inputEmail.value = data.email;
-    this.inputPhone.value = data.phone;
+    this.inputEmail.value = data.value.email;
+    this.inputPhone.value = data.value.phone;
     return this.element;
   }
 }

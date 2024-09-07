@@ -1,16 +1,17 @@
-import { IContactsData, IOrderData } from "../types/contracts";
+import { IContactsData } from "../types/contracts";
+import { FormErrors, IFormDataWithErrors } from "./FormErrors";
 import { ModelBase } from "./ModelBase";
-
-
-export type ContactFormErrors = Partial<Record<keyof IContactsData, string>>;
 
 export class ContactsModel extends ModelBase {
 
-  private data: IContactsData = {
-    email: "",
-    phone: "",
-    errors: {}
-  }
+  public data: IFormDataWithErrors<IContactsData> = {
+    value: {
+      email: "",
+      phone: "",
+    },
+    errors: {},
+  };
+
 
   setField(name: string, value: string): void {
 
@@ -18,20 +19,20 @@ export class ContactsModel extends ModelBase {
       console.error(`Неизвестное имя поля: ${name}`)
       return;
     }
-    this.data[name] = value;
+    this.data.value[name] = value;
     this.validateOrder()
   }
 
   validateOrder(): boolean {
-    const errors: ContactFormErrors = {};
+    const errors: FormErrors<IContactsData> = {};
 
-    if (this.data.email.length === 0) {
+    if (this.data.value.email.length === 0) {
       errors.email = 'Необходимо указать email';
-    } else if (!this.data.email.includes('@')) {
+    } else if (!this.data.value.email.includes('@')) {
       errors.email = 'Вы не указали @';
     }
 
-    if (this.data.phone.length === 0) {
+    if (this.data.value.phone.length === 0) {
       errors.phone = 'Необходимо указать телефон';
     }
 

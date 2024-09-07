@@ -1,9 +1,10 @@
 import { IPaymentInfoData } from "../types/contracts";
 import { ensureElement } from "../utils/utils";
 import { IEvents } from "./base/events";
+import { IFormDataWithErrors } from "./FormErrors";
 import { ViewWithForm } from "./ViewWithForms";
 
-export class PaymentInfoView extends ViewWithForm<IPaymentInfoData> {
+export class PaymentInfoView extends ViewWithForm<IFormDataWithErrors<IPaymentInfoData>> {
 
   private readonly buttonOnline: HTMLButtonElement;
   private readonly buttonOffline: HTMLButtonElement;
@@ -30,7 +31,7 @@ export class PaymentInfoView extends ViewWithForm<IPaymentInfoData> {
     this.events.emit('paymentsInfo:submit', formData as any);
   }
 
-  override render(data: IPaymentInfoData): HTMLElement {
+  override render(data: IFormDataWithErrors<IPaymentInfoData>): HTMLElement {
     this.formErrors.textContent = Object.values(data.errors).filter(x => x.trim().length > 0).join('; ');
 
     const isValid = Object.keys(data.errors).length === 0;

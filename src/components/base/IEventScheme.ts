@@ -1,5 +1,5 @@
 import { IContactsData, IIdData, IInputChangeData, IOrderData, IPaymentInfoData, IProductData } from "../../types/contracts";
-import { ContactFormErrors } from "../ContactsModal";
+import { IFormDataWithErrors } from "../FormErrors";
 
 
 
@@ -16,10 +16,10 @@ export interface IEventScheme {
   // contacts
   'contacts:submit': IContactsData;
   'contacts:input-change': IInputChangeData;
-  'contacts:error-change': IContactsData;
+  'contacts:error-change': IFormDataWithErrors<IContactsData>;
   // 
   'paymentsInfo:submit': IPaymentInfoData;
-  'paymentsInfo:error-change': IPaymentInfoData;
+  'paymentsInfo:error-change': IFormDataWithErrors<IPaymentInfoData>;
   'paymentsInfo:input-change': IInputChangeData;
   'order:completed': IOrderData;
 }

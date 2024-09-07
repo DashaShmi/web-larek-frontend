@@ -16,6 +16,7 @@ import { PaymentInfoView } from './components/PaymentInfoView';
 import { SuccessfulOrderView } from './components/SuccessfulOrderView';
 import { OrderModel } from './components/OrderModel';
 import { ContactsModel } from './components/ContactsModal';
+import { PaymentInfoModel } from './components/PaymentInfoModel';
 
 const baseApi: IApi = new Api(API_URL);
 const api = new AppApi(baseApi);
@@ -26,6 +27,7 @@ const cartModel = new CartModel(events);
 const orderModel = new OrderModel(events);
 const catalogModel = new CatalogModel(events);
 const contactsModal = new ContactsModel(events);
+const paymentInfoModel = new PaymentInfoModel(events);
 
 // views
 const modalView = new ModalView(ensureElement('#modal-container'));
@@ -39,11 +41,12 @@ const catalogView = new CatalogView(ensureElement('.gallery'), events);
 // отрисовываем пустой каталог, пока с апи не пришли данные
 catalogView.render(catalogModel.products);
 
-const contactsViewElement = contactsView.render({
-  email: "popa@gmail.com",
-  phone: "+1234567890",
-  errors: {},
-});
+// для тестов 
+contactsModal.setField("email", "popa@gmail.com");
+contactsModal.setField("phone", "+1234567890");
+// для тестов конец
+
+const contactsViewElement = contactsView.render(contactsModal.data);
 modalView.render({ content: contactsViewElement });
 modalView.open();
 
@@ -119,7 +122,7 @@ events.on('contacts:submit', (contactsData) => {
     payment: orderModel.paymentInfo.paymentMethod,
     email: orderModel.contacts.email,
     phone: orderModel.contacts.phone,
-    address: orderModel.paymentInfo.adress,
+    address: orderModel.paymentInfo.address,
     total: cartModel.total,
     items: cartModel.products.map(productData => productData.id)
   };
@@ -142,11 +145,7 @@ events.on('paymentsInfo:submit', (paymentInfoData) => {
   orderModel.paymentInfo = paymentInfoData;
 
   console.log('paymentsInfo:submit', paymentInfoData);
-  const contactsViewElement = contactsView.render({
-    email: "",
-    phone: "",
-    errors: {},
-  });
+  const contactsViewElement = contactsView.render(contactsModal.data);
   modalView.render({ content: contactsViewElement });
   modalView.open();
   console.log("ищем модалку с контактами")
@@ -154,11 +153,7 @@ events.on('paymentsInfo:submit', (paymentInfoData) => {
 
 events.on('cart:completed', (productsData) => {
   console.log('cart:completed', productsData)
-  const paymentInfoViewElement = paymentInfoView.render({
-    paymentMethod: "online",
-    adress: "ul.Sezam",
-    errors: {},
-  })
+  const paymentInfoViewElement = paymentInfoView.render(paymentInfoModel.data);
   modalView.render({ content: paymentInfoViewElement });
   modalView.open();
 })

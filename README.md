@@ -70,7 +70,7 @@ interface IContactsData {
 ```
 interface IPaymentInfoData {
  paymentMethod: "online" | "offline";
- adress: string;
+ address: string;
 }
 ```
 

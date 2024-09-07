@@ -1,7 +1,5 @@
 // работа с апи
 import { IListResponse, IOrderResponse } from "../components/base/api"
-import { ContactFormErrors } from "../components/ContactsModal";
-import { PaymentInfoFormErrors } from "../components/PaymentInfoModel";
 export type ApiPostMethods = 'POST' | 'PUT' | 'DELETE' | 'PATCH';
 
 
@@ -44,13 +42,11 @@ export interface IProductDetailViewData extends IProductData {
 export interface IContactsData {
   email: string;
   phone: string;
-  errors: ContactFormErrors;
 }
 
 export interface IPaymentInfoData {
   paymentMethod: "online" | "offline";
-  adress: string;
-  errors: PaymentInfoFormErrors;
+  address: string;
 }
 
 export interface IOrderData {
