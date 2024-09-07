@@ -2,21 +2,19 @@ import { IContactsData, IOrderData } from "../types/contracts";
 import { ModelBase } from "./ModelBase";
 
 
-const propertyName: keyof IOrderData = 'products';
-
 export type ContactFormErrors = Partial<Record<keyof IContactsData, string>>;
 
 export class ContactsModal extends ModelBase {
 
-  formErrors: ContactFormErrors = {};
   private data: IContactsData = {
     email: "",
-    telephone: ""
+    phone: "",
+    errors: {}
   }
 
   setField(name: string, value: string): void {
 
-    if (name !== 'email' && name !== 'telephone') {
+    if (name !== 'email' && name !== 'phone') {
       console.error(`Неизвестное имя поля: ${name}`)
       return;
     }
@@ -33,12 +31,12 @@ export class ContactsModal extends ModelBase {
       errors.email = 'Вы не указали @';
     }
 
-    if (this.data.telephone.length === 0) {
-      errors.telephone = 'Необходимо указать телефон';
+    if (this.data.phone.length === 0) {
+      errors.phone = 'Необходимо указать телефон';
     }
 
-    this.formErrors = errors;
-    this.events.emit('contacts:error-change', this.formErrors);
+    this.data.errors = errors;
+    this.events.emit('contacts:error-change', this.data);
     return Object.keys(errors).length === 0;
   }
 }

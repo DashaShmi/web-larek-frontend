@@ -4,7 +4,8 @@ import { ModelBase } from "./ModelBase";
 export class OrderModel extends ModelBase implements IOrderModel {
   contacts: IContactsData = {
     email: "",
-    telephone: ""
+    phone: "",
+    errors: {},
   }
 
   paymentInfo: IPaymentInfoData = {

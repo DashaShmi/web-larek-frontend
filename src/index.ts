@@ -40,8 +40,9 @@ const catalogView = new CatalogView(ensureElement('.gallery'), events);
 catalogView.render(catalogModel.products);
 
 const contactsViewElement = contactsView.render({
-  email: "",
-  telephone: ""
+  email: "popa@gmail.com",
+  phone: "+1234567890",
+  errors: {},
 });
 modalView.render({ content: contactsViewElement });
 modalView.open();
@@ -117,7 +118,7 @@ events.on('contacts:submit', (contactsData) => {
   const apiOrderData: IApiOrderData = {
     payment: orderModel.paymentInfo.paymentMethod,
     email: orderModel.contacts.email,
-    phone: orderModel.contacts.telephone,
+    phone: orderModel.contacts.phone,
     address: orderModel.paymentInfo.adress,
     total: cartModel.total,
     items: cartModel.products.map(productData => productData.id)
@@ -143,7 +144,8 @@ events.on('paymentsInfo:submit', (paymentInfoData) => {
   console.log('paymentsInfo:submit', paymentInfoData);
   const contactsViewElement = contactsView.render({
     email: "",
-    telephone: ""
+    phone: "",
+    errors: {},
   });
   modalView.render({ content: contactsViewElement });
   modalView.open();
@@ -162,7 +164,13 @@ events.on('cart:completed', (productsData) => {
 
 events.on('contacts:input-change', (valueInput) => {
   console.log('contacts:input-change', valueInput);
-  contactsModal.setField(valueInput.name, valueInput.value);
+  contactsModal.setField(valueInput.name, valueInput.value
+  );
+})
+
+events.on('contacts:error-change', (contactData) => {
+  console.log('contacts:error-change', contactData);
+  contactsView.render(contactData);
 })
 
 // Получаем карточки с сервера

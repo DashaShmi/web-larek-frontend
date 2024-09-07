@@ -24,7 +24,7 @@ export abstract class ViewWithForm<T> extends ViewWithEvents<T> {
     }
 
     this.submitButton = ensureElement<HTMLButtonElement>('.button', this.form);
-    this.submitButton.disabled = false;
+
     this.inputs = this.form.querySelectorAll<HTMLInputElement>('.form__input');
     this.formName = this.form.getAttribute('name') ?? 'noname';
 

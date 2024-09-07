@@ -16,7 +16,7 @@ export interface IEventScheme {
   // contacts
   'contacts:submit': IContactsData;
   'contacts:input-change': IInputChangeData;
-  'contacts:error-change': ContactFormErrors;
+  'contacts:error-change': IContactsData;
   // 
   'paymentsInfo:submit': IPaymentInfoData;
   'order:completed': IOrderData;
