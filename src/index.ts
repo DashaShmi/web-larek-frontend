@@ -141,6 +141,10 @@ events.on('contacts:submit', (contactsData) => {
 
 events.on('order:completed', orderData => {
   console.log('order:completed', orderData);
+
+  // очистка контактов
+  contactsModal.reset();
+
   const successfulOrderViewElement = successfulOrderView.render(orderData);
   modalView.render({ content: successfulOrderViewElement });
   modalView.open();

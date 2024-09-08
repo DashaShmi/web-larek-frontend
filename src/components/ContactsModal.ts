@@ -1,36 +1,27 @@
 import { IContactsData } from "../types/contracts";
 import { IEvents } from "./base/events";
-import { FormErrors, IFormDataWithErrors } from "./FormErrors";
-import { ModelBase } from "./ModelBase";
+import { FormErrors } from "./FormErrors";
+import { FormModel } from "./FormModel";
 
-export class ContactsModel extends ModelBase {
-
-  public data: IFormDataWithErrors<IContactsData> = {
-    value: {
-      email: "",
-      phone: "",
-    },
-    errors: {},
-    isValid: false
-  };
+export class ContactsModel extends FormModel<IContactsData> {
 
   constructor(events: IEvents) {
-    super(events);
-    this.validateOrder();
+    super(events, {
+      email: "",
+      phone: ""
+    });
   }
 
-
   setField(name: string, value: string): void {
-
     if (name !== 'email' && name !== 'phone') {
       console.error(`Неизвестное имя поля: ${name}`)
       return;
     }
     this.data.value[name] = value;
-    this.validateOrder()
+    this.validateOrder();
   }
 
-  private validateOrder(): void {
+  protected validateOrder(): void {
     const errors: FormErrors<IContactsData> = {};
 
     if (this.data.value.email.length === 0) {

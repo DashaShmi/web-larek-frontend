@@ -1,27 +1,16 @@
 import { IPaymentInfoData } from "../types/contracts";
 import { IEvents } from "./base/events";
-import { IFormDataWithErrors, FormErrors } from "./FormErrors";
-import { ModelBase } from "./ModelBase";
+import { FormModel } from "./FormModel";
+import { FormErrors } from "./FormErrors";
 
-
-export class PaymentInfoModel extends ModelBase {
-
-  public data: IFormDataWithErrors<IPaymentInfoData> = {
-    value: {
-      paymentMethod: "",
-      address: ""
-    },
-    errors: {},
-    isValid: false
-  }
+export class PaymentInfoModel extends FormModel<IPaymentInfoData> {
 
   constructor(events: IEvents) {
-    super(events);
-
-    this.validateOrder();
+    super(events, {
+      paymentMethod: "",
+      address: ""
+    });
   }
-
-
 
   setField(name: string, fieldValue: string): void {
     if (name === 'address') {
@@ -47,7 +36,7 @@ export class PaymentInfoModel extends ModelBase {
     this.data.value.paymentMethod = fieldValue;
   }
 
-  private validateOrder(): void {
+  protected validateOrder(): void {
     const errors: FormErrors<IPaymentInfoData> = {};
 
     if (this.data.value.address.length === 0) {
@@ -62,6 +51,4 @@ export class PaymentInfoModel extends ModelBase {
     this.events.emit('paymentsInfo:error-change', this.data);
     this.data.isValid = Object.keys(errors).length === 0;
   }
-
-
 }
