@@ -42,13 +42,18 @@ const catalogView = new CatalogView(ensureElement('.gallery'), events);
 catalogView.render(catalogModel.products);
 
 // для тестов 
-contactsModal.setField("email", "popa@gmail.com");
-contactsModal.setField("phone", "+1234567890");
+// contactsModal.setField("email", "popa@gmail.com");
+// contactsModal.setField("phone", "+1234567890");
 // для тестов конец
 
-const contactsViewElement = contactsView.render(contactsModal.data);
-modalView.render({ content: contactsViewElement });
+// const contactsViewElement = contactsView.render(contactsModal.data);
+// modalView.render({ content: contactsViewElement });
+// modalView.open();
+
+const paymentInfoViewElement = paymentInfoView.render(paymentInfoModel.data);
+modalView.render({ content: paymentInfoViewElement });
 modalView.open();
+
 
 events.on('product:open', (idData) => {
   console.log(`eventOpen: `, idData);
@@ -168,6 +173,18 @@ events.on('contacts:error-change', (contactData) => {
   console.log('contacts:error-change', contactData);
   contactsView.render(contactData);
 })
+
+events.on('paymentsInfo:input-change', (valueInput) => {
+  console.log('paymentsInfo:input-change', valueInput);
+  paymentInfoModel.setField(valueInput.name, valueInput.value)
+})
+
+events.on('paymentsInfo:error-change', (paymentsData) => {
+  console.log('paymentsInfo:error-change', paymentsData);
+  paymentInfoView.render(paymentsData)
+})
+
+
 
 // Получаем карточки с сервера
 
