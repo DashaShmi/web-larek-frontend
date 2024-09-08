@@ -1,4 +1,5 @@
 import { IPaymentInfoData } from "../types/contracts";
+import { IEvents } from "./base/events";
 import { IFormDataWithErrors, FormErrors } from "./FormErrors";
 import { ModelBase } from "./ModelBase";
 
@@ -10,28 +11,43 @@ export class PaymentInfoModel extends ModelBase {
       paymentMethod: "",
       address: ""
     },
-    errors: {}
-  };
+    errors: {},
+    isValid: false
+  }
+
+  constructor(events: IEvents) {
+    super(events);
+
+    this.validateOrder();
+  }
+
 
 
   setField(name: string, fieldValue: string): void {
     if (name === 'address') {
-      this.data.value[name] = fieldValue;
+      this.setAddress(fieldValue);
     } else if (name === 'paymentMethod') {
-      if (fieldValue !== 'offline' && fieldValue !== 'online' && fieldValue !== "") {
-        console.error(`Не корректный способ оплаты: ${fieldValue}`);
-        return;
-      }
-
-      this.data.value[name] = fieldValue;
+      this.setPaymentMethod(fieldValue)
     } else {
       console.error(`Неизвестное имя поля: ${name}`)
       return;
     }
-    this.validateOrder()
+    this.validateOrder();
   }
 
-  validateOrder(): boolean {
+  private setAddress(fieldValue: string): void {
+    this.data.value.address = fieldValue;
+  }
+
+  private setPaymentMethod(fieldValue: string): void {
+    if (fieldValue !== 'offline' && fieldValue !== 'online' && fieldValue !== "") {
+      console.error(`Не корректный способ оплаты: ${fieldValue}`);
+      return;
+    }
+    this.data.value.paymentMethod = fieldValue;
+  }
+
+  private validateOrder(): void {
     const errors: FormErrors<IPaymentInfoData> = {};
 
     if (this.data.value.address.length === 0) {
@@ -42,12 +58,9 @@ export class PaymentInfoModel extends ModelBase {
       errors.paymentMethod = 'Необходимо указать способ оплаты';
     }
 
-
-
-
     this.data.errors = errors;
     this.events.emit('paymentsInfo:error-change', this.data);
-    return Object.keys(errors).length === 0;
+    this.data.isValid = Object.keys(errors).length === 0;
   }
 
 

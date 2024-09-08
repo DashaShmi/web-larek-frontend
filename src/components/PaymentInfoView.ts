@@ -34,8 +34,7 @@ export class PaymentInfoView extends ViewWithForm<IFormDataWithErrors<IPaymentIn
   override render(data: IFormDataWithErrors<IPaymentInfoData>): HTMLElement {
     this.formErrors.textContent = Object.values(data.errors).filter(x => x.trim().length > 0).join('; ');
 
-    const isValid = Object.keys(data.errors).length === 0;
-    this.submitButton.disabled = !isValid;
+    this.submitButton.disabled = !data.isValid;
 
     return this.element;
 

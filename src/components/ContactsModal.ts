@@ -1,4 +1,5 @@
 import { IContactsData } from "../types/contracts";
+import { IEvents } from "./base/events";
 import { FormErrors, IFormDataWithErrors } from "./FormErrors";
 import { ModelBase } from "./ModelBase";
 
@@ -10,7 +11,13 @@ export class ContactsModel extends ModelBase {
       phone: "",
     },
     errors: {},
+    isValid: false
   };
+
+  constructor(events: IEvents) {
+    super(events);
+    this.validateOrder();
+  }
 
 
   setField(name: string, value: string): void {
@@ -23,7 +30,7 @@ export class ContactsModel extends ModelBase {
     this.validateOrder()
   }
 
-  validateOrder(): boolean {
+  private validateOrder(): void {
     const errors: FormErrors<IContactsData> = {};
 
     if (this.data.value.email.length === 0) {
@@ -38,6 +45,6 @@ export class ContactsModel extends ModelBase {
 
     this.data.errors = errors;
     this.events.emit('contacts:error-change', this.data);
-    return Object.keys(errors).length === 0;
+    this.data.isValid = Object.keys(errors).length === 0;
   }
 }

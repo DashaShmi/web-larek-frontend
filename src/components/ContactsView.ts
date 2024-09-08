@@ -30,8 +30,7 @@ export class ContactsView extends ViewWithForm<IFormDataWithErrors<IContactsData
 
   override render(data: IFormDataWithErrors<IContactsData>): HTMLElement {
     this.formErrors.textContent = Object.values(data.errors).filter(x => x.trim().length > 0).join('; ');
-    const isValid = Object.keys(data.errors).length === 0;
-    this.submitButton.disabled = !isValid;
+    this.submitButton.disabled = !data.isValid;
     this.inputEmail.value = data.value.email;
     this.inputPhone.value = data.value.phone;
     return this.element;
