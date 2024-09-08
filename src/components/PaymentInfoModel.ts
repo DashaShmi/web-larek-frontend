@@ -7,20 +7,27 @@ export class PaymentInfoModel extends ModelBase {
 
   public data: IFormDataWithErrors<IPaymentInfoData> = {
     value: {
-      paymentMethod: "online",
+      paymentMethod: "",
       address: ""
     },
     errors: {}
   };
 
 
-  setField(name: string, value: string): void {
+  setField(name: string, fieldValue: string): void {
+    if (name === 'address') {
+      this.data.value[name] = fieldValue;
+    } else if (name === 'paymentMethod') {
+      if (fieldValue !== 'offline' && fieldValue !== 'online' && fieldValue !== "") {
+        console.error(`Не корректный способ оплаты: ${fieldValue}`);
+        return;
+      }
 
-    if (name !== 'address') {
+      this.data.value[name] = fieldValue;
+    } else {
       console.error(`Неизвестное имя поля: ${name}`)
       return;
     }
-    this.data.value[name] = value;
     this.validateOrder()
   }
 
@@ -31,10 +38,12 @@ export class PaymentInfoModel extends ModelBase {
       errors.address = 'Необходимо указать адрес';
     }
 
-    if (this.data.value.paymentMethod === 'offline' || this.data.value.paymentMethod === 'online') {
-    } else {
-      errors.paymentMethod = 'Необходимо выбрать способ оплаты';
+    if (this.data.value.paymentMethod === "") {
+      errors.paymentMethod = 'Необходимо указать способ оплаты';
     }
+
+
+
 
     this.data.errors = errors;
     this.events.emit('paymentsInfo:error-change', this.data);

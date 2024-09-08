@@ -10,7 +10,7 @@ export interface IApi {
 }
 
 export interface IApiOrderData {
-  payment: "online" | "offline";
+  payment: PaymentMethod;
   email: string;
   phone: string;
   address: string;
@@ -43,9 +43,10 @@ export interface IContactsData {
   email: string;
   phone: string;
 }
+export type PaymentMethod = "" | "online" | "offline";
 
 export interface IPaymentInfoData {
-  paymentMethod: "online" | "offline";
+  paymentMethod: PaymentMethod
   address: string;
 }
 
