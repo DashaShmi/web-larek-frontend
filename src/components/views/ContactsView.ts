@@ -1,8 +1,8 @@
-import { IContactsData } from "../types/contracts";
-import { ensureElement } from "../utils/utils";
-import { IEvents } from "./base/events";
-import { IFormDataWithErrors } from "../types/contracts";
-import { ViewWithForm } from "./ViewWithForms";
+import { IContactsData } from "../../types/contracts";
+import { ensureElement } from "../../utils/utils";
+import { IEvents } from "../base/events";
+import { IFormDataWithErrors } from "../../types/contracts";
+import { ViewWithForm } from "../base/ViewWithForms";
 
 export class ContactsView extends ViewWithForm<IFormDataWithErrors<IContactsData>> {
 

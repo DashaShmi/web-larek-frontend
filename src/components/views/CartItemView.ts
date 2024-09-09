@@ -2,7 +2,7 @@ import { ICartItemData } from "../../types/contracts";
 import { ensureElement } from "../../utils/utils";
 import { IEvents } from "../base/events";
 
-import { ViewWithEvents } from "../ViewWithEvents";
+import { ViewWithEvents } from "../base/ViewWithEvents";
 
 export class CartItemView extends ViewWithEvents<ICartItemData> {
   private readonly cardTitle: HTMLElement;

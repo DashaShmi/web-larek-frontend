@@ -1,7 +1,7 @@
-import { ISuccessfulOrderData } from "../types/contracts";
-import { ensureElement } from "../utils/utils";
-import { IEvents } from "./base/events";
-import { ViewWithEvents } from "./ViewWithEvents";
+import { ISuccessfulOrderData } from "../../types/contracts";
+import { ensureElement } from "../../utils/utils";
+import { IEvents } from "../base/events";
+import { ViewWithEvents } from "../base/ViewWithEvents";
 
 export class SuccessfulOrderView extends ViewWithEvents<ISuccessfulOrderData> {
   private readonly totalElement: HTMLElement;

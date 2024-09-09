@@ -2,7 +2,7 @@ import { ICartData } from "../../types/contracts";
 import { cloneTemplate, ensureElement } from "../../utils/utils";
 import { IEvents } from "../base/events";
 import { CartItemView } from "./CartItemView";
-import { ViewWithEvents } from "../ViewWithEvents";
+import { ViewWithEvents } from "../base/ViewWithEvents";
 
 export class CartView extends ViewWithEvents<ICartData> {
   private readonly listUl: HTMLElement;

@@ -1,8 +1,8 @@
-import { IProductData, IProductDetailViewData } from "../types/contracts";
-import { CDN_URL } from "../utils/constants";
-import { ensureElement } from "../utils/utils";
-import { IEvents } from "./base/events";
-import { ViewWithEvents } from "./ViewWithEvents";
+import { IProductData, IProductDetailViewData } from "../../types/contracts";
+import { CDN_URL } from "../../utils/constants";
+import { ensureElement } from "../../utils/utils";
+import { IEvents } from "../base/events";
+import { ViewWithEvents } from "../base/ViewWithEvents";
 
 export class ProductViewBase<T extends IProductData> extends ViewWithEvents<T> {
   private readonly title: HTMLHeadingElement;

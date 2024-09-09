@@ -1,6 +1,6 @@
-import { ensureElement } from "../utils/utils";
+import { ensureElement } from "../../utils/utils";
 import { ViewWithEvents } from "./ViewWithEvents";
-import { IEvents } from "./base/events";
+import { IEvents } from "./events";
 
 
 export abstract class ViewWithForm<T> extends ViewWithEvents<T> {

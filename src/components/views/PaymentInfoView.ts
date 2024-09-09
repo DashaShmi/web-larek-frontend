@@ -1,8 +1,8 @@
-import { IPaymentInfoData } from "../types/contracts";
-import { ensureElement } from "../utils/utils";
-import { IEvents } from "./base/events";
-import { IFormDataWithErrors } from "../types/contracts";
-import { ViewWithForm } from "./ViewWithForms";
+import { IPaymentInfoData } from "../../types/contracts";
+import { ensureElement } from "../../utils/utils";
+import { IEvents } from "../base/events";
+import { IFormDataWithErrors } from "../../types/contracts";
+import { ViewWithForm } from "../base/ViewWithForms";
 
 export class PaymentInfoView extends ViewWithForm<IFormDataWithErrors<IPaymentInfoData>> {
 
@@ -51,6 +51,7 @@ export class PaymentInfoView extends ViewWithForm<IFormDataWithErrors<IPaymentIn
 
     this.buttonOffline.classList.remove('button_alt-active');
     this.buttonOnline.classList.remove('button_alt-active');
+    this.inputAdress.value = data.value.address;
 
     if (data.value.paymentMethod === "offline") {
       this.buttonOffline.classList.add('button_alt-active');

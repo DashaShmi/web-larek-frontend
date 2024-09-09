@@ -1,6 +1,6 @@
-import { IIdData, IProductData, IProductDetailViewData } from "../types/contracts";
-import { ensureElement } from "../utils/utils";
-import { IEvents } from "./base/events";
+import { IIdData, IProductData, IProductDetailViewData } from "../../types/contracts";
+import { ensureElement } from "../../utils/utils";
+import { IEvents } from "../base/events";
 import { ProductViewBase } from "./ProductViewBase";
 
 export class ProductDetailView extends ProductViewBase<IProductDetailViewData> {

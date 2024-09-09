@@ -4,15 +4,15 @@ import { IApi, IApiOrderData, ICartData, IProductDetailViewData } from './types/
 import { Api } from './components/base/api';
 import { API_URL } from './utils/constants';
 import { EventEmitter, IEvents } from './components/base/events';
-import { ProductDetailView } from "./components/ProductDetailView";
+import { ProductDetailView } from "./components/views/ProductDetailView";
 import { CartView as CartView } from "./components/views/CartView";
 import { cloneTemplate, ensureElement } from './utils/utils';
 import { ModalView } from "./components/base/ModalView";
 import { CatalogView } from './components/views/CatalogView';
 import { CatalogModel } from './components/models/CatalogModel';
-import { ContactsView } from './components/ContactsView';
-import { PaymentInfoView } from './components/PaymentInfoView';
-import { SuccessfulOrderView } from './components/SuccessfulOrderView';
+import { ContactsView } from './components/views/ContactsView';
+import { PaymentInfoView } from './components/views/PaymentInfoView';
+import { SuccessfulOrderView } from './components/views/SuccessfulOrderView';
 import { ContactsModel } from './components/models/ContactsModal';
 import { PaymentInfoModel } from './components/models/PaymentInfoModel';
 import { CartModel } from './components/models/CartModel';
@@ -38,7 +38,6 @@ const catalogView = new CatalogView(ensureElement('.gallery'), events);
 
 // отрисовываем пустой каталог, пока с апи не пришли данные
 catalogView.render(catalogModel.products);
-
 
 events.on('product:open', (idData) => {
   console.log(`eventOpen: `, idData);

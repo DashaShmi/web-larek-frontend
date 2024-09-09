@@ -1,5 +1,5 @@
-import { IEvents } from "./base/events";
-import { View } from "./base/View";
+import { IEvents } from "./events";
+import { View } from "./View";
 
 export abstract class ViewWithEvents<T> extends View<T> {
   protected events: IEvents;
