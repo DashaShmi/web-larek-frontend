@@ -1,7 +1,7 @@
-import { IContactsData } from "../types/contracts";
-import { IEvents } from "./base/events";
-import { FormErrors } from "./FormErrors";
-import { FormModel } from "./FormModel";
+import { IContactsData } from "../../types/contracts";
+import { IEvents } from "../base/events";
+import { FormErrors } from "../FormErrors";
+import { FormModel } from "../base/FormModel";
 
 export class ContactsModel extends FormModel<IContactsData> {
 
@@ -35,7 +35,7 @@ export class ContactsModel extends FormModel<IContactsData> {
     }
 
     this.data.errors = errors;
-    this.events.emit('contacts:error-change', this.data);
     this.data.isValid = Object.keys(errors).length === 0;
+    this.events.emit('contacts:error-change', this.data);
   }
 }

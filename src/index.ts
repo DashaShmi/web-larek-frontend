@@ -1,6 +1,6 @@
 import './scss/styles.scss';
 import { AppApi } from './components/AppApi';
-import { IApi, IApiOrderData, IProductDetailViewData } from './types/contracts';
+import { IApi, IApiOrderData, ICartData, IProductDetailViewData } from './types/contracts';
 import { Api } from './components/base/api';
 import { API_URL } from './utils/constants';
 import { EventEmitter, IEvents } from './components/base/events';
@@ -8,14 +8,14 @@ import { ProductDetailView } from "./components/ProductDetailView";
 import { CartView as CartView } from "./components/CartView";
 import { cloneTemplate, ensureElement } from './utils/utils';
 import { ModalView } from "./components/base/ModalView";
-import { CartModel } from './components/CartModel';
 import { CatalogView } from './components/CatalogView';
-import { CatalogModel } from './components/CatalogModel';
+import { CatalogModel } from './components/models/CatalogModel';
 import { ContactsView } from './components/ContactsView';
 import { PaymentInfoView } from './components/PaymentInfoView';
 import { SuccessfulOrderView } from './components/SuccessfulOrderView';
-import { ContactsModel } from './components/ContactsModal';
-import { PaymentInfoModel } from './components/PaymentInfoModel';
+import { ContactsModel } from './components/models/ContactsModal';
+import { PaymentInfoModel } from './components/models/PaymentInfoModel';
+import { CartModel } from './components/models/CartModel';
 
 const baseApi: IApi = new Api(API_URL);
 const api = new AppApi(baseApi);
@@ -145,6 +145,7 @@ events.on('order:completed', orderData => {
 events.on('order:close', () => {
   console.log('order:close');
   modalView.close();
+  cartModel.reset();
 })
 
 events.on('paymentsInfo:submit', () => {
@@ -182,6 +183,7 @@ events.on('paymentsInfo:error-change', (paymentsData) => {
   console.log('paymentsInfo:error-change', paymentsData);
   paymentInfoView.render(paymentsData)
 })
+
 
 
 

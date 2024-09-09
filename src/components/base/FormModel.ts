@@ -1,10 +1,14 @@
-import { IEvents } from "./base/events";
-import { IFormDataWithErrors } from "./FormErrors";
-import { ModelBase } from "./ModelBase";
+import { IEvents } from "./events";
+import { IFormDataWithErrors } from "../FormErrors";
+import { ModelBase } from "../ModelBase";
 
 
 export abstract class FormModel<TData> extends ModelBase {
-  public data: IFormDataWithErrors<TData>;
+  private _data: IFormDataWithErrors<TData>;
+
+  public get data(): Readonly<IFormDataWithErrors<TData>> {
+    return this._data;
+  }
 
   private readonly defaultValue: TData;
 
@@ -15,8 +19,8 @@ export abstract class FormModel<TData> extends ModelBase {
     super(events);
     this.defaultValue = defaultValue;
 
-    this.data = {
-      value: defaultValue,
+    this._data = {
+      value: structuredClone(defaultValue),
       errors: {},
       isValid: false,
     };
@@ -24,8 +28,8 @@ export abstract class FormModel<TData> extends ModelBase {
   }
 
   reset(): void {
-    this.data = {
-      value: this.defaultValue,
+    this._data = {
+      value: structuredClone(this.defaultValue),
       errors: {},
       isValid: false
     };

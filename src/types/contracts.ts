@@ -51,11 +51,12 @@ export interface IPaymentInfoData {
 }
 
 export interface ICartModel {
-  products: IProductData[];
+  readonly products: IProductData[];
+  readonly total: number;
   add(data: IProductData): void;
   delete(productId: string): void;
-  total: number;
   contains(productId: string): boolean;
+  reset(): void;
 }
 
 export interface ICatalogModel {
@@ -91,5 +92,3 @@ export interface IInputChangeData {
 export interface ISuccessfulOrderData {
   total: number
 }
-
-

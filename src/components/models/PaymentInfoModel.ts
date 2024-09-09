@@ -1,7 +1,7 @@
-import { IPaymentInfoData } from "../types/contracts";
-import { IEvents } from "./base/events";
-import { FormModel } from "./FormModel";
-import { FormErrors } from "./FormErrors";
+import { IPaymentInfoData } from "../../types/contracts";
+import { IEvents } from "../base/events";
+import { FormModel } from "../base/FormModel";
+import { FormErrors } from "../FormErrors";
 
 export class PaymentInfoModel extends FormModel<IPaymentInfoData> {
 
@@ -48,7 +48,7 @@ export class PaymentInfoModel extends FormModel<IPaymentInfoData> {
     }
 
     this.data.errors = errors;
-    this.events.emit('paymentsInfo:error-change', this.data);
     this.data.isValid = Object.keys(errors).length === 0;
+    this.events.emit('paymentsInfo:error-change', this.data);
   }
 }

@@ -1,6 +1,6 @@
-import { IProductData, ICatalogModel } from "../types/contracts";
-import { IEvents } from "./base/events";
-import { ModelBase } from "./ModelBase";
+import { IProductData, ICatalogModel } from "../../types/contracts";
+import { IEvents } from "../base/events";
+import { ModelBase } from "../ModelBase";
 
 export class CatalogModel extends ModelBase implements ICatalogModel {
   private _products: IProductData[] = [];
