@@ -17,6 +17,7 @@ import { ContactsModel } from './components/models/ContactsModal';
 import { PaymentInfoModel } from './components/models/PaymentInfoModel';
 import { CartModel } from './components/models/CartModel';
 import { PageView } from './components/views/PageView';
+import { CartItemView } from './components/views/CartItemView';
 
 const baseApi: IApi = new Api(API_URL);
 const api = new AppApi(baseApi);
@@ -40,6 +41,31 @@ const detailProductView = new ProductDetailView(cloneTemplate('#card-preview'), 
 
 // отрисовываем пустой каталог, пока с апи не пришли данные
 catalogView.render(catalogModel.products);
+
+function renderCart(): HTMLElement {
+  const liArray: HTMLElement[] = [];
+
+  for (let i = 0; i < cartModel.products.length; i++) {
+    const productData = cartModel.products[i];
+
+    const cartItemView = new CartItemView(cloneTemplate('#card-basket'), events);
+    const cartItemElement = cartItemView.render({
+      title: productData.title,
+      price: productData.price,
+      index: `${i + 1}`,
+      id: productData.id
+    })
+
+    liArray.push(cartItemElement);
+  }
+
+  const cartElement = cartView.render({
+    elements: liArray,
+    total: cartModel.total
+  });
+
+  return cartElement;
+}
 
 events.on('product:open', (idData) => {
   console.log(`eventOpen: `, idData);
@@ -66,20 +92,16 @@ events.on('product:add_to_cart', (productData) => {
   modalView.close();
   cartModel.add(productData);
 
-  const cartElement = cartView.render({
-    products: cartModel.products,
-    total: cartModel.total
-  });
+  const cartElement = renderCart();
+
   modalView.render({ content: cartElement });
   modalView.open();
 })
 
-events.on('cart:changed', (productsData) => {
-  console.log(`cart:changed: `, productsData);
-  cartView.render({
-    products: cartModel.products,
-    total: cartModel.total
-  });
+events.on('cart:changed', () => {
+  console.log(`cart:changed`);
+
+  renderCart();
 
   pageView.render({ count: cartModel.products.length });
 });
@@ -92,10 +114,8 @@ events.on('cart:item-deleted', (productsId) => {
 events.on('cart:open', () => {
   console.log(`cart:open`);
 
-  const cartElement = cartView.render({
-    products: cartModel.products,
-    total: cartModel.total
-  });
+  const cartElement = renderCart();
+
   modalView.render({ content: cartElement });
   modalView.open();
 })

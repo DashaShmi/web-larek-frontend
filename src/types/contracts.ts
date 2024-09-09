@@ -68,7 +68,7 @@ export interface IModalData {
 }
 
 export interface ICartData {
-  products: IProductData[];
+  elements: HTMLElement[];
   total: number;
 }
 
@@ -109,7 +109,7 @@ export interface IAppEventScheme {
   'product:add_to_cart': IProductData;
   'product:remove_from_cart': IIdData;
   // cart
-  'cart:changed': IProductData[];
+  'cart:changed': void;
   'cart:item-deleted': IIdData;
   'cart:completed': IProductData[];
   'cart:open': void;

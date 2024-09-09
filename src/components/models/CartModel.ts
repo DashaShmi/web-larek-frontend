@@ -40,7 +40,7 @@ export class CartModel extends ModelBase<IAppEventScheme> implements ICartModel 
     else {
       this._total += data.price;
     }
-    this.events.emit('cart:changed', this._products);
+    this.events.emit('cart:changed');
   }
 
   delete(productId: string): void {
@@ -65,13 +65,13 @@ export class CartModel extends ModelBase<IAppEventScheme> implements ICartModel 
     }
     // Удаляет элемент из массива
     this._products.splice(existingProductIndex, 1);
-    this.events.emit('cart:changed', this._products);
+    this.events.emit('cart:changed');
   }
 
   reset(): void {
     this._products.splice(0, this._products.length);
     this._total = 0;
-    this.events.emit('cart:changed', this._products);
+    this.events.emit('cart:changed');
   }
 }
 
