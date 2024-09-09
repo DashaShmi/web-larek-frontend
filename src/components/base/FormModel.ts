@@ -1,10 +1,10 @@
 import { IEvents } from "./events";
-import { IFormDataWithErrors } from "../FormErrors";
-import { ModelBase } from "../ModelBase";
+import { IFormDataWithErrors } from "../../types/contracts";
+import { ModelBase } from "./ModelBase";
 
 
 export abstract class FormModel<TData> extends ModelBase {
-  private _data: IFormDataWithErrors<TData>;
+  protected _data: IFormDataWithErrors<TData>;
 
   public get data(): Readonly<IFormDataWithErrors<TData>> {
     return this._data;

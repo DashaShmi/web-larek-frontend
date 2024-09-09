@@ -1,7 +1,7 @@
 import { IContactsData } from "../types/contracts";
 import { ensureElement } from "../utils/utils";
 import { IEvents } from "./base/events";
-import { IFormDataWithErrors } from "./FormErrors";
+import { IFormDataWithErrors } from "../types/contracts";
 import { ViewWithForm } from "./ViewWithForms";
 
 export class ContactsView extends ViewWithForm<IFormDataWithErrors<IContactsData>> {
@@ -24,7 +24,7 @@ export class ContactsView extends ViewWithForm<IFormDataWithErrors<IContactsData
     })
   }
 
-  protected override onSubmit(formData: Record<string, string>): void {
+  protected override onSubmit(): void {
     this.events.emit(`contacts:submit`);
   }
 

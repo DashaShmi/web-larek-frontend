@@ -1,7 +1,5 @@
 import { IContactsData, IIdData, IInputChangeData, IPaymentInfoData, IProductData, ISuccessfulOrderData } from "../../types/contracts";
-import { IFormDataWithErrors } from "../FormErrors";
-
-
+import { IFormDataWithErrors } from "../../types/contracts";
 
 export interface IEventScheme {
   'product:open': IIdData;

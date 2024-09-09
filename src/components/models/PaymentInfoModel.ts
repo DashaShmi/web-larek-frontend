@@ -1,7 +1,7 @@
 import { IPaymentInfoData } from "../../types/contracts";
 import { IEvents } from "../base/events";
 import { FormModel } from "../base/FormModel";
-import { FormErrors } from "../FormErrors";
+import { FormErrors } from "../../types/contracts";
 
 export class PaymentInfoModel extends FormModel<IPaymentInfoData> {
 
@@ -47,8 +47,8 @@ export class PaymentInfoModel extends FormModel<IPaymentInfoData> {
       errors.paymentMethod = 'Необходимо указать способ оплаты';
     }
 
-    this.data.errors = errors;
-    this.data.isValid = Object.keys(errors).length === 0;
+    this._data.errors = errors;
+    this._data.isValid = Object.keys(errors).length === 0;
     this.events.emit('paymentsInfo:error-change', this.data);
   }
 }

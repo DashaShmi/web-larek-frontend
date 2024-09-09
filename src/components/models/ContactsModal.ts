@@ -1,6 +1,6 @@
 import { IContactsData } from "../../types/contracts";
 import { IEvents } from "../base/events";
-import { FormErrors } from "../FormErrors";
+import { FormErrors } from "../../types/contracts";
 import { FormModel } from "../base/FormModel";
 
 export class ContactsModel extends FormModel<IContactsData> {
@@ -34,8 +34,8 @@ export class ContactsModel extends FormModel<IContactsData> {
       errors.phone = 'Необходимо указать телефон';
     }
 
-    this.data.errors = errors;
-    this.data.isValid = Object.keys(errors).length === 0;
+    this._data.errors = errors;
+    this._data.isValid = Object.keys(errors).length === 0;
     this.events.emit('contacts:error-change', this.data);
   }
 }

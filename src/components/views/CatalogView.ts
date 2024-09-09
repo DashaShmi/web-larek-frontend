@@ -1,8 +1,8 @@
-import { IProductData } from "../types/contracts";
-import { cloneTemplate } from "../utils/utils";
-import { IEvents } from "./base/events";
-import { ProductView } from "./ProductView";
-import { ViewWithEvents } from "./ViewWithEvents";
+import { IProductData } from "../../types/contracts";
+import { cloneTemplate } from "../../utils/utils";
+import { IEvents } from "../base/events";
+import { ProductView } from "../ProductView";
+import { ViewWithEvents } from "../ViewWithEvents";
 
 export class CatalogView extends ViewWithEvents<IProductData[]> {
 

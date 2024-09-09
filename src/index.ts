@@ -5,10 +5,10 @@ import { Api } from './components/base/api';
 import { API_URL } from './utils/constants';
 import { EventEmitter, IEvents } from './components/base/events';
 import { ProductDetailView } from "./components/ProductDetailView";
-import { CartView as CartView } from "./components/CartView";
+import { CartView as CartView } from "./components/views/CartView";
 import { cloneTemplate, ensureElement } from './utils/utils';
 import { ModalView } from "./components/base/ModalView";
-import { CatalogView } from './components/CatalogView';
+import { CatalogView } from './components/views/CatalogView';
 import { CatalogModel } from './components/models/CatalogModel';
 import { ContactsView } from './components/ContactsView';
 import { PaymentInfoView } from './components/PaymentInfoView';
@@ -38,19 +38,6 @@ const catalogView = new CatalogView(ensureElement('.gallery'), events);
 
 // отрисовываем пустой каталог, пока с апи не пришли данные
 catalogView.render(catalogModel.products);
-
-// для тестов 
-// contactsModal.setField("email", "popa@gmail.com");
-// contactsModal.setField("phone", "+1234567890");
-// для тестов конец
-
-// const contactsViewElement = contactsView.render(contactsModal.data);
-// modalView.render({ content: contactsViewElement });
-// modalView.open();
-
-// const paymentInfoViewElement = paymentInfoView.render(paymentInfoModel.data);
-// modalView.render({ content: paymentInfoViewElement });
-// modalView.open();
 
 
 events.on('product:open', (idData) => {

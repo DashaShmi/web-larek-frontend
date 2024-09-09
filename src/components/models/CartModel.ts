@@ -1,6 +1,6 @@
 import { ICartModel, IProductData } from "../../types/contracts";
 import { IEvents } from "../base/events";
-import { ModelBase } from "../ModelBase";
+import { ModelBase } from "../base/ModelBase";
 
 export class CartModel extends ModelBase implements ICartModel {
   private _products: IProductData[] = [];

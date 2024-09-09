@@ -1,7 +1,7 @@
 import { IPaymentInfoData } from "../types/contracts";
 import { ensureElement } from "../utils/utils";
 import { IEvents } from "./base/events";
-import { IFormDataWithErrors } from "./FormErrors";
+import { IFormDataWithErrors } from "../types/contracts";
 import { ViewWithForm } from "./ViewWithForms";
 
 export class PaymentInfoView extends ViewWithForm<IFormDataWithErrors<IPaymentInfoData>> {
@@ -40,7 +40,7 @@ export class PaymentInfoView extends ViewWithForm<IFormDataWithErrors<IPaymentIn
     })
   }
 
-  protected override onSubmit(formData: Record<string, string>): void {
+  protected override onSubmit(): void {
     this.events.emit('paymentsInfo:submit');
   }
 
