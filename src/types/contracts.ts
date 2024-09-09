@@ -96,6 +96,10 @@ export interface IPageData {
   count: number;
 }
 
+export interface ICatalogData {
+  elements: HTMLElement[];
+}
+
 export interface IFormDataWithErrors<T> {
   value: T;
   errors: FormErrors<T>;

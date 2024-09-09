@@ -18,6 +18,7 @@ import { PaymentInfoModel } from './components/models/PaymentInfoModel';
 import { CartModel } from './components/models/CartModel';
 import { PageView } from './components/views/PageView';
 import { CartItemView } from './components/views/CartItemView';
+import { ProductView } from './components/views/ProductView';
 
 const baseApi: IApi = new Api(API_URL);
 const api = new AppApi(baseApi);
@@ -38,9 +39,6 @@ const contactsView = new ContactsView(cloneTemplate('#contacts'), events);
 const paymentInfoView = new PaymentInfoView(cloneTemplate('#order'), events);
 const successfulOrderView = new SuccessfulOrderView(cloneTemplate('#success'), events);
 const detailProductView = new ProductDetailView(cloneTemplate('#card-preview'), events);
-
-// отрисовываем пустой каталог, пока с апи не пришли данные
-catalogView.render(catalogModel.products);
 
 function renderCart(): HTMLElement {
   const liArray: HTMLElement[] = [];
@@ -128,7 +126,17 @@ events.on('product:remove_from_cart', (productsId) => {
 
 events.on('catalog:changed', (productsData) => {
   console.log(`catalog:changed `, productsData);
-  catalogView.render(catalogModel.products);
+
+  const productElements: HTMLElement[] = [];
+
+  for (let i = 0; i < productsData.length; i++) {
+    const productData = productsData[i];
+    const productView = new ProductView(cloneTemplate('#card-catalog'), events);
+    const productElement = productView.render(productData);
+    productElements.push(productElement);
+  }
+
+  catalogView.render({ elements: productElements });
 })
 
 events.on('contacts:submit', () => {
