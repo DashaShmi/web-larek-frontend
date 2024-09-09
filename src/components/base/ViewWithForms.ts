@@ -18,7 +18,7 @@ export abstract class ViewWithForm<T, TScheme> extends ViewWithEvents<T, TScheme
       this.form = ensureElement<HTMLFormElement>('.form', this.element);
     }
 
-    this.submitButton = ensureElement<HTMLButtonElement>('.button', this.form);
+    this.submitButton = ensureElement<HTMLButtonElement>('.button[type="submit"]', this.form);
 
     // слушаем инпуты
     this.form.addEventListener('input', (e) => {
