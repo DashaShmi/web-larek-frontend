@@ -92,11 +92,16 @@ export interface ISuccessfulOrderData {
   total: number
 }
 
+export interface IPageData {
+  count: number;
+}
+
 export interface IFormDataWithErrors<T> {
   value: T;
   errors: FormErrors<T>;
   isValid: boolean;
 }
+
 export type FormErrors<T> = Partial<Record<keyof T, string>>;
 
 export interface IAppEventScheme {
@@ -107,6 +112,7 @@ export interface IAppEventScheme {
   'cart:changed': IProductData[];
   'cart:item-deleted': IIdData;
   'cart:completed': IProductData[];
+  'cart:open': void;
   // catalog
   'catalog:changed': IProductData[];
   // contacts

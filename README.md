@@ -345,6 +345,7 @@ interface IApi {
 - `product:add_to_cart` - добавление товара в корзину
 - `product:remove_from_cart` - удаление товара из корзины
 
+- `cart:open` - корзину открыли с главной страницы
 - `сart:competed` - утвердили список товаров, кторорые хотим купить
 - `cart:changed` - данные в корзине изменились
 - `cart:item-deleted` - данные в корзине удалили

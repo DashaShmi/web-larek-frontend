@@ -16,6 +16,7 @@ import { SuccessfulOrderView } from './components/views/SuccessfulOrderView';
 import { ContactsModel } from './components/models/ContactsModal';
 import { PaymentInfoModel } from './components/models/PaymentInfoModel';
 import { CartModel } from './components/models/CartModel';
+import { PageView } from './components/views/PageView';
 
 const baseApi: IApi = new Api(API_URL);
 const api = new AppApi(baseApi);
@@ -28,13 +29,14 @@ const contactsModal = new ContactsModel(events);
 const paymentInfoModel = new PaymentInfoModel(events);
 
 // views
-const modalView = new ModalView(ensureElement('#modal-container'));
-const detailProductView = new ProductDetailView(cloneTemplate('#card-preview'), events);
+const pageView = new PageView(ensureElement('.page'), events);
 const cartView = new CartView(cloneTemplate('#basket'), events);
+const modalView = new ModalView(ensureElement('#modal-container'));
+const catalogView = new CatalogView(ensureElement('.gallery'), events);
 const contactsView = new ContactsView(cloneTemplate('#contacts'), events);
 const paymentInfoView = new PaymentInfoView(cloneTemplate('#order'), events);
 const successfulOrderView = new SuccessfulOrderView(cloneTemplate('#success'), events);
-const catalogView = new CatalogView(ensureElement('.gallery'), events);
+const detailProductView = new ProductDetailView(cloneTemplate('#card-preview'), events);
 
 // отрисовываем пустой каталог, пока с апи не пришли данные
 catalogView.render(catalogModel.products);
@@ -78,15 +80,28 @@ events.on('cart:changed', (productsData) => {
     products: cartModel.products,
     total: cartModel.total
   });
+
+  pageView.render({ count: cartModel.products.length });
 });
 
 events.on('cart:item-deleted', (productsId) => {
-  console.log(`cart:item-deleted: `, productsId);
+  console.log(`cart:item-deleted`, productsId);
   cartModel.delete(productsId.id);
 });
 
+events.on('cart:open', () => {
+  console.log(`cart:open`);
+
+  const cartElement = cartView.render({
+    products: cartModel.products,
+    total: cartModel.total
+  });
+  modalView.render({ content: cartElement });
+  modalView.open();
+})
+
 events.on('product:remove_from_cart', (productsId) => {
-  console.log(`'product:remove_from_cart:' `, productsId);
+  console.log(`product:remove_from_cart:`, productsId);
   cartModel.delete(productsId.id);
   modalView.close();
 });
@@ -105,13 +120,20 @@ events.on('contacts:submit', () => {
     phone: contactsModal.data.value.phone,
     address: paymentInfoModel.data.value.address,
     total: cartModel.total,
-    items: cartModel.products.map(productData => productData.id)
+    items: cartModel.products
+      .filter(x => x.price !== null)
+      .map(productData => productData.id)
   };
 
   api.sendOrder(apiOrderData).then(() => {
     events.emit('order:completed', {
       total: cartModel.total,
     });
+
+    // очистка данных
+    paymentInfoModel.reset();
+    contactsModal.reset();
+    cartModel.reset();
   });
 
   modalView.close();
@@ -119,9 +141,6 @@ events.on('contacts:submit', () => {
 
 events.on('order:completed', orderData => {
   console.log('order:completed', orderData);
-
-  // очистка контактов
-  contactsModal.reset();
 
   const successfulOrderViewElement = successfulOrderView.render(orderData);
   modalView.render({ content: successfulOrderViewElement });
@@ -131,7 +150,6 @@ events.on('order:completed', orderData => {
 events.on('order:close', () => {
   console.log('order:close');
   modalView.close();
-  cartModel.reset();
 })
 
 events.on('paymentsInfo:submit', () => {
@@ -139,7 +157,6 @@ events.on('paymentsInfo:submit', () => {
   const contactsViewElement = contactsView.render(contactsModal.data);
   modalView.render({ content: contactsViewElement });
   modalView.open();
-  console.log("ищем модалку с контактами")
 })
 
 events.on('cart:completed', (productsData) => {
@@ -151,8 +168,7 @@ events.on('cart:completed', (productsData) => {
 
 events.on('contacts:input-change', (valueInput) => {
   console.log('contacts:input-change', valueInput);
-  contactsModal.setField(valueInput.name, valueInput.value
-  );
+  contactsModal.setField(valueInput.name, valueInput.value);
 })
 
 events.on('contacts:error-change', (contactData) => {
@@ -169,9 +185,6 @@ events.on('paymentsInfo:error-change', (paymentsData) => {
   console.log('paymentsInfo:error-change', paymentsData);
   paymentInfoView.render(paymentsData)
 })
-
-
-
 
 // Получаем карточки с сервера
 
