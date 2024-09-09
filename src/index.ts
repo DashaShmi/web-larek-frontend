@@ -1,6 +1,6 @@
 import './scss/styles.scss';
 import { AppApi } from './components/AppApi';
-import { IApi, IApiOrderData, IOrderData, IPaymentInfoData, IProductDetailViewData } from './types/contracts';
+import { IApi, IApiOrderData, IProductDetailViewData } from './types/contracts';
 import { Api } from './components/base/api';
 import { API_URL } from './utils/constants';
 import { EventEmitter, IEvents } from './components/base/events';
@@ -14,7 +14,6 @@ import { CatalogModel } from './components/CatalogModel';
 import { ContactsView } from './components/ContactsView';
 import { PaymentInfoView } from './components/PaymentInfoView';
 import { SuccessfulOrderView } from './components/SuccessfulOrderView';
-import { OrderModel } from './components/OrderModel';
 import { ContactsModel } from './components/ContactsModal';
 import { PaymentInfoModel } from './components/PaymentInfoModel';
 
@@ -24,7 +23,6 @@ const events: IEvents = new EventEmitter();
 
 // models
 const cartModel = new CartModel(events);
-const orderModel = new OrderModel(events);
 const catalogModel = new CatalogModel(events);
 const contactsModal = new ContactsModel(events);
 const paymentInfoModel = new PaymentInfoModel(events);
@@ -50,9 +48,9 @@ catalogView.render(catalogModel.products);
 // modalView.render({ content: contactsViewElement });
 // modalView.open();
 
-const paymentInfoViewElement = paymentInfoView.render(paymentInfoModel.data);
-modalView.render({ content: paymentInfoViewElement });
-modalView.open();
+// const paymentInfoViewElement = paymentInfoView.render(paymentInfoModel.data);
+// modalView.render({ content: paymentInfoViewElement });
+// modalView.open();
 
 
 events.on('product:open', (idData) => {
@@ -112,28 +110,22 @@ events.on('catalog:changed', (productsData) => {
   catalogView.render(catalogModel.products);
 })
 
-events.on('contacts:submit', (contactsData) => {
-  console.log('contacts:submit', contactsData);
-  orderModel.contacts = contactsData;
-
-  const orderData: IOrderData = {
-    total: cartModel.total,
-    products: cartModel.products,
-    contacts: orderModel.contacts,
-    paymentInfo: orderModel.paymentInfo,
-  };
+events.on('contacts:submit', () => {
+  console.log('contacts:submit');
 
   const apiOrderData: IApiOrderData = {
-    payment: orderModel.paymentInfo.paymentMethod,
-    email: orderModel.contacts.email,
-    phone: orderModel.contacts.phone,
-    address: orderModel.paymentInfo.address,
+    payment: paymentInfoModel.data.value.paymentMethod,
+    email: contactsModal.data.value.email,
+    phone: contactsModal.data.value.phone,
+    address: paymentInfoModel.data.value.address,
     total: cartModel.total,
     items: cartModel.products.map(productData => productData.id)
   };
 
   api.sendOrder(apiOrderData).then(() => {
-    events.emit('order:completed', orderData);
+    events.emit('order:completed', {
+      total: cartModel.total,
+    });
   });
 
   modalView.close();
@@ -150,10 +142,13 @@ events.on('order:completed', orderData => {
   modalView.open();
 })
 
-events.on('paymentsInfo:submit', (paymentInfoData) => {
-  orderModel.paymentInfo = paymentInfoData;
+events.on('order:close', () => {
+  console.log('order:close');
+  modalView.close();
+})
 
-  console.log('paymentsInfo:submit', paymentInfoData);
+events.on('paymentsInfo:submit', () => {
+  console.log('paymentsInfo:submit');
   const contactsViewElement = contactsView.render(contactsModal.data);
   modalView.render({ content: contactsViewElement });
   modalView.open();

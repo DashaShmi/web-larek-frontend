@@ -50,13 +50,6 @@ export interface IPaymentInfoData {
   address: string;
 }
 
-export interface IOrderData {
-  readonly total: number;
-  contacts: IContactsData;
-  products: IProductData[];
-  paymentInfo: IPaymentInfoData;
-}
-
 export interface ICartModel {
   products: IProductData[];
   add(data: IProductData): void;
@@ -69,10 +62,6 @@ export interface ICatalogModel {
   products: IProductData[];
 }
 
-export interface IOrderModel {
-  contacts: IContactsData;
-  paymentInfo: IPaymentInfoData;
-}
 
 export interface IModalData {
   content: HTMLElement;
@@ -99,5 +88,8 @@ export interface IInputChangeData {
   value: string;
 }
 
+export interface ISuccessfulOrderData {
+  total: number
+}
 
 

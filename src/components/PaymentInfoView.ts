@@ -41,7 +41,7 @@ export class PaymentInfoView extends ViewWithForm<IFormDataWithErrors<IPaymentIn
   }
 
   protected override onSubmit(formData: Record<string, string>): void {
-    this.events.emit('paymentsInfo:submit', formData as any);
+    this.events.emit('paymentsInfo:submit');
   }
 
   override render(data: IFormDataWithErrors<IPaymentInfoData>): HTMLElement {

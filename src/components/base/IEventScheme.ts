@@ -1,4 +1,4 @@
-import { IContactsData, IIdData, IInputChangeData, IOrderData, IPaymentInfoData, IProductData } from "../../types/contracts";
+import { IContactsData, IIdData, IInputChangeData, IPaymentInfoData, IProductData, ISuccessfulOrderData } from "../../types/contracts";
 import { IFormDataWithErrors } from "../FormErrors";
 
 
@@ -14,14 +14,15 @@ export interface IEventScheme {
   // catalog
   'catalog:changed': IProductData[];
   // contacts
-  'contacts:submit': IContactsData;
+  'contacts:submit': void;
   'contacts:input-change': IInputChangeData;
   'contacts:error-change': IFormDataWithErrors<IContactsData>;
   // 
-  'paymentsInfo:submit': IPaymentInfoData;
+  'paymentsInfo:submit': void;
   'paymentsInfo:error-change': IFormDataWithErrors<IPaymentInfoData>;
   'paymentsInfo:input-change': IInputChangeData;
-  'order:completed': IOrderData;
+  'order:completed': ISuccessfulOrderData;
+  'order:close': void;
 }
 
 

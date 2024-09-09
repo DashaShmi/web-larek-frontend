@@ -135,13 +135,6 @@ export interface ICatalogModel {
 Events:
 'order:completed': (data: IOrderData)
 
-```
-export interface IOrderModel {
-  contacts: IContactsData;
-  paymentInfo: IPaymentInfoData;
-}
-```
-
 Интерфейс модели корзины
 Events:
 'cart:changed': (data: IProductData[])
@@ -351,12 +344,22 @@ interface IApi {
 - `product:open` - открытие модального окна для детального просмотра товара
 - `product:add_to_cart` - добавление товара в корзину
 - `product:remove_from_cart` - удаление товара из корзины
+
 - `сart:competed` - утвердили список товаров, кторорые хотим купить
-- `paymentsInfo:submit'` - выбрали способ платежа
-- `contacts:submit` - заполненли котактные данные покупателя
-- `order:completed` - оформили заказ
+- `cart:changed` - данные в корзине изменились
+- `cart:item-deleted` - данные в корзине удалили
+
+- `catalog:changed` - каталог изменился, нельзя добавить товар повтрно в корзину
+
+- `contacts:submit` - заполнили контактные данные покупателя
 - `contacts:input-change` - один инпут изменился в поле контактов
+- `contacts:error-change` - следим за ошибками
+
+- `paymentsInfo:submit` - выбрали способ платежа
+- `paymentsInfo:error-change` - следим за ошибками
+- `paymentsInfo:input-change` - один инпут изменился в поле плптежей
+- `order:completed` - заказ завершен
+- `order:close` - закрываем модалку с упешным заказом
 
 
-Дописать: CartItemView , ICartItemData, IInputChangeData, PaymentMethod
   

@@ -25,7 +25,7 @@ export class ContactsView extends ViewWithForm<IFormDataWithErrors<IContactsData
   }
 
   protected override onSubmit(formData: Record<string, string>): void {
-    this.events.emit(`contacts:submit`, formData as any);
+    this.events.emit(`contacts:submit`);
   }
 
   override render(data: IFormDataWithErrors<IContactsData>): HTMLElement {
