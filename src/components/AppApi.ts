@@ -1,5 +1,6 @@
 import { IApi, IProductData, IAppApi, IApiOrderData } from "../types/contracts";
-import { IListResponse, IOrderResponse } from "./base/api";
+import { IOrderResponse } from "../types/contracts";
+import { IListResponse } from "../types/contracts";
 
 export class AppApi implements IAppApi {
   private _baseApi: IApi;

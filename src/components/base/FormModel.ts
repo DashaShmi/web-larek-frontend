@@ -2,7 +2,6 @@ import { IEvents } from "./events";
 import { IFormDataWithErrors } from "../../types/contracts";
 import { ModelBase } from "./ModelBase";
 
-
 export abstract class FormModel<TData, TSceheme> extends ModelBase<TSceheme> {
   protected _data: IFormDataWithErrors<TData>;
 

@@ -1,4 +1,4 @@
-import { IAppEventScheme, IIdData, IProductData, IProductDetailViewData } from "../../types/contracts";
+import { IAppEventScheme, IProductDetailViewData } from "../../types/contracts";
 import { ensureElement } from "../../utils/utils";
 import { IEvents } from "../base/events";
 import { ProductViewBase } from "./ProductViewBase";

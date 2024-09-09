@@ -1,5 +1,4 @@
 // работа с апи
-import { IListResponse, IOrderResponse } from "../components/base/api"
 export type ApiPostMethods = 'POST' | 'PUT' | 'DELETE' | 'PATCH';
 
 export interface IApi {
@@ -129,5 +128,15 @@ export interface IAppEventScheme {
   'paymentsInfo:input-change': IInputChangeData;
   'order:completed': ISuccessfulOrderData;
   'order:close': void;
+}
+
+export interface IListResponse<T> {
+  total: number;
+  items: T[];
+}
+
+export interface IOrderResponse {
+  id: string;
+  total: number;
 }
 

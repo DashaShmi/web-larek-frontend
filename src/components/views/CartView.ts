@@ -1,7 +1,6 @@
 import { IAppEventScheme, ICartData } from "../../types/contracts";
-import { cloneTemplate, ensureElement } from "../../utils/utils";
+import { ensureElement } from "../../utils/utils";
 import { IEvents } from "../base/events";
-import { CartItemView } from "./CartItemView";
 import { ViewWithEvents } from "../base/ViewWithEvents";
 
 export class CartView extends ViewWithEvents<ICartData, IAppEventScheme> {

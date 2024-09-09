@@ -1,4 +1,3 @@
-import { IAppEventScheme } from "../../types/contracts";
 import { IEvents } from "./events";
 import { View } from "./View";
 

@@ -1,15 +1,5 @@
 import { IApi } from "../../types/contracts";
 
-export interface IListResponse<T> {
-    total: number;
-    items: T[];
-}
-
-export interface IOrderResponse {
-    id: string,
-    total: number
-}
-
 export type ApiPostMethods = 'POST' | 'PUT' | 'DELETE';
 
 export class Api implements IApi {
