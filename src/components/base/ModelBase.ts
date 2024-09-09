@@ -1,10 +1,9 @@
 import { IEvents } from "./events";
 
+export class ModelBase<TScheme> {
+  protected events: IEvents<TScheme>;
 
-export class ModelBase {
-  protected events: IEvents;
-
-  constructor(events: IEvents) {
+  constructor(events: IEvents<TScheme>) {
     this.events = events;
   }
 }

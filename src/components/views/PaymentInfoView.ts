@@ -1,17 +1,17 @@
-import { IPaymentInfoData } from "../../types/contracts";
+import { IAppEventScheme, IPaymentInfoData } from "../../types/contracts";
 import { ensureElement } from "../../utils/utils";
 import { IEvents } from "../base/events";
 import { IFormDataWithErrors } from "../../types/contracts";
 import { ViewWithForm } from "../base/ViewWithForms";
 
-export class PaymentInfoView extends ViewWithForm<IFormDataWithErrors<IPaymentInfoData>> {
+export class PaymentInfoView extends ViewWithForm<IFormDataWithErrors<IPaymentInfoData>, IAppEventScheme> {
 
   private readonly buttonOnline: HTMLButtonElement;
   private readonly buttonOffline: HTMLButtonElement;
   private readonly inputAdress: HTMLInputElement;
   private readonly formErrors: HTMLElement;
 
-  constructor(element: HTMLElement, events: IEvents) {
+  constructor(element: HTMLElement, events: IEvents<IAppEventScheme>) {
     super(element, events);
     this.buttonOnline = ensureElement<HTMLButtonElement>('button[name="card"]', this.element);
     this.buttonOffline = ensureElement<HTMLButtonElement>('button[name="cash"]', this.element);

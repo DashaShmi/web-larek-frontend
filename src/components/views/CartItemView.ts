@@ -1,17 +1,17 @@
-import { ICartItemData } from "../../types/contracts";
+import { IAppEventScheme, ICartItemData } from "../../types/contracts";
 import { ensureElement } from "../../utils/utils";
 import { IEvents } from "../base/events";
 
 import { ViewWithEvents } from "../base/ViewWithEvents";
 
-export class CartItemView extends ViewWithEvents<ICartItemData> {
+export class CartItemView extends ViewWithEvents<ICartItemData, IAppEventScheme> {
   private readonly cardTitle: HTMLElement;
   private readonly cardPrice: HTMLElement;
   private readonly cartIndex: HTMLElement;
   private readonly cartDeleteButton: HTMLButtonElement;
   protected data?: ICartItemData;
 
-  constructor(element: HTMLElement, events: IEvents) {
+  constructor(element: HTMLElement, events: IEvents<IAppEventScheme>) {
     super(element, events);
 
     // заполнение данными

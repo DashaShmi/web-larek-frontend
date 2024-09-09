@@ -1,16 +1,16 @@
-import { IContactsData } from "../../types/contracts";
+import { IAppEventScheme, IContactsData } from "../../types/contracts";
 import { ensureElement } from "../../utils/utils";
 import { IEvents } from "../base/events";
 import { IFormDataWithErrors } from "../../types/contracts";
 import { ViewWithForm } from "../base/ViewWithForms";
 
-export class ContactsView extends ViewWithForm<IFormDataWithErrors<IContactsData>> {
+export class ContactsView extends ViewWithForm<IFormDataWithErrors<IContactsData>, IAppEventScheme> {
 
   private readonly formErrors: HTMLElement;
   private readonly inputEmail: HTMLInputElement;
   private readonly inputPhone: HTMLInputElement;
 
-  constructor(element: HTMLElement, events: IEvents) {
+  constructor(element: HTMLElement, events: IEvents<IAppEventScheme>) {
     super(element, events);
     this.formErrors = ensureElement<HTMLElement>(".form__errors", this.element);
     this.inputEmail = ensureElement<HTMLInputElement>('input[name="email"]', this.element);

@@ -1,14 +1,14 @@
-import { ICartData } from "../../types/contracts";
+import { IAppEventScheme, ICartData } from "../../types/contracts";
 import { cloneTemplate, ensureElement } from "../../utils/utils";
 import { IEvents } from "../base/events";
 import { CartItemView } from "./CartItemView";
 import { ViewWithEvents } from "../base/ViewWithEvents";
 
-export class CartView extends ViewWithEvents<ICartData> {
+export class CartView extends ViewWithEvents<ICartData, IAppEventScheme> {
   private readonly listUl: HTMLElement;
   private readonly cartCount: HTMLElement;
 
-  constructor(element: HTMLElement, events: IEvents) {
+  constructor(element: HTMLElement, events: IEvents<IAppEventScheme>) {
     super(element, events);
     this.listUl = ensureElement<HTMLElement>(".basket__list", this.element);
     this.cartCount = ensureElement<HTMLButtonElement>(".basket__price", this.element);

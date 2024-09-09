@@ -1,6 +1,6 @@
 import './scss/styles.scss';
 import { AppApi } from './components/AppApi';
-import { IApi, IApiOrderData, ICartData, IProductDetailViewData } from './types/contracts';
+import { IApi, IApiOrderData, IAppEventScheme, ICartData, IProductDetailViewData } from './types/contracts';
 import { Api } from './components/base/api';
 import { API_URL } from './utils/constants';
 import { EventEmitter, IEvents } from './components/base/events';
@@ -19,7 +19,7 @@ import { CartModel } from './components/models/CartModel';
 
 const baseApi: IApi = new Api(API_URL);
 const api = new AppApi(baseApi);
-const events: IEvents = new EventEmitter();
+const events = new EventEmitter<IAppEventScheme>();
 
 // models
 const cartModel = new CartModel(events);

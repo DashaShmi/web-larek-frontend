@@ -2,7 +2,6 @@
 import { IListResponse, IOrderResponse } from "../components/base/api"
 export type ApiPostMethods = 'POST' | 'PUT' | 'DELETE' | 'PATCH';
 
-
 export interface IApi {
   baseUrl: string;
   get<T>(uri: string): Promise<T>;
@@ -99,4 +98,26 @@ export interface IFormDataWithErrors<T> {
   isValid: boolean;
 }
 export type FormErrors<T> = Partial<Record<keyof T, string>>;
+
+export interface IAppEventScheme {
+  'product:open': IIdData;
+  'product:add_to_cart': IProductData;
+  'product:remove_from_cart': IIdData;
+  // cart
+  'cart:changed': IProductData[];
+  'cart:item-deleted': IIdData;
+  'cart:completed': IProductData[];
+  // catalog
+  'catalog:changed': IProductData[];
+  // contacts
+  'contacts:submit': void;
+  'contacts:input-change': IInputChangeData;
+  'contacts:error-change': IFormDataWithErrors<IContactsData>;
+  // 
+  'paymentsInfo:submit': void;
+  'paymentsInfo:error-change': IFormDataWithErrors<IPaymentInfoData>;
+  'paymentsInfo:input-change': IInputChangeData;
+  'order:completed': ISuccessfulOrderData;
+  'order:close': void;
+}
 

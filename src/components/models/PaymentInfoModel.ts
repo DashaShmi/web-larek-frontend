@@ -1,11 +1,11 @@
-import { IPaymentInfoData } from "../../types/contracts";
+import { IAppEventScheme, IPaymentInfoData } from "../../types/contracts";
 import { IEvents } from "../base/events";
 import { FormModel } from "../base/FormModel";
 import { FormErrors } from "../../types/contracts";
 
-export class PaymentInfoModel extends FormModel<IPaymentInfoData> {
+export class PaymentInfoModel extends FormModel<IPaymentInfoData, IAppEventScheme> {
 
-  constructor(events: IEvents) {
+  constructor(events: IEvents<IAppEventScheme>) {
     super(events, {
       paymentMethod: "",
       address: ""

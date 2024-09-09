@@ -1,8 +1,8 @@
-import { ICartModel, IProductData } from "../../types/contracts";
+import { IAppEventScheme, ICartModel, IProductData } from "../../types/contracts";
 import { IEvents } from "../base/events";
 import { ModelBase } from "../base/ModelBase";
 
-export class CartModel extends ModelBase implements ICartModel {
+export class CartModel extends ModelBase<IAppEventScheme> implements ICartModel {
   private _products: IProductData[] = [];
   private _total = 0;
 
@@ -14,7 +14,7 @@ export class CartModel extends ModelBase implements ICartModel {
     return this._total
   }
 
-  constructor(events: IEvents) {
+  constructor(events: IEvents<IAppEventScheme>) {
     super(events);
   }
 

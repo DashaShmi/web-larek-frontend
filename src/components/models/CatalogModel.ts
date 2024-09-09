@@ -1,11 +1,11 @@
-import { IProductData, ICatalogModel } from "../../types/contracts";
+import { IProductData, ICatalogModel, IAppEventScheme } from "../../types/contracts";
 import { IEvents } from "../base/events";
 import { ModelBase } from "../base/ModelBase";
 
-export class CatalogModel extends ModelBase implements ICatalogModel {
+export class CatalogModel extends ModelBase<IAppEventScheme> implements ICatalogModel {
   private _products: IProductData[] = [];
 
-  constructor(events: IEvents) {
+  constructor(events: IEvents<IAppEventScheme>) {
     super(events);
   }
 

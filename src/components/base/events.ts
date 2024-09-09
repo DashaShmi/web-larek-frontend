@@ -1,17 +1,10 @@
 // Хорошая практика даже простые типы выносить в алиасы
 
-import { IEventScheme } from "./IEventScheme";
-
-
-export interface IEvents extends IGenericEvents<IEventScheme> {
-
-}
-
 export type ToArrayOfParams<T> = T extends void ? [] : [data: T];
 
 type Listener<T> = (...args: ToArrayOfParams<T>) => void;
 
-export interface IGenericEvents<T extends Record<keyof T, unknown>> {
+export interface IEvents<T extends Record<keyof T, unknown>> {
     on<K extends keyof T>(eventName: K, func: Listener<T[K]>): boolean;
     off<K extends keyof T>(eventName: K, func: Listener<T[K]>): boolean;
     offAll(): void;
@@ -23,7 +16,7 @@ export interface IGenericEvents<T extends Record<keyof T, unknown>> {
  * В расширенных вариантах есть возможность подписаться на все события
  * или слушать события по шаблону например
  */
-export class EventEmitter<T extends Record<keyof T, []>> implements IGenericEvents<T> {
+export class EventEmitter<T extends Record<keyof T, unknown>> implements IEvents<T> {
     private readonly _actions: {
         [K in keyof T]?: Listener<T[K]>[];
     } = {};
@@ -114,17 +107,5 @@ export class EventEmitter<T extends Record<keyof T, []>> implements IGenericEven
             delete this._actions[key];
         }
     }
-
-    /**
-     * Сделать коллбек триггер, генерирующий событие при вызове
-     */
-    // trigger<T extends object>(eventName: string, context?: Partial<T>) {
-    //     return (event: object = {}) => {
-    //         this.emit(eventName, {
-    //             ...(event || {}),
-    //             ...(context || {})
-    //         });
-    //     };
-    // }
 }
 

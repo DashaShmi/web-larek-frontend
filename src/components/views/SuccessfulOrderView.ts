@@ -1,13 +1,13 @@
-import { ISuccessfulOrderData } from "../../types/contracts";
+import { IAppEventScheme, ISuccessfulOrderData } from "../../types/contracts";
 import { ensureElement } from "../../utils/utils";
 import { IEvents } from "../base/events";
 import { ViewWithEvents } from "../base/ViewWithEvents";
 
-export class SuccessfulOrderView extends ViewWithEvents<ISuccessfulOrderData> {
+export class SuccessfulOrderView extends ViewWithEvents<ISuccessfulOrderData, IAppEventScheme> {
   private readonly totalElement: HTMLElement;
   private readonly buttonNewShop: HTMLButtonElement;
 
-  constructor(element: HTMLElement, events: IEvents) {
+  constructor(element: HTMLElement, events: IEvents<IAppEventScheme>) {
     super(element, events);
     this.totalElement = ensureElement<HTMLElement>(".order-success__description", this.element);
     this.buttonNewShop = ensureElement<HTMLButtonElement>(".order-success__close", this.element);

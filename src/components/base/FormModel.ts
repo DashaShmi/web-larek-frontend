@@ -3,7 +3,7 @@ import { IFormDataWithErrors } from "../../types/contracts";
 import { ModelBase } from "./ModelBase";
 
 
-export abstract class FormModel<TData> extends ModelBase {
+export abstract class FormModel<TData, TSceheme> extends ModelBase<TSceheme> {
   protected _data: IFormDataWithErrors<TData>;
 
   public get data(): Readonly<IFormDataWithErrors<TData>> {
@@ -15,7 +15,7 @@ export abstract class FormModel<TData> extends ModelBase {
   public abstract setField(name: string, fieldValue: string): void;
   protected abstract validateOrder(): void;
 
-  constructor(events: IEvents, defaultValue: TData) {
+  constructor(events: IEvents<TSceheme>, defaultValue: TData) {
     super(events);
     this.defaultValue = defaultValue;
 

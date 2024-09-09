@@ -1,4 +1,4 @@
-import { IIdData, IProductData, IProductDetailViewData } from "../../types/contracts";
+import { IAppEventScheme, IIdData, IProductData, IProductDetailViewData } from "../../types/contracts";
 import { ensureElement } from "../../utils/utils";
 import { IEvents } from "../base/events";
 import { ProductViewBase } from "./ProductViewBase";
@@ -7,7 +7,7 @@ export class ProductDetailView extends ProductViewBase<IProductDetailViewData> {
   private readonly description: HTMLElement;
   private readonly btnAddToCart = ensureElement<HTMLElement>(".card__button", this.element);
 
-  constructor(element: HTMLElement, events: IEvents) {
+  constructor(element: HTMLElement, events: IEvents<IAppEventScheme>) {
     super(element, events);
     this.description = ensureElement<HTMLElement>(".card__text", this.element);
 

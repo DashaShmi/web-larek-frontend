@@ -1,11 +1,11 @@
-import { IContactsData } from "../../types/contracts";
+import { IAppEventScheme, IContactsData } from "../../types/contracts";
 import { IEvents } from "../base/events";
 import { FormErrors } from "../../types/contracts";
 import { FormModel } from "../base/FormModel";
 
-export class ContactsModel extends FormModel<IContactsData> {
+export class ContactsModel extends FormModel<IContactsData, IAppEventScheme> {
 
-  constructor(events: IEvents) {
+  constructor(events: IEvents<IAppEventScheme>) {
     super(events, {
       email: "",
       phone: ""

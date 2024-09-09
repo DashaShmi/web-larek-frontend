@@ -1,12 +1,12 @@
-import { IProductData } from "../../types/contracts";
+import { IAppEventScheme, IProductData } from "../../types/contracts";
 import { cloneTemplate } from "../../utils/utils";
 import { IEvents } from "../base/events";
 import { ProductView } from "./ProductView";
 import { ViewWithEvents } from "../base/ViewWithEvents";
 
-export class CatalogView extends ViewWithEvents<IProductData[]> {
+export class CatalogView extends ViewWithEvents<IProductData[], IAppEventScheme> {
 
-  constructor(element: HTMLElement, events: IEvents) {
+  constructor(element: HTMLElement, events: IEvents<IAppEventScheme>) {
     super(element, events);
   }
 
