@@ -4,6 +4,7 @@ import { DataErrors } from "../../types/contracts";
 import { ModelWithValidation } from "../base/ModelWithValidation";
 
 export class ContactsModel extends ModelWithValidation<IContactsData, IAppEventScheme> {
+  private readonly phoneRegEx = /^((8|\+374|\+994|\+995|\+375|\+7|\+380|\+38|\+996|\+998|\+993)[\- ]?)?\(?\d{3,5}\)?[\- ]?\d{1}[\- ]?\d{1}[\- ]?\d{1}[\- ]?\d{1}[\- ]?\d{1}(([\- ]?\d{1})?[\- ]?\d{1})?$/
 
   constructor(events: IEvents<IAppEventScheme>) {
     super(events, {
@@ -32,6 +33,8 @@ export class ContactsModel extends ModelWithValidation<IContactsData, IAppEventS
 
     if (this.data.value.phone.length === 0) {
       errors.phone = 'Необходимо указать телефон';
+    } else if (!this.phoneRegEx.test(this.data.value.phone)) {
+      errors.phone = 'Поле телефон содержит недопустимый формат';
     }
 
     this._data.errors = errors;
