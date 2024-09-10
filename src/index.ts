@@ -33,7 +33,7 @@ const paymentInfoModel = new PaymentInfoModel(events);
 // views
 const pageView = new PageView(ensureElement('.page'), events);
 const cartView = new CartView(cloneTemplate('#basket'), events);
-const modalView = new ModalView(ensureElement('#modal-container'));
+const modalView = new ModalView(ensureElement('#modal-container'), events);
 const catalogView = new CatalogView(ensureElement('.gallery'), events);
 const contactsView = new ContactsView(cloneTemplate('#contacts'), events);
 const paymentInfoView = new PaymentInfoView(cloneTemplate('#order'), events);
@@ -212,6 +212,16 @@ events.on('paymentsInfo:input-change', (valueInput) => {
 events.on('paymentsInfo:error-change', (paymentsData) => {
   console.log('paymentsInfo:error-change', paymentsData);
   paymentInfoView.render(paymentsData)
+})
+
+events.on('modal:open', () => {
+  console.log('modal:open');
+  pageView.render({ isLocked: true });
+})
+
+events.on('modal:close', () => {
+  console.log('modal:close');
+  pageView.render({ isLocked: false });
 })
 
 // Получаем карточки с сервера

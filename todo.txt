@@ -1,4 +1,0 @@
-Дописать: CartItemView , ICartItemData, IInputChangeData, PaymentMethod
-
-
-* подчистить закомментированный код в index.ts

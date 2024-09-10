@@ -1,13 +1,14 @@
-import { IModalData } from "../../types/contracts";
+import { IAppEventScheme, IModalData } from "../../types/contracts";
 import { ensureElement } from "../../utils/utils";
-import { View } from "./View";
+import { IEvents } from "./events";
+import { ViewWithEvents } from "./ViewWithEvents";
 
-export class ModalView extends View<IModalData> {
+export class ModalView extends ViewWithEvents<IModalData, IAppEventScheme> {
 
   private readonly modalContent: HTMLElement;
 
-  constructor(element: HTMLElement) {
-    super(element);
+  constructor(element: HTMLElement, events: IEvents<IAppEventScheme>) {
+    super(element, events);
     const closeButtonElement = ensureElement('.modal__close', element);
     closeButtonElement.addEventListener("click", this.close.bind(this));
     this.modalContent = ensureElement<HTMLElement>('.modal__content', this.element);
@@ -16,20 +17,21 @@ export class ModalView extends View<IModalData> {
   open(): void {
     this.element.classList.add('modal_active');
     document.addEventListener("keyup", this.handleEscUp);
-  };
+    this.events.emit('modal:open')
+
+  }
 
   close(): void {
     this.element.classList.remove('modal_active');
     document.removeEventListener("keyup", this.handleEscUp);
-  };
+    this.events.emit('modal:close');
+  }
 
-  render(data: Partial<IModalData>) {
-
-    if (data.content !== undefined) {
-      this.modalContent.replaceChildren(data.content);
-    }
+  render(data: IModalData) {
+    this.modalContent.replaceChildren(data.content);
     return this.element;
   }
+
   handleEscUp = (evt: KeyboardEvent) => {
     if (evt.key === "Escape") {
       this.close();
