@@ -1,9 +1,9 @@
 import { IAppEventScheme, IContactsData } from "../../types/contracts";
 import { IEvents } from "../base/events";
-import { FormErrors } from "../../types/contracts";
-import { FormModel } from "../base/FormModel";
+import { DataErrors } from "../../types/contracts";
+import { ModelWithValidation } from "../base/ModelWithValidation";
 
-export class ContactsModel extends FormModel<IContactsData, IAppEventScheme> {
+export class ContactsModel extends ModelWithValidation<IContactsData, IAppEventScheme> {
 
   constructor(events: IEvents<IAppEventScheme>) {
     super(events, {
@@ -18,11 +18,11 @@ export class ContactsModel extends FormModel<IContactsData, IAppEventScheme> {
       return;
     }
     this.data.value[name] = value;
-    this.validateOrder();
+    this.validate();
   }
 
-  protected validateOrder(): void {
-    const errors: FormErrors<IContactsData> = {};
+  protected validate(): void {
+    const errors: DataErrors<IContactsData> = {};
 
     if (this.data.value.email.length === 0) {
       errors.email = 'Необходимо указать email';

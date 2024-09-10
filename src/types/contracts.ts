@@ -99,13 +99,13 @@ export interface ICatalogData {
   elements: HTMLElement[];
 }
 
-export interface IFormDataWithErrors<T> {
+export interface IDataWithErrors<T> {
   value: T;
-  errors: FormErrors<T>;
+  errors: DataErrors<T>;
   isValid: boolean;
 }
 
-export type FormErrors<T> = Partial<Record<keyof T, string>>;
+export type DataErrors<T> = Partial<Record<keyof T, string>>;
 
 export interface IAppEventScheme {
   // product
@@ -122,11 +122,11 @@ export interface IAppEventScheme {
   // contacts
   'contacts:submit': void;
   'contacts:input-change': IInputChangeData;
-  'contacts:error-change': IFormDataWithErrors<IContactsData>;
+  'contacts:error-change': IDataWithErrors<IContactsData>;
   // paymentsInfo
   'paymentsInfo:submit': void;
   'paymentsInfo:input-change': IInputChangeData;
-  'paymentsInfo:error-change': IFormDataWithErrors<IPaymentInfoData>;
+  'paymentsInfo:error-change': IDataWithErrors<IPaymentInfoData>;
   // order
   'order:completed': ISuccessfulOrderData;
   'order:close': void;

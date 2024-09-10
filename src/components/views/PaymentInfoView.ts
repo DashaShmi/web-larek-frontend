@@ -1,10 +1,10 @@
 import { IAppEventScheme, IPaymentInfoData } from "../../types/contracts";
 import { ensureElement } from "../../utils/utils";
 import { IEvents } from "../base/events";
-import { IFormDataWithErrors } from "../../types/contracts";
+import { IDataWithErrors } from "../../types/contracts";
 import { ViewWithForm } from "../base/ViewWithForms";
 
-export class PaymentInfoView extends ViewWithForm<IFormDataWithErrors<IPaymentInfoData>, IAppEventScheme> {
+export class PaymentInfoView extends ViewWithForm<IDataWithErrors<IPaymentInfoData>, IAppEventScheme> {
 
   private readonly buttonOnline: HTMLButtonElement;
   private readonly buttonOffline: HTMLButtonElement;
@@ -44,7 +44,7 @@ export class PaymentInfoView extends ViewWithForm<IFormDataWithErrors<IPaymentIn
     this.events.emit('paymentsInfo:submit');
   }
 
-  override render(data: IFormDataWithErrors<IPaymentInfoData>): HTMLElement {
+  override render(data: IDataWithErrors<IPaymentInfoData>): HTMLElement {
     this.formErrors.textContent = Object.values(data.errors).filter(x => x.trim().length > 0).join('; ');
 
     this.submitButton.disabled = !data.isValid;

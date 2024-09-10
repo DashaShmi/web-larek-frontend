@@ -193,7 +193,7 @@ events: IEvents<IAppEventScheme> - экземпляр класса EventEmitter 
 Сеттер, обновляющий массив продуктов в каталоге новыми данными. После обновления генерирует событие catalog:changed, передавая обновленный массив продуктов в качестве параметра.
 
 #### Класс ContactsModel
-Класс ContactsModel наследуется от FormModel<IContactsData, IAppEventScheme> и отвечает за управление данными формы контактов, включая валидацию введенных пользователем данных.
+Класс ContactsModel наследуется от ModelWithValidation<IContactsData, IAppEventScheme> и отвечает за управление данными формы контактов, включая валидацию введенных пользователем данных.
 
 Класс предоставляет набор методов для работы с данными формы:
 - setField(name: string, value: string): void
@@ -203,12 +203,12 @@ name - строка, имя поля (email или phone).
 value - строка, значение, которое нужно установить.
 Логика:
 Проверяет корректность имени поля. Если имя некорректное, выводит сообщение об ошибке в консоль.
-Устанавливает новое значение для поля и вызывает метод валидации validateOrder.
-- validateOrder(): void
+Устанавливает новое значение для поля и вызывает метод валидации validate.
+- validate(): void
 Защищенный метод, проверяет данные формы на корректность и обновляет состояние ошибок.
 
 #### Класс PaymentInfoModel
-Класс PaymentInfoModel отвечает за управление данными формы для информации об оплате, включая валидацию введенных данных. Наследуется от FormModel<IPaymentInfoData, IAppEventScheme>.
+Класс PaymentInfoModel отвечает за управление данными формы для информации об оплате, включая валидацию введенных данных. Наследуется от ModelWithValidation<IPaymentInfoData, IAppEventScheme>.
 Конструктор класса принимает инстанс брокера событий.
 
 - setField(name: string, fieldValue: string): void
@@ -409,7 +409,7 @@ class CartView extends ViewWithEvents<ICartData, IAppEventScheme> {
 ```
 
 #### Класс PaymentInfoView
-Класс PaymentInfoView отвечает за отображение и управление формой ввода информации об оплате. Наследуется от ViewWithForm<IFormDataWithErrors<IPaymentInfoData>, IAppEventScheme>, добавляя функциональность для обработки ввода данных, их валидации и отправки формы.
+Класс PaymentInfoView отвечает за отображение и управление формой ввода информации об оплате. Наследуется от ViewWithForm<IDataWithErrors<IPaymentInfoData>, IAppEventScheme>, добавляя функциональность для обработки ввода данных, их валидации и отправки формы.
 
 Events:
 'paymentsInfo:submit'
@@ -426,7 +426,7 @@ class PaymentInfoView extends ViewWithForm<IPaymentInfoData> {
 ```
 
 #### Класс ContactsView
-Класс ContactsView отвечает за отображение и управление формой ввода контактной информации. Наследуется от ViewWithForm<IFormDataWithErrors<IContactsData>, IAppEventScheme>, добавляя функциональность для обработки ввода данных, их валидации и отправки формы.
+Класс ContactsView отвечает за отображение и управление формой ввода контактной информации. Наследуется от ViewWithForm<IDataWithErrors<IContactsData>, IAppEventScheme>, добавляя функциональность для обработки ввода данных, их валидации и отправки формы.
 События - 
 Events:
 'contacts:submit'

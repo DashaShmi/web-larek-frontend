@@ -1,9 +1,9 @@
 import { IAppEventScheme, IPaymentInfoData } from "../../types/contracts";
 import { IEvents } from "../base/events";
-import { FormModel } from "../base/FormModel";
-import { FormErrors } from "../../types/contracts";
+import { ModelWithValidation } from "../base/ModelWithValidation";
+import { DataErrors } from "../../types/contracts";
 
-export class PaymentInfoModel extends FormModel<IPaymentInfoData, IAppEventScheme> {
+export class PaymentInfoModel extends ModelWithValidation<IPaymentInfoData, IAppEventScheme> {
 
   constructor(events: IEvents<IAppEventScheme>) {
     super(events, {
@@ -21,7 +21,7 @@ export class PaymentInfoModel extends FormModel<IPaymentInfoData, IAppEventSchem
       console.error(`Неизвестное имя поля: ${name}`)
       return;
     }
-    this.validateOrder();
+    this.validate();
   }
 
   private setAddress(fieldValue: string): void {
@@ -36,8 +36,8 @@ export class PaymentInfoModel extends FormModel<IPaymentInfoData, IAppEventSchem
     this.data.value.paymentMethod = fieldValue;
   }
 
-  protected validateOrder(): void {
-    const errors: FormErrors<IPaymentInfoData> = {};
+  protected validate(): void {
+    const errors: DataErrors<IPaymentInfoData> = {};
 
     if (this.data.value.address.length === 0) {
       errors.address = 'Необходимо указать адрес';
