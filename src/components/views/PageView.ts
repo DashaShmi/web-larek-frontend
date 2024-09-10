@@ -22,12 +22,15 @@ export class PageView extends ViewWithEvents<Partial<IPageData>, IAppEventScheme
   };
 
   override render(data: Partial<IPageData>): HTMLElement {
-    this.counter.innerText = `${data.count}`;
-    if (data.isLocked) {
-      this.pageWrapper.classList.add('.page__wrapper_locked')
+    if (data.count !== undefined) {
+      this.counter.innerText = `${data.count}`;
     }
-    else {
-      this.pageWrapper.classList.remove('.page__wrapper_locked')
+
+    if (data.isLocked === true) {
+      this.pageWrapper.classList.add('page__wrapper_locked')
+    }
+    else if (data.isLocked === false) {
+      this.pageWrapper.classList.remove('page__wrapper_locked')
     }
     return this.element
   }
