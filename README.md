@@ -77,12 +77,13 @@ interface IPaymentInfoData {
 Данные о заказе
 
 ```
-
-export interface IOrderData {
-  readonly total: number;
-  contacts: IContactsData;
-  products: IProductData[];
-  paymentInfo: IPaymentInfoData;
+export interface IApiOrderData {
+  payment: PaymentMethod;
+  email: string;
+  phone: string;
+  address: string;
+  total: number;
+  items: string[];
 }
 ```
 
@@ -116,16 +117,15 @@ interface IModalData{
 Брокер событий позволяет отправлять события и подписываться на события, происходящие в системе. Класс используется в презентере для обработки событий и в слоях приложения для генерации событий.  
 Основные методы, реализуемые классом описаны интерфейсом `IEvents`:
 - `on` - подписка на событие
+- `off` - отписка от события
 - `emit` - инициализация события
-- `trigger` - возвращает функцию, при вызове которой инициализируется требуемое в параметрах событие   
+
+`IEvents<T>` - дженерик версия интерфейса брокера событий, где Т представляет собой схему, сопоставляющую имена событий с соответствующими данными.
+Строго типизированная версия EventEmitter помогает избежать ошибок, связанных с неправильными именами событий и несоответствующими типами данных.
 
 ### Слой данных
 
 Интерфейс для модели данных продуктов
-Events:
-'product:open': (data: IIdData);
-'product:add_to_cart': (data: IProductData);
-'product:remove_from_cart': (data: IIdData);
 
 ```
 export interface ICatalogModel {
@@ -133,17 +133,7 @@ export interface ICatalogModel {
 }
 ```
 
-Интерфейс для модели данных заказа
-Events:
-  'order:completed': (data: IOrderData);
-  'order:close': void;
-
 Интерфейс модели корзины
-Events:
-  'cart:changed': void;
-  'cart:item-deleted': IIdData;
-  'cart:completed':void;
-  'cart:open': void;
 
 ```
 export interface ICartModel {
@@ -155,6 +145,21 @@ export interface ICartModel {
   reset(): void;
 }
 ```
+
+#### класс ModelBase
+ModelBase<T> - является базовым классом для всех моделей данных. Он хранит ссылку на объект, управляющий событиями, и предоставляет механизм для взаимодействия с системой событий. Где T - схема сопоставления событий и данных.
+
+- data: Readonly<IDataWithErrors<TData>> Публичное свойство для доступа к данным модели. Возвращает объект, содержащий значения данных, ошибки и статус валидации в режиме "только для чтения".
+Абстрактные методы:
+- setField(name: string, fieldValue: string): void;
+Абстрактный метод, который должен быть реализован в дочерних классах. Используется для установки значения конкретного поля в модели.
+- validate(): void;
+Абстрактный метод, который должен быть реализован в дочерних классах. Используется для проверки данных на корректность и обновления состояния ошибок.
+- reset(): void;
+Сбрасывает данные модели до значений по умолчанию и выполняет валидацию.
+
+#### класс ModelWithValidation
+Класс ModelWithValidation является абстрактным базовым классом для моделей данных, которые требуют валидации. Он наследуется от ModelBase<TScheme> и добавляет функциональность для работы с данными, содержащими ошибки, а также поддерживает механизм валидации.
 
 #### Класс CartModel
 CartModel — это модель данных корзины покупок, которая управляет состоянием корзины, включая добавление и удаление продуктов, а также вычисление общей стоимости товаров. Наследуется от ModelBase<IAppEventScheme> и реализует интерфейс ICartModel
@@ -179,6 +184,9 @@ events: IEvents<IAppEventScheme> - экземпляр класса EventEmitter 
 - get total(): number
 Геттер, возвращающий общую стоимость продуктов в корзине.
 
+Events:
+  'cart:changed': void;
+
 #### Класс CatalogModel
 Класс CatalogModel отвечает за хранение и управление данными каталога продуктов. Наследуется от ModelBase<IAppEventScheme> и реализует интерфейс ICatalogModel.
 Конструктор класса принимает инстанс брокера событий.
@@ -192,8 +200,11 @@ events: IEvents<IAppEventScheme> - экземпляр класса EventEmitter 
 - set products(newProducts: IProductData[]): void
 Сеттер, обновляющий массив продуктов в каталоге новыми данными. После обновления генерирует событие catalog:changed, передавая обновленный массив продуктов в качестве параметра.
 
+Events:
+'catalog:changed': (data: IIIProductData[]);
+
 #### Класс ContactsModel
-Класс ContactsModel наследуется от ModelWithValidation<IContactsData, IAppEventScheme> и отвечает за управление данными формы контактов, включая валидацию введенных пользователем данных.
+ContactsModel наследуется от ModelWithValidation<IContactsData, IAppEventScheme> и отвечает за управление данными формы контактов, включая валидацию введенных пользователем данных.
 
 Класс предоставляет набор методов для работы с данными формы:
 - setField(name: string, value: string): void
@@ -208,7 +219,7 @@ value - строка, значение, которое нужно установ
 Защищенный метод, проверяет данные формы на корректность и обновляет состояние ошибок.
 
 #### Класс PaymentInfoModel
-Класс PaymentInfoModel отвечает за управление данными формы для информации об оплате, включая валидацию введенных данных. Наследуется от ModelWithValidation<IPaymentInfoData, IAppEventScheme>.
+PaymentInfoModel отвечает за управление данными формы для информации об оплате, включая валидацию введенных данных. Наследуется от ModelWithValidation<IPaymentInfoData, IAppEventScheme>.
 Конструктор класса принимает инстанс брокера событий.
 
 - setField(name: string, fieldValue: string): void
@@ -257,7 +268,7 @@ abstract class View<T> {
 ```
 
 #### Класс ViewWithEvents
-Класс ViewWithEvents расширяет функциональность базового абстрактного класса View, добавляя поддержку событий. Класс используется для представлений, которые не только рендерят данные, но и взаимодействуют с другими компонентами через систему событий. Класс помогает сократить код и не писать везде  события.
+Класс ViewWithEvents расширяет функциональность базового абстрактного класса View, добавляя поддержку событий. Класс используется для представлений, которые не только рендерят данные, но и взаимодействуют с другими компонентами через систему событий. Класс помогает сократить код и не писать везде события.
 
 ```
 abstract class ViewWithEvents<T> extends View<T> {
@@ -521,6 +532,3 @@ export class Api implements IApi {
 
 - `modal:open` - модалка о окрыта
 - `modal:close` - модалка закрыта
-
-
-  
