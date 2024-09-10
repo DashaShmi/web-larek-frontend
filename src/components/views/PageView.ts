@@ -3,24 +3,32 @@ import { ensureElement } from "../../utils/utils";
 import { IEvents } from "../base/events";
 import { ViewWithEvents } from "../base/ViewWithEvents"
 
-export class PageView extends ViewWithEvents<IPageData, IAppEventScheme> {
+export class PageView extends ViewWithEvents<Partial<IPageData>, IAppEventScheme> {
 
-  protected button: HTMLButtonElement;
+  protected cartButton: HTMLButtonElement;
   protected counter: HTMLElement;
+  protected pageWrapper: HTMLElement;
 
   constructor(element: HTMLElement, events: IEvents<IAppEventScheme>) {
     super(element, events);
 
-    this.button = ensureElement<HTMLButtonElement>('.header__basket');
+    this.cartButton = ensureElement<HTMLButtonElement>('.header__basket');
     this.counter = ensureElement<HTMLElement>('.header__basket-counter');
+    this.pageWrapper = ensureElement<HTMLElement>('.page__wrapper')
 
-    this.button.addEventListener('click', () => {
+    this.cartButton.addEventListener('click', () => {
       this.events.emit('cart:open');
     })
   };
 
-  override render(data: IPageData): HTMLElement {
+  override render(data: Partial<IPageData>): HTMLElement {
     this.counter.innerText = `${data.count}`;
+    if (data.isLocked) {
+      this.pageWrapper.classList.add('.page__wrapper_locked')
+    }
+    else {
+      this.pageWrapper.classList.remove('.page__wrapper_locked')
+    }
     return this.element
   }
 }

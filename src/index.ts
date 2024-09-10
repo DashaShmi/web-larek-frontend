@@ -13,7 +13,7 @@ import { CatalogModel } from './components/models/CatalogModel';
 import { ContactsView } from './components/views/ContactsView';
 import { PaymentInfoView } from './components/views/PaymentInfoView';
 import { SuccessfulOrderView } from './components/views/SuccessfulOrderView';
-import { ContactsModel } from './components/models/ContactsModal';
+import { ContactsModel } from './components/models/ContactsModel';
 import { PaymentInfoModel } from './components/models/PaymentInfoModel';
 import { CartModel } from './components/models/CartModel';
 import { PageView } from './components/views/PageView';
@@ -27,7 +27,7 @@ const events = new EventEmitter<IAppEventScheme>();
 // models
 const cartModel = new CartModel(events);
 const catalogModel = new CatalogModel(events);
-const contactsModal = new ContactsModel(events);
+const contactsModel = new ContactsModel(events);
 const paymentInfoModel = new PaymentInfoModel(events);
 
 // views
@@ -144,8 +144,8 @@ events.on('contacts:submit', () => {
 
   const apiOrderData: IApiOrderData = {
     payment: paymentInfoModel.data.value.paymentMethod,
-    email: contactsModal.data.value.email,
-    phone: contactsModal.data.value.phone,
+    email: contactsModel.data.value.email,
+    phone: contactsModel.data.value.phone,
     address: paymentInfoModel.data.value.address,
     total: cartModel.total,
     items: cartModel.products
@@ -160,7 +160,7 @@ events.on('contacts:submit', () => {
 
     // очистка данных
     paymentInfoModel.reset();
-    contactsModal.reset();
+    contactsModel.reset();
     cartModel.reset();
   });
 
@@ -182,13 +182,13 @@ events.on('order:close', () => {
 
 events.on('paymentsInfo:submit', () => {
   console.log('paymentsInfo:submit');
-  const contactsViewElement = contactsView.render(contactsModal.data);
+  const contactsViewElement = contactsView.render(contactsModel.data);
   modalView.render({ content: contactsViewElement });
   modalView.open();
 })
 
-events.on('cart:completed', (productsData) => {
-  console.log('cart:completed', productsData)
+events.on('cart:completed', () => {
+  console.log('cart:completed')
   const paymentInfoViewElement = paymentInfoView.render(paymentInfoModel.data);
   modalView.render({ content: paymentInfoViewElement });
   modalView.open();
@@ -196,7 +196,7 @@ events.on('cart:completed', (productsData) => {
 
 events.on('contacts:input-change', (valueInput) => {
   console.log('contacts:input-change', valueInput);
-  contactsModal.setField(valueInput.name, valueInput.value);
+  contactsModel.setField(valueInput.name, valueInput.value);
 })
 
 events.on('contacts:error-change', (contactData) => {

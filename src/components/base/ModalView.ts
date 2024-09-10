@@ -39,6 +39,3 @@ export class ModalView extends View<IModalData> {
   };
 }
 
-// class ProductDetailView {
-
-// };

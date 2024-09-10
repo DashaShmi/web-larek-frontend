@@ -61,7 +61,6 @@ export interface ICatalogModel {
   products: IProductData[];
 }
 
-
 export interface IModalData {
   content: HTMLElement;
 }
@@ -93,6 +92,7 @@ export interface ISuccessfulOrderData {
 
 export interface IPageData {
   count: number;
+  isLocked: boolean;
 }
 
 export interface ICatalogData {
@@ -108,13 +108,14 @@ export interface IFormDataWithErrors<T> {
 export type FormErrors<T> = Partial<Record<keyof T, string>>;
 
 export interface IAppEventScheme {
+  // product
   'product:open': IIdData;
   'product:add_to_cart': IProductData;
   'product:remove_from_cart': IIdData;
   // cart
   'cart:changed': void;
   'cart:item-deleted': IIdData;
-  'cart:completed': IProductData[];
+  'cart:completed': void;
   'cart:open': void;
   // catalog
   'catalog:changed': IProductData[];
@@ -122,12 +123,16 @@ export interface IAppEventScheme {
   'contacts:submit': void;
   'contacts:input-change': IInputChangeData;
   'contacts:error-change': IFormDataWithErrors<IContactsData>;
-  // 
+  // paymentsInfo
   'paymentsInfo:submit': void;
-  'paymentsInfo:error-change': IFormDataWithErrors<IPaymentInfoData>;
   'paymentsInfo:input-change': IInputChangeData;
+  'paymentsInfo:error-change': IFormDataWithErrors<IPaymentInfoData>;
+  // order
   'order:completed': ISuccessfulOrderData;
   'order:close': void;
+  //modal
+  'modal:open': void;
+  'modal:close': void;
 }
 
 export interface IListResponse<T> {

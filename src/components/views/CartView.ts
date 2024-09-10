@@ -13,7 +13,7 @@ export class CartView extends ViewWithEvents<ICartData, IAppEventScheme> {
     this.cartCount = ensureElement<HTMLButtonElement>(".basket__price", this.element);
 
     const cartOrderButtom = ensureElement<HTMLButtonElement>('.basket__button', this.element);
-    cartOrderButtom.addEventListener('click', () => this.events.emit('cart:completed', []));
+    cartOrderButtom.addEventListener('click', () => this.events.emit('cart:completed'));
   }
 
   override render(data: ICartData): HTMLElement {
