@@ -18,13 +18,16 @@ export class ModalView extends ViewWithEvents<IModalData, IAppEventScheme> {
     this.element.classList.add('modal_active');
     document.addEventListener("keyup", this.handleEscUp);
     this.events.emit('modal:open')
-
   }
 
   close(): void {
     this.element.classList.remove('modal_active');
     document.removeEventListener("keyup", this.handleEscUp);
     this.events.emit('modal:close');
+    this.modalContent.replaceChildren();
+    // modalContent мы не можем сделать null, это часть модалки,которая остается в ней,
+    // когда мы добавляем в модалку мы добавляем внутрь нее, а не вместо. Поэтому я не сделалала
+    // null а очистила
   }
 
   render(data: IModalData) {

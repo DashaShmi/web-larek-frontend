@@ -68,20 +68,27 @@ function renderCart(): HTMLElement {
 events.on('product:open', (idData) => {
   console.log(`eventOpen: `, idData);
 
-  api.getProduct(idData.id).then((productData) => {
-    const inCart = cartModel.contains(idData.id);
+  api
+    .getProduct(idData.id)
+    .then((productData) => {
+      const inCart = cartModel.contains(idData.id);
 
-    const productViewData: IProductDetailViewData = {
-      ...productData,
-      inCart: inCart
-    };
+      const productViewData: IProductDetailViewData = {
+        ...productData,
+        inCart: inCart
+      };
 
-    const productElement = detailProductView.render(productViewData);
+      const productElement = detailProductView.render(productViewData);
 
-    modalView.render({ content: productElement });
+      modalView.render({ content: productElement });
 
-    modalView.open();
-  })
+      modalView.open();
+    })
+    .catch(e => {
+      console.error(e);
+      alert('Ошибка получения продукта');
+    })
+
 });
 
 events.on('product:add_to_cart', (productData) => {
@@ -153,16 +160,22 @@ events.on('contacts:submit', () => {
       .map(productData => productData.id)
   };
 
-  api.sendOrder(apiOrderData).then(() => {
-    events.emit('order:completed', {
-      total: cartModel.total,
-    });
+  api
+    .sendOrder(apiOrderData)
+    .then(() => {
+      events.emit('order:completed', {
+        total: cartModel.total,
+      });
 
-    // очистка данных
-    paymentInfoModel.reset();
-    contactsModel.reset();
-    cartModel.reset();
-  });
+      // очистка данных
+      paymentInfoModel.reset();
+      contactsModel.reset();
+      cartModel.reset();
+    })
+    .catch(e => {
+      console.error(e);
+      alert('Ошибка отправки заказа');
+    });
 
   modalView.close();
 })
@@ -226,14 +239,13 @@ events.on('modal:close', () => {
 
 // Получаем карточки с сервера
 
-const productListPromise = api.getProductList();
-
-const newPromise = productListPromise.then((productList) => {
-  catalogModel.products = productList.items;
-  console.log(productList.items);
-});
-
-newPromise.catch((err) => {
-  console.error(err);
-});
-
+api
+  .getProductList()
+  .then((productList) => {
+    catalogModel.products = productList.items;
+    console.log(productList.items);
+  })
+  .catch(e => {
+    console.error(e);
+    alert('Ошибка получения списка продуктов');
+  })
