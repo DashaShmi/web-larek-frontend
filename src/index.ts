@@ -59,7 +59,8 @@ function renderCart(): HTMLElement {
 
   const cartElement = cartView.render({
     elements: liArray,
-    total: cartModel.total
+    total: cartModel.total,
+    isValid: cartModel.isValid,
   });
 
   return cartElement;

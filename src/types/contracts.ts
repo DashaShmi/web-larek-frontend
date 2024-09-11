@@ -51,6 +51,7 @@ export interface IPaymentInfoData {
 export interface ICartModel {
   readonly products: IProductData[];
   readonly total: number;
+  readonly isValid: boolean;
   add(data: IProductData): void;
   delete(productId: string): void;
   contains(productId: string): boolean;
@@ -68,6 +69,7 @@ export interface IModalData {
 export interface ICartData {
   elements: HTMLElement[];
   total: number;
+  isValid: boolean;
 }
 
 export interface IIdData {

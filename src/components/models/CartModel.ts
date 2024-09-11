@@ -14,6 +14,10 @@ export class CartModel extends ModelBase<IAppEventScheme> implements ICartModel 
     return this._total
   }
 
+  public get isValid(): boolean {
+    return this.total !== 0;
+  }
+
   constructor(events: IEvents<IAppEventScheme>) {
     super(events);
   }
